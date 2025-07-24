@@ -1,4 +1,4 @@
 package com.mokuroku.backend.common;
 
-public class ResultDTO {
+public record ResultDTO<T>(String message, T data) {
 }
