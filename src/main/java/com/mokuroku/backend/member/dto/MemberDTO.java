@@ -12,5 +12,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class MemberDTO {
-
+ private String email;
 }
