@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class Member {
-    @Id
-    private String email;
+
+  @Id
+  private String email;
 }
