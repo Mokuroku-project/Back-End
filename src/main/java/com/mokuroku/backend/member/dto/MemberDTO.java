@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class MemberDTO {
-
+ private String email;
 }
