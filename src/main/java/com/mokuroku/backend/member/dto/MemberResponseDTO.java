@@ -1,6 +1,7 @@
 package com.mokuroku.backend.member.dto;
 
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Getter
@@ -8,16 +9,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-public class MemberDTO {
-    private Long id;
+public class MemberResponseDTO {
+    private Long memberId;
     private String email;
-    private String password;
     private String nickname;
     private String profileImage;
-    private boolean socialLogin; // true: 소셜, false: 일반
-    private LocalDateTime regDate;
-    private LocalDateTime withdrawalDate;
-    private String role;   // "admin", "user"
+    private String role; // "admin" 또는 "user"
     private boolean status; // true: usable, false: unusable
+    private LocalDateTime regDate;
 }
