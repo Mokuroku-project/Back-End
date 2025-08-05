@@ -28,3 +28,9 @@ public class RegisterRequestDTO {
     private boolean socialLoginCheck; // true = 소셜 로그인
 
 }
+
+/*
+📌 회원가입 요청 시 클라이언트로부터 전달받는 데이터를 담는 DTO
+예: 이메일, 비밀번호, 닉네임, 소셜 여부, 프로필 이미지 등
+서비스 계층에서 이 데이터를 바탕으로 Member 엔티티를 생성합니다.
+ */

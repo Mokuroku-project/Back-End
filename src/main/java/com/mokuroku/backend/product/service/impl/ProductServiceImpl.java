@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
     // 임시 테스트 이메일
     String email = "test@gmail.com";
     // 회원인지 검증
-    Member member = memberRepository.findById(email)
+    Member member = memberRepository.findById(Long.valueOf(email))
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
 
     Wishlist wishlist = Wishlist.builder()

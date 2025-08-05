@@ -27,8 +27,11 @@ public class Member {
     @Column(nullable = false, unique = true, length = 50)
     private String nickname;
 
+    @Column(length = 512)
+    private String profileImage;
+
     @Column(name = "social_login_check", length = 1)
-    private String socialLoginCheck;  // '1' = 소셜 로그인, '0' = 일반
+    private String socialLoginCheck;  // 'Y' or 'N'
 
     @Column(name = "reg_date")
     private LocalDateTime regDate;
@@ -39,11 +42,22 @@ public class Member {
     @Column(length = 1)
     private String status; // '1' = 사용 가능, '0' = 정지/탈퇴
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Role role;  // ✅ Role 필드 추가
+
     @PrePersist
     public void prePersist() {
         regDate = LocalDateTime.now();
         if (status == null) {
             status = "1";
         }
+        if (role == null) {
+            role = Role.USER;
+        }
+    }
+
+    public enum Role {
+        USER, ADMIN
     }
 }
