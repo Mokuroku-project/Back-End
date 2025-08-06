@@ -22,6 +22,8 @@ public class BudgetbookServiceImpl implements BudgetbookService {
     private final MemberRepository memberRepository;
     private final BudgetbookRepository budgetbookRepository;
 
+
+    //가계부 생성
     @Override
     public ResponseEntity<ResultDTO> budgetbookRegist(BudgetbookDTO budgetbookDTO){
         String email = "test@gmail.com";
@@ -42,4 +44,18 @@ public class BudgetbookServiceImpl implements BudgetbookService {
 
         return ResponseEntity.ok(new ResultDTO<>("가계부 작성에 성공했습니다",  budgetbook));
     };
+
+
+    //가계부 삭제
+    @Override
+    public ResponseEntity<ResultDTO> budgetbookDelete(BudgetbookDTO budgetbookDTO){
+        String email = "test@gmail.com";
+        Member member = memberRepository.findById(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+        budgetbookRepository.deleteById(budgetbookDTO.getBudgetbookId());
+
+        return ResponseEntity.ok(new ResultDTO<>("가계부 삭제에 성공했습니다",""));
+    }
+
 }

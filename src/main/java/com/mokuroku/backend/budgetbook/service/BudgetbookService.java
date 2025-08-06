@@ -10,4 +10,5 @@ public interface BudgetbookService {
 
     ResponseEntity<ResultDTO> budgetbookRegist(BudgetbookDTO budgetbookDTO);
 
+    ResponseEntity<ResultDTO> budgetbookDelete(BudgetbookDTO budgetbookDTO);
 }
