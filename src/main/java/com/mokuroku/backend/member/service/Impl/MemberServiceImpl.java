@@ -63,8 +63,12 @@ public class MemberServiceImpl implements MemberService {
                 .email(saved.getEmail())
                 .nickname(saved.getNickname())
                 .profileImage(saved.getProfileImage())
+                .role(saved.getRole().name().toLowerCase())
+                .regDate(saved.getRegDate())
                 .build();
+
     }
+}
 
 //    @Override
 //    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
@@ -109,12 +113,6 @@ public class MemberServiceImpl implements MemberService {
 //
 //        redisTemplate.delete(REFRESH_PREFIX + email);
 //    }
-}
-
-
-/*
-
- */
 
 /*
 사용된 컴포넌트 요약
@@ -128,4 +126,4 @@ MemberRepository	사용자 조회용 JPA Repository
 계정 상태 체크 (status가 unusable이면 로그인 막기)
 소셜 로그인 분기
 Refresh Token 발급 및 Redis 저장
- */
+*/

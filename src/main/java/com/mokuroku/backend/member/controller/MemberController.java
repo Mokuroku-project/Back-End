@@ -43,6 +43,7 @@ public class MemberController {
         RegisterResponseDTO responseDTO = memberService.register(requestDTO);
         return ResponseEntity.ok(responseDTO);
     }
+}
 
 //    // ✅ 로그인
 //    @PostMapping("/login")
@@ -94,4 +95,3 @@ public class MemberController {
 //        authService.logout(accessToken);
 //        return ResponseEntity.ok("로그아웃 되었습니다.");
 //    }
-}
