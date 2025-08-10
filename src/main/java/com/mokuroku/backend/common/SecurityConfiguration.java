@@ -26,34 +26,28 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
     return http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(AbstractHttpConfigurer::disable)
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(
+            .authorizeHttpRequests(
+                    requests -> requests.requestMatchers(
                             "/",
-                            "/api",
-                            "/auth/**",
                             "/products/**",
                             "/dutch/**",
-                            "/swagger-ui.html",     // ✅ UI HTML 파일
-                            "/swagger-ui/**",       // ✅ JS, CSS 리소스
-                            "/v3/api-docs",         // ✅ JSON 문서
-                            "/v3/api-docs/**",      // ✅ 그룹화된 문서
-                            "/webjars/**",              // ✅ swagger-ui 리소스
-                            "/favicon.ico",             // ✅ 404 방지
+                            "/budgetbook/**",
+                            "/swagger-ui.html",       // ✅ UI HTML 파일
+                            "swagger-ui/**",          // ✅ JS, CSS 리소스
+                            "/v3/api-docs",           // ✅ JSON 문서
+                            "/v3/api-docs/**",        // ✅ 그룹화된 문서
+                            "/webjars/**",            // ✅ swagger-ui 리소스
+                            "/favicon.ico",           // ✅ 404 방지
                             "/error"
-                    ).permitAll()
-
-                    .anyRequest().authenticated()
-            )
-//                .exceptionHandling(ex -> ex
-//                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//                        .accessDeniedHandler(jwtAccessDeniedHandler)
-//                )
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                            ).permitAll()
+                            .anyRequest().authenticated())
+            .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS))
             .build();
   }
 
