@@ -1,14 +1,18 @@
 package com.mokuroku.backend.budgetbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mokuroku.backend.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.cglib.core.Local;
 
+import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @Table(name="budgetbook")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,8 +40,9 @@ public class BudgetbookEntity {
     @Column
     private String memo;
 
-    @Column(name = "date", nullable = false)
-    private LocalDateTime date = LocalDateTime.now();
+    @Column(nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
 
 
 }

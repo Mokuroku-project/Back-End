@@ -1,6 +1,7 @@
 package com.mokuroku.backend.budgetbook.service.impl;
 
 import com.mokuroku.backend.budgetbook.dto.BudgetbookDTO;
+import com.mokuroku.backend.budgetbook.dto.BudgetbookEditDTO;
 import com.mokuroku.backend.budgetbook.entity.BudgetbookEntity;
 import com.mokuroku.backend.budgetbook.repository.BudgetbookRepository;
 import com.mokuroku.backend.budgetbook.service.BudgetbookService;
@@ -9,6 +10,7 @@ import com.mokuroku.backend.exception.ErrorCode;
 import com.mokuroku.backend.exception.impl.CustomException;
 import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.member.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -36,26 +38,51 @@ public class BudgetbookServiceImpl implements BudgetbookService {
                 .amount(budgetbookDTO.getAmount())
                 .category(budgetbookDTO.getCategory())
                 .memo(budgetbookDTO.getMemo())
-                .date(LocalDateTime.now())
+                .date(budgetbookDTO.getDate())
                 .build();
 
         budgetbookRepository.save(budgetbook);
 
 
         return ResponseEntity.ok(new ResultDTO<>("가계부 작성에 성공했습니다",  budgetbook));
-    };
+    }
+
+
 
 
     //가계부 삭제
     @Override
-    public ResponseEntity<ResultDTO> budgetbookDelete(BudgetbookDTO budgetbookDTO){
+    public ResponseEntity<ResultDTO> budgetbookDelete(Long budgetBookId){
         String email = "test@gmail.com";
         Member member = memberRepository.findById(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
 
-        budgetbookRepository.deleteById(budgetbookDTO.getBudgetbookId());
+        budgetbookRepository.deleteById(budgetBookId);
 
         return ResponseEntity.ok(new ResultDTO<>("가계부 삭제에 성공했습니다",""));
+    }
+
+
+    //가계부 수정
+    @Override
+    @Transactional
+    public ResponseEntity<ResultDTO> budgetbookEdit(Long budgetbookId, BudgetbookEditDTO budgetbookEditDTO){
+        String email = "test@gmail.com";
+        Member member = memberRepository.findById(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+        BudgetbookEntity budgetbook = budgetbookRepository.findById(budgetbookId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BUDGETBOOK));
+
+        budgetbook.setType(budgetbookEditDTO.getType());
+        budgetbook.setAmount(budgetbookEditDTO.getAmount());
+        budgetbook.setCategory(budgetbookEditDTO.getCategory());
+        budgetbook.setMemo(budgetbookEditDTO.getMemo());
+        budgetbook.setDate(budgetbookEditDTO.getDate());
+
+        budgetbookRepository.save(budgetbook);
+
+        return ResponseEntity.ok(new ResultDTO<>("가계부 수정에 성공했습니다",budgetbook));
     }
 
 }

@@ -4,7 +4,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -18,7 +21,6 @@ public class BudgetbookDTO {
     private Integer amount; //금액
     private String category; //카테고리
     private String memo; //메모
-    private LocalDateTime budgetbookDate; //가계부 생성날짜
-
+    private LocalDate date;//해당일자
 
 }
