@@ -52,12 +52,19 @@ public class BudgetbookServiceImpl implements BudgetbookService {
 
     //가계부 삭제
     @Override
-    public ResponseEntity<ResultDTO> budgetbookDelete(Long budgetBookId){
+    public ResponseEntity<ResultDTO> budgetbookDelete(Long budgetbookId){
         String email = "test@gmail.com";
         Member member = memberRepository.findById(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
 
-        budgetbookRepository.deleteById(budgetBookId);
+        BudgetbookEntity budgetbook = budgetbookRepository.findById(budgetbookId)
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BUDGETBOOK));
+
+        if (!budgetbook.getMember().getEmail().equals(member)) {
+            throw new CustomException(ErrorCode.NOT_FOUND_BUDGETBOOK);
+        }
+
+        budgetbookRepository.deleteById(budgetbookId);
 
         return ResponseEntity.ok(new ResultDTO<>("가계부 삭제에 성공했습니다",""));
     }

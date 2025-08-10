@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BudgetbookRepository extends JpaRepository<BudgetbookEntity, Long> {
 
+    Long budgetbookId(Long budgetbookId);
 }
