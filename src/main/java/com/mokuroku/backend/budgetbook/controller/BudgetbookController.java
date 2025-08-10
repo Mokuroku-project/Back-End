@@ -23,7 +23,7 @@ public class BudgetbookController {
     }
 
     @DeleteMapping("/{budgetbookId}")
-    public ResponseEntity<ResultDTO> budgetbook(@RequestBody @PathVariable Long budgetbookId) {
+    public ResponseEntity<ResultDTO> budgetbookDelete(@RequestBody @PathVariable Long budgetbookId) {
         ResponseEntity<ResultDTO> result = budgetbookService.budgetbookDelete(budgetbookId);
         return result;
     }
@@ -33,5 +33,12 @@ public class BudgetbookController {
         ResponseEntity<ResultDTO> result = budgetbookService.budgetbookEdit(budgetbookId, budgetbookDTO);
         return result;
     }
+
+    @GetMapping("/{budgetbookId}")
+    public ResponseEntity<ResultDTO> budgetbook(@PathVariable Long budgetbookId){
+        ResponseEntity<ResultDTO> result = budgetbookService.budgetbook(budgetbookId);
+        return result;
+    }
+
 
 }

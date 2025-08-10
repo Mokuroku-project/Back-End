@@ -60,7 +60,7 @@ public class BudgetbookServiceImpl implements BudgetbookService {
         BudgetbookEntity budgetbook = budgetbookRepository.findById(budgetbookId)
                         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BUDGETBOOK));
 
-        if (!budgetbook.getMember().getEmail().equals(member)) {
+        if (!budgetbook.getMember().getEmail().equals(email)) {
             throw new CustomException(ErrorCode.NOT_FOUND_BUDGETBOOK);
         }
 
@@ -91,5 +91,27 @@ public class BudgetbookServiceImpl implements BudgetbookService {
 
         return ResponseEntity.ok(new ResultDTO<>("가계부 수정에 성공했습니다",budgetbook));
     }
+
+
+    //가계부 조회
+    @Override
+    public ResponseEntity<ResultDTO> budgetbook(Long budgetbookId){
+        String email = "test@gmail.com";
+        Member member = memberRepository.findById(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+        BudgetbookEntity budgetbook = budgetbookRepository.findById(budgetbookId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BUDGETBOOK));
+
+        if(!budgetbook.getMember().getEmail().equals(email) || !budgetbook.getBudgetbookId().equals(budgetbookId)) {
+            throw new CustomException(ErrorCode.NOT_FOUND_BUDGETBOOK);
+        }
+        budgetbookRepository.findById(budgetbookId);
+
+        return ResponseEntity.ok(new ResultDTO<>("가계부 조회에 성공했습니다", budgetbook));
+
+    }
+
+
 
 }

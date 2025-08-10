@@ -14,4 +14,6 @@ public interface BudgetbookService {
     ResponseEntity<ResultDTO> budgetbookDelete(Long budgetbookId);
 
     ResponseEntity<ResultDTO> budgetbookEdit(Long budgetbookId, BudgetbookEditDTO budgetbookEditDTO);
+
+    ResponseEntity<ResultDTO> budgetbook(Long budgetbookId);
 }
