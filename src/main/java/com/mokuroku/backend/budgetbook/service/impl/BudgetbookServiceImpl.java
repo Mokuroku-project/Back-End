@@ -15,7 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -110,6 +114,42 @@ public class BudgetbookServiceImpl implements BudgetbookService {
 
         return ResponseEntity.ok(new ResultDTO<>("가계부 조회에 성공했습니다", budgetbook));
 
+    }
+
+
+    //가계부 리스트 조회
+    @Override
+    public ResponseEntity<ResultDTO> budgetbookList(String email, String startDate, String endDate, String type) {
+
+        Member member = memberRepository.findById(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end   = LocalDate.parse(endDate);
+
+        List<BudgetbookEntity> budgetbookList;
+        if (type == null || type.isEmpty()) {
+            budgetbookList = budgetbookRepository.findByMemberAndDateBetween(member, start, end);
+        } else {
+            budgetbookList = budgetbookRepository.findByMemberAndDateBetweenAndType(member, start, end, type);
+        }
+
+        int totalIncome = budgetbookList.stream()
+                .filter(b -> "수입".equals(b.getType()))
+                .mapToInt(BudgetbookEntity::getAmount)
+                .sum();
+
+        int totalExpense = budgetbookList.stream()
+                .filter(b -> "지출".equals(b.getType()))
+                .mapToInt(BudgetbookEntity::getAmount)
+                .sum();
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("totalIncome", totalIncome);
+        resultMap.put("totalExpense", totalExpense);
+        resultMap.put("items", budgetbookList);
+
+        return ResponseEntity.ok(new ResultDTO<>("가계부 리스트 조회에 성공했습니다", resultMap));
     }
 
 
