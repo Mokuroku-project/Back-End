@@ -61,4 +61,12 @@ public class PostEntity {
         this.status = '1';
         this.deleteDate = null;
     }
+
+    // 게시물 수정 처리
+    public void update(String content, String location, Visibility visibility) {
+        this.content = content;
+        this.location = location;
+        this.visibility = visibility;
+        // updatedDate는 @LastModifiedDate로 자동 업데이트됨
+    }
 }

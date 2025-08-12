@@ -43,4 +43,23 @@ public class PostServiceImpl implements PostService {
         
         return PostDTO.fromEntity(postEntity);
     }
+
+    @Override
+    public PostDTO updatePost(Long postId, PostDTO postDTO) {
+        PostEntity postEntity = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+        
+        if (postEntity.getStatus() == '0') {
+            throw new CustomException(ErrorCode.POST_NOT_FOUND);
+        }
+        
+        // 게시글 수정 - 직접 필드 설정
+        postEntity.setContent(postDTO.getContent());
+        postEntity.setLocation(postDTO.getLocation());
+        postEntity.setVisibility(postDTO.getVisibility());
+        
+        PostEntity updatedEntity = postRepository.save(postEntity);
+        
+        return PostDTO.fromEntity(updatedEntity);
+    }
 } 
