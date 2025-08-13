@@ -1,5 +1,6 @@
 package com.mokuroku.backend.dutch.dto;
 
+
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,10 +19,12 @@ public class DutchDTO {
         private List<String> eater;
     }
 
+
     @Getter
     @Setter
     public static class DutchRequest {
         private List<String> participant;
         private List<DutchItem> dutchList;
+
     }
 }

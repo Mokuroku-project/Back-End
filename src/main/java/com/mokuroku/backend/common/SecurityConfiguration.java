@@ -30,8 +30,6 @@ public class SecurityConfiguration {
             requests -> requests.requestMatchers(
                     "/",
                             "/api",
-                            "/api/members/verify-email",
-                            "/api/members/resend-verification",
                             "/auth/**",
                             "/products/**",
                             "/dutch/**",
