@@ -30,6 +30,7 @@ public class SecurityConfiguration {
             requests -> requests.requestMatchers(
                     "/",
                             "/api",
+                            "/api/members/register",
                             "/api/members/verify-email",
                             "/api/members/resend-verification",
                             "/auth/**",
