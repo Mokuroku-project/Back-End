@@ -44,5 +44,4 @@ public class BudgetbookEntity {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
-
 }
