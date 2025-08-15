@@ -1,43 +1,21 @@
 package com.mokuroku.backend.dutch.service;
 
+import com.mokuroku.backend.budgetbook.dto.BudgetbookDTO;
+import com.mokuroku.backend.common.ResultDTO;
 import com.mokuroku.backend.dutch.dto.DutchDTO;
+import com.mokuroku.backend.dutch.dto.DutchToBudgetbookDTO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
-public class DutchService {
-
-    public Map<String, Integer> calculate(DutchDTO.DutchRequest request) {
-        Map<String, Integer> dutchResult = new HashMap<>();
+public interface DutchService {
 
 
-        for (DutchDTO.DutchItem item : request.getDutchList()) {
-            int totalPrice = 0;
+    ResponseEntity<ResultDTO> dutchToBudgetbook(DutchToBudgetbookDTO dutchToBudgetbookDTO);
 
-            if (item.getTotalPrice() != null) {
-                totalPrice = item.getTotalPrice();
-            } else if (item.getPrice() != null && item.getQuantity() != null) {
-                totalPrice = item.getPrice() * item.getQuantity();
-                item.setTotalPrice(totalPrice);
-            } else {
-                continue;
-            }
-
-            List<String> eaters = item.getEater();
-            if (eaters == null || eaters.isEmpty()) continue;
-
-            int dutchPrice = totalPrice / eaters.size();
-
-            for (String person : eaters) {
-                dutchResult.put(person, dutchResult.getOrDefault(person, 0) + dutchPrice);
-            }
-        }
-
-        return dutchResult;
-    }
+    ResponseEntity<ResultDTO> dutch(DutchDTO dutchDTO);
 
 
 }
