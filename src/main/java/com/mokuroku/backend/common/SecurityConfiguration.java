@@ -27,7 +27,23 @@ public class SecurityConfiguration {
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(
-            requests -> requests.requestMatchers("/products/**", "/dutch/**", "/sns/**").permitAll()
+            requests -> requests.requestMatchers(
+                    "/",
+                            "/api",
+                            "/api/members/register",
+                            "/api/members/verify-email",
+                            "/api/members/resend-verification",
+                            "/auth/**",
+                            "/products/**",
+                            "/dutch/**",
+                            "/swagger-ui.html",     //
+                            "/swagger-ui/**",       // ✅ JS, CSS 리소스
+                            "/v3/api-docs",         // ✅ JSON 문서
+                            "/v3/api-docs/**",      // ✅ 그룹화된 문서
+                            "/webjars/**",          // ✅ swagger-ui 리소스
+                            "/favicon.ico",         // ✅ 404 방지
+                            "/error"
+                    ).permitAll()
                 .anyRequest().authenticated())
         .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
             SessionCreationPolicy.STATELESS))
