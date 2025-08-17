@@ -1,8 +1,8 @@
 package com.mokuroku.backend.member.service;
 
-import org.springframework.stereotype.Service;
+import com.mokuroku.backend.member.dto.RegisterRequestDTO;
+import com.mokuroku.backend.member.dto.RegisterResponseDTO;
 
-@Service
 public interface MemberService {
-
+    RegisterResponseDTO register(RegisterRequestDTO requestDTO);
 }

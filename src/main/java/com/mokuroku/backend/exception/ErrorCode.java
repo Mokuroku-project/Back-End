@@ -7,16 +7,16 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
   // Members
-  NOT_FOUND_MEMBER("존재하지 않는 회원 입니다.", HttpStatus.NOT_FOUND),
+  NOT_FOUND_MEMBER("존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND),
 
   // SNS
-  POST_NOT_FOUND("존재하지 않는 게시글 입니다.", HttpStatus.NOT_FOUND);
-
+  NOT_FOUND_POST("존재하지 않는 게시글입니다.", HttpStatus.NOT_FOUND),
   // Comments
 
   // Bookmark
 
   // BudgetBook
+  NOT_FOUND_BUDGETBOOK("존재하지 않는 가계부입니다.", HttpStatus.NOT_FOUND);
 
   // Dutch
 
