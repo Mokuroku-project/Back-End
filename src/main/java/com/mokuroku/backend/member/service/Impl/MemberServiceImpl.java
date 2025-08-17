@@ -59,7 +59,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 응답 반환
         return RegisterResponseDTO.builder()
-//                .memberId(saved.getId())
+                .memberId(saved.getId())
                 .email(saved.getEmail())
                 .nickname(saved.getNickname())
                 .profileImage(saved.getProfileImage())

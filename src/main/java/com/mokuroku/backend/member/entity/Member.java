@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class Member {
 
     @Id
+    @Column(nullable = false, unique = true, length = 255)
     private String email;
 
     @Column(nullable = false, length = 255)
