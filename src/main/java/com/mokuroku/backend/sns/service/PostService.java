@@ -9,4 +9,7 @@ public interface PostService {
 
     // 게시물 조회 (단일)
     PostDTO getPost(Long postId);
+
+    // 게시물 수정
+    PostDTO updatePost(Long postId, PostDTO postDTO);
 }

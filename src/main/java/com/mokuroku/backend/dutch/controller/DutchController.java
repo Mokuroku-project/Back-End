@@ -18,9 +18,10 @@ public class DutchController {
         this.dutchService = dutchService;
     }
 
-    @PostMapping("/dutch")
+    @PostMapping("/dutch/")
     public Map<String, Integer> dutch(@RequestBody DutchDTO.DutchRequest request){
     Map<String, Integer> dutchResult = dutchService.calculate(request);
     return dutchResult;
     }
+
 }
