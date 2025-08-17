@@ -15,14 +15,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(AuditingEntityListener.class) //저장·수정 이벤트를 감시해서, 날짜/작성자 정보를 자동으로 채우는 기능
 public class PostEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, length = 255)
     private String email;
 
     @Column(columnDefinition = "TEXT")
@@ -38,7 +38,7 @@ public class PostEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime regDate;
 
-    @LastModifiedDate // Entity가 수정될 떄 자동으로 시간 정보를 업뎃해줌
+    @LastModifiedDate // Entity가 수정될 때 자동으로 시간 정보를 업뎃해줌
     private LocalDateTime updatedDate;
 
     private LocalDateTime deleteDate;
@@ -50,6 +50,13 @@ public class PostEntity {
         PUBLIC, PRIVATE, LIMITED
     }
 
+    /**
+    게시글 삭제, 복구, 수정 같은 로직을 엔티티 내부에 적는 이유는
+    필요할 때 서비스에서 이 메서드를 호출해서 처리하면 되고,
+    변경 시 한 곳만 수정하면 되기 때문에
+    나중에 테스트할때나 가독성 부분도 고려해서 이렇게 했습니다!
+     *
+      */
     // 게시물 삭제 처리
     public void delete() {
         this.status = '0';
@@ -67,6 +74,6 @@ public class PostEntity {
         this.content = content;
         this.location = location;
         this.visibility = visibility;
-        // updatedDate는 @LastModifiedDate로 자동 업데이트됨
+        // updatedDate는 @LastModifiedDate로 자동 업뎃됨
     }
 }

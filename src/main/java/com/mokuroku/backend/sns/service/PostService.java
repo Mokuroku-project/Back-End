@@ -12,4 +12,7 @@ public interface PostService {
 
     // 게시물 수정
     PostDTO updatePost(Long postId, PostDTO postDTO);
+
+    // 게시물 삭제
+    void deletePost(Long postId);
 }

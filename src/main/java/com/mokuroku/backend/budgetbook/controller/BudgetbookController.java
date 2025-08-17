@@ -42,7 +42,7 @@ public class BudgetbookController {
 
     @GetMapping("/list")
     public ResponseEntity<ResultDTO> budgetbookList(
-            @RequestParam String email,
+        @RequestParam String email,
         @RequestParam String startDate,
         @RequestParam String endDate,
         @RequestParam String type
@@ -50,6 +50,4 @@ public class BudgetbookController {
         ResponseEntity<ResultDTO> result = budgetbookService.budgetbookList(email, startDate, endDate, type);
         return result;
     }
-
-
 }

@@ -31,26 +31,26 @@ public class PostServiceImpl implements PostService {
         return PostDTO.fromEntity(savedEntity);
     }
 
-    @Override
+    @Override // 게시글 조회
     @Transactional(readOnly = true)
     public PostDTO getPost(Long postId) {
         PostEntity postEntity = postRepository.findById(postId)
-                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
         
         if (postEntity.getStatus() == '0') {
-            throw new CustomException(ErrorCode.POST_NOT_FOUND);
+            throw new CustomException(ErrorCode.NOT_FOUND_POST);
         }
         
         return PostDTO.fromEntity(postEntity);
     }
 
-    @Override
+    @Override // 게시글 수정
     public PostDTO updatePost(Long postId, PostDTO postDTO) {
         PostEntity postEntity = postRepository.findById(postId)
-                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
         
         if (postEntity.getStatus() == '0') {
-            throw new CustomException(ErrorCode.POST_NOT_FOUND);
+            throw new CustomException(ErrorCode.NOT_FOUND_POST);
         }
         
         // 게시글 수정 - 직접 필드 설정
@@ -61,5 +61,19 @@ public class PostServiceImpl implements PostService {
         PostEntity updatedEntity = postRepository.save(postEntity);
         
         return PostDTO.fromEntity(updatedEntity);
+    }
+
+    @Override // 게시글 삭제
+    public void deletePost(Long postId) {
+        PostEntity postEntity = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+        
+        if (postEntity.getStatus() == '0') {
+            throw new CustomException(ErrorCode.NOT_FOUND_POST);
+        }
+        
+        // 게시글 삭제 처리
+        postEntity.delete();
+        postRepository.save(postEntity);
     }
 } 
