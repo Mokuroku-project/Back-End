@@ -18,4 +18,5 @@ public class Member {
 
   @Id
   private String email;
+  private Character status;
 }
