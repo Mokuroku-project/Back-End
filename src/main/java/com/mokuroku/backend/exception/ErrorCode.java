@@ -10,12 +10,13 @@ public enum ErrorCode {
   NOT_FOUND_MEMBER("존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND),
 
   // SNS
-
+  NOT_FOUND_POST("존재하지 않는 게시글입니다.", HttpStatus.NOT_FOUND),
   // Comments
 
   // Bookmark
 
   // BudgetBook
+  NOT_FOUND_BUDGETBOOK("존재하지 않는 가계부입니다.", HttpStatus.NOT_FOUND),
 
   // Dutch
 
