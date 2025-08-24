@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 
 public class CustomException extends AbstractException {
 
-  private String message;
-  private HttpStatus status;
-  private ErrorCode errorCode;
+  private final String message;
+  private final HttpStatus status;
+  private final ErrorCode errorCode;
 
   public CustomException(ErrorCode errorCode) {
     this.errorCode = errorCode;
@@ -18,16 +18,16 @@ public class CustomException extends AbstractException {
 
   @Override
   public HttpStatus getHttpStatus() {
-    return null;
+    return status;
   }
 
   @Override
   public ErrorCode getErrorCode() {
-    return null;
+    return errorCode;
   }
 
   @Override
   public String getMessage() {
-    return "";
+    return message;
   }
 }
