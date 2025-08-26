@@ -27,17 +27,17 @@ public class PostDTO {
     private char status;
 
     // Entity를 DTO로
-    public static PostDTO fromEntity(PostEntity entity) {
+    public static PostDTO fromEntity(PostEntity postEntity) {
         return PostDTO.builder()
-                .postId(entity.getPostId())
-                .email(entity.getEmail())
-                .content(entity.getContent())
-                .location(entity.getLocation())
-                .visibility(entity.getVisibility())
-                .regDate(entity.getRegDate())
-                .updatedDate(entity.getUpdatedDate())
-                .deleteDate(entity.getDeleteDate())
-                .status(entity.getStatus())
+                .postId(postEntity.getPostId())
+                .email(postEntity.getEmail())
+                .content(postEntity.getContent())
+                .location(postEntity.getLocation())
+                .visibility(postEntity.getVisibility())
+                .regDate(postEntity.getRegDate())
+                .updatedDate(postEntity.getUpdatedDate())
+                .deleteDate(postEntity.getDeleteDate())
+                .status(postEntity.getStatus())
                 .build();
     }
 
@@ -49,7 +49,7 @@ public class PostDTO {
                 .content(postDTO.getContent())
                 .location(postDTO.getLocation())
                 .visibility(postDTO.getVisibility())
-                .status(postDTO.getStatus())
+                .status('1') //항상 활성 상태로
                 .build();
     }
 }

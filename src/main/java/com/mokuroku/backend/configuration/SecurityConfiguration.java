@@ -1,4 +1,4 @@
-package com.mokuroku.backend.common;
+package com.mokuroku.backend.configuration;
 
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +36,7 @@ public class SecurityConfiguration {
                             "/auth/**",
                             "/products/**",
                             "/dutch/**",
+                            "/sns/**",
                             "/swagger-ui.html",     //
                             "/swagger-ui/**",       // ✅ JS, CSS 리소스
                             "/v3/api-docs",         // ✅ JSON 문서

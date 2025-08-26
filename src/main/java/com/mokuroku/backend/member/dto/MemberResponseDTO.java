@@ -1,65 +1,55 @@
 package com.mokuroku.backend.member.dto;
 
-// 필요한 클래스와 어노테이션을 위한 import 문
-import com.fasterxml.jackson.annotation.JsonValue; // JSON 직렬화 시 열거형 값을 제어하기 위한 어노테이션
-import io.swagger.v3.oas.annotations.media.Schema; // Swagger 문서화를 위한 어노테이션
-import lombok.*; // Lombok 어노테이션으로 보일러플레이트 코드 최소화
-import java.time.LocalDateTime; // 날짜 및 시간 처리를 위한 클래스
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
 
-// Getter 메서드를 자동 생성하여 필드 값을 외부에서 읽을 수 있도록 함
+import java.time.LocalDateTime;
+
 @Getter
-// Builder 패턴을 활성화하여 객체 생성을 유연하게 처리, toBuilder=true로 기존 객체를 기반으로 수정 가능
-@Builder(toBuilder = true)
-// 매개변수가 없는 기본 생성자를 private으로 설정하여 Jackson 역직렬화용으로 사용
-// 외부에서 직접 호출되지 않도록 제한
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-// 모든 필드를 포함하는 생성자를 생성, 필요 시 명시적 사용 가능
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
-// toString 메서드를 자동 생성하여 객체의 문자열 표현 제공
-@ToString
-// Swagger 문서화: 이 클래스가 회원 정보 응답 DTO임을 설명
+@Builder
 @Schema(description = "회원 정보 응답 DTO")
 public class MemberResponseDTO {
 
-    // 회원의 고유 식별자
-    // @Schema : Swagger 문서에서 필드 설명, 예시, 필수 여부를 정의
-    @Schema(description = "회원 ID", example = "1", required = true)
+    @Schema(description = "회원 ID", example = "1")
     private Long memberId;
 
-    // 회원의 이메일 주소
-    @Schema(description = "이메일", example = "user@example.com", required = true)
+    @Schema(description = "이메일", example = "user@example.com")
     private String email;
 
-    // 회원의 닉네임
-    @Schema(description = "닉네임", example = "mokuroku", required = true)
+    @Schema(description = "닉네임", example = "mokuroku")
     private String nickname;
 
-    // 회원의 프로필 이미지 URL, 선택적 필드
-    @Schema(description = "프로필 이미지 URL", example = "https://example.com/profile.jpg", required = false)
+    @Schema(description = "프로필 이미지 URL", example = "https://example.com/profile.jpg")
     private String profileImage;
 
-    // 회원의 권한 (USER 또는 ADMIN)
-    @Schema(description = "회원 권한 (USER, ADMIN)", example = "USER", required = true)
-    private Role role;
+    @Schema(description = "회원 권한 (예: user, admin)", example = "user")
+    private String role;
 
-    // 회원 계정 상태 (true=활성, false=정지/탈퇴)
-    @Schema(description = "회원 상태 (true=사용 가능, false=정지/탈퇴)", example = "true", required = true)
+    @Schema(description = "회원 상태 (true = 사용 가능, false = 정지/탈퇴)", example = "true")
     private boolean status;
 
-    // 회원 가입 일자
-    @Schema(description = "가입 일자", example = "2025-08-07T12:34:56", required = true)
+    @Schema(description = "가입 일자", example = "2025-08-07T12:34:56")
     private LocalDateTime regDate;
-
-    // 회원 권한을 정의하는 열거형
-    public enum Role {
-        USER, // 일반 사용자 권한
-        ADMIN; // 관리자 권한
-
-        // JSON 직렬화 시 열거형 값을 문자열로 변환 (예: "USER", "ADMIN")
-        // @JsonValue : Jackson이 이 메서드를 사용하여 Role 값을 직렬화
-        @JsonValue
-        public String getValue() {
-            return name();
-        }
-    }
 }
+
+/*
+    3. MemberResponseDTO
+    ⚠️ 상황에 따라 필요
+    이 DTO는 일반적으로 "회원 정보 조회"와 같은 조회용 응답 DTO로 사용됩니다.
+    예를 들어 마이페이지, 프로필 보기, 회원 목록 등에서 활용될 수 있습니다.
+    그러나 회원가입 전까지는 보통 사용되지 않습니다.
+    ✅ 나중에 이메일 인증 이후 사용자 정보 응답이 필요해지면 사용하는 것이 좋습니다.
+ */
+
+// ✅ Swagger 문서에 표시될 필드 요약
+// 필드	설명	예시
+// memberId	회원 고유 ID	1
+// email	회원 이메일	user@example.com
+// nickname	회원 닉네임	mokuroku
+// profileImage	프로필 이미지 URL	https://example.com/img.png
+// role	권한 (예: 일반 사용자, 관리자)	user, admin
+// status	계정 활성 여부	true
+// regDate	가입 일시	2025-08-07T12:34:56
