@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/members")
+@RequestMapping("/members")
 @RequiredArgsConstructor
 @Tag(name = "회원", description = "회원 관련 API")
 public class MemberController {
@@ -29,7 +29,7 @@ public class MemberController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청"),
             @ApiResponse(responseCode = "409", description = "이메일 또는 닉네임 중복")
     })
-    @PostMapping("/register")
+    @PostMapping("/join")
     public ResponseEntity<RegisterResponseDTO> register(
             @Valid @RequestBody RegisterRequestDTO requestDTO) {
 
