@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CrawlingDTO {
+public class CrawlingRequestDTO {
   private String name;
   private String nationCode;
 }

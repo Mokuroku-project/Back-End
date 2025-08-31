@@ -5,8 +5,9 @@ import com.mokuroku.backend.exception.ErrorCode;
 import com.mokuroku.backend.exception.impl.CustomException;
 import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.member.repository.MemberRepository;
-import com.mokuroku.backend.product.dto.CrawlingDTO;
+import com.mokuroku.backend.product.dto.CrawlingRequestDTO;
 import com.mokuroku.backend.product.dto.CrawlingResponseDTO;
+import com.mokuroku.backend.product.dto.ProductDTO;
 import com.mokuroku.backend.product.dto.ProductInfoDTO;
 import com.mokuroku.backend.product.dto.WishlistDTO;
 import com.mokuroku.backend.product.entity.DailyPrice;
@@ -49,7 +50,8 @@ public class ProductServiceImpl implements ProductService {
   public ResponseEntity<ResultDTO> wishListRegist(WishlistDTO wishListDTO) {
 
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
-    String email = "test1@gmail.com";
+    String email = "test@gmail.com";
+
     // 회원인지 검증 -> 회원상태에 대한 검증 추가 필요함
     Member member = memberRepository.findById(email)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
@@ -66,7 +68,34 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Mono<ProductInfoDTO> crawling(CrawlingDTO crawlingDTO) {
+  public ResponseEntity<ResultDTO> getProductInfo(long wishlistId) {
+
+    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
+    String email = "test@gmail.com";
+
+    // 회원 검증
+    Member member = memberRepository.findById(email)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+    // Wishlist 조회
+    Wishlist wishlist = wishlistRepository.findByWishlistIdAndEmail(wishlistId, member)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_WISHLIST));
+
+    ProductInfoDTO.ProductInfoDTOBuilder builder = ProductInfoDTO.builder()
+        .name(wishlist.getName())
+        .description(wishlist.getDescription());
+
+    productRepository.findByWishlist(wishlist).ifPresent(product -> {
+      builder.price(product.getPrice())
+          .url(product.getUrl())
+          .regDate(product.getRegDate());
+    });
+
+    return ResponseEntity.ok(new ResultDTO<>("관심상품 상세 정보가져오기에 성공했습니다.", builder.build()));
+  }
+
+  @Override
+  public Mono<ProductDTO> crawling(CrawlingRequestDTO crawlingRequestDTO) {
 
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
@@ -82,8 +111,8 @@ public class ProductServiceImpl implements ProductService {
           }
         })
         .flatMap(member -> {
-          String keyword = crawlingDTO.getName();
-          String nationCode = crawlingDTO.getNationCode().toLowerCase();
+          String keyword = crawlingRequestDTO.getName();
+          String nationCode = crawlingRequestDTO.getNationCode().toLowerCase();
 
           if (!nationCode.equals("kr") && !nationCode.equals("jp")) {
             return Mono.error(new CustomException(ErrorCode.INVALID_NATION_CODE));
@@ -91,7 +120,7 @@ public class ProductServiceImpl implements ProductService {
 
           String baseUrl = "http://localhost:5000";
 
-          Mono<ProductInfoDTO> productInfo = webClientBuilder.baseUrl(baseUrl)
+          Mono<ProductDTO> productInfo = webClientBuilder.baseUrl(baseUrl)
               .build()
               .get()
               .uri(uriBuilder -> uriBuilder
@@ -103,7 +132,7 @@ public class ProductServiceImpl implements ProductService {
               .bodyToMono(CrawlingResponseDTO.class)  // Wrapper DTO
               .map(wrapper -> {
                 if (wrapper.getData() != null && !wrapper.getData().isEmpty()) {
-                  ProductInfoDTO product = wrapper.getData().get(0);
+                  ProductDTO product = wrapper.getData().get(0);
 
                   // nationCode가 null일 수도 있으므로, 크롤링 서버에서 채워지지 않았으면 기본값 설정
                   if (!(product.getNationCode() != null)) {
@@ -112,7 +141,7 @@ public class ProductServiceImpl implements ProductService {
 
                   return product;
                 } else {
-                  return new ProductInfoDTO();
+                  return new ProductDTO();
                 }
               })
               .timeout(Duration.ofSeconds(60))
@@ -122,12 +151,12 @@ public class ProductServiceImpl implements ProductService {
         });
   }
 
-  public Flux<Pair<Wishlist, ProductInfoDTO>> crawlMultipleProducts(List<Wishlist> wishlists) {
+  public Flux<Pair<Wishlist, ProductDTO>> crawlMultipleProducts(List<Wishlist> wishlists) {
 
     return Flux.fromIterable(wishlists)
         .flatMap(wishlist -> {
           // Wishlist → CrawlingDTO 변환
-          CrawlingDTO dto = new CrawlingDTO();
+          CrawlingRequestDTO dto = new CrawlingRequestDTO();
           dto.setNationCode(wishlist.getNationCode());
           dto.setName(wishlist.getName());
 
@@ -147,12 +176,12 @@ public class ProductServiceImpl implements ProductService {
 
     crawlMultipleProducts(wishlists)
         .filter(pair -> {
-          ProductInfoDTO productInfoDTO = pair.getSecond();
-          return productInfoDTO.getName() != null && !productInfoDTO.getName().isEmpty();
+          ProductDTO productDTO = pair.getSecond();
+          return productDTO.getName() != null && !productDTO.getName().isEmpty();
         })
         .flatMap(pair -> {
           Wishlist wishlist = pair.getFirst();
-          ProductInfoDTO productInfoDTO = pair.getSecond();
+          ProductDTO productDTO = pair.getSecond();
 
           // DB에서 존재 여부 확인
           Optional<Product> existingProductOpt = productRepository.findByWishlist(wishlist);
@@ -160,12 +189,12 @@ public class ProductServiceImpl implements ProductService {
           if (existingProductOpt.isPresent()) {
             Product existingProduct = existingProductOpt.get();
             int oldPrice = existingProduct.getPrice();
-            int newPrice = productInfoDTO.getPrice();
+            int newPrice = productDTO.getPrice();
 
             // 가격이 변경된 경우만 업데이트
             if (newPrice > 0 && newPrice != oldPrice) {
               return Mono.fromCallable(() -> {
-                Product updated = ProductInfoDTO.updateEntity(productInfoDTO, existingProduct);
+                Product updated = ProductDTO.updateEntity(productDTO, existingProduct);
                 Product saved = productRepository.save(updated);
 
                 dailyPriceRepository.save(DailyPrice.builder()
@@ -180,7 +209,7 @@ public class ProductServiceImpl implements ProductService {
           } else {
             // 새 상품이면 바로 저장
             return Mono.fromCallable(() -> {
-              Product newProduct = ProductInfoDTO.toNewEntity(productInfoDTO, wishlist);
+              Product newProduct = ProductDTO.toNewEntity(productDTO, wishlist);
               Product saved = productRepository.save(newProduct);
 
               dailyPriceRepository.save(DailyPrice.builder()
