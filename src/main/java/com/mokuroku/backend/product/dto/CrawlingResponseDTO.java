@@ -9,5 +9,5 @@ import java.util.List;
 @Setter
 public class CrawlingResponseDTO {
   private String message;
-  private List<ProductInfoDTO> data;
+  private List<ProductDTO> data;
 }

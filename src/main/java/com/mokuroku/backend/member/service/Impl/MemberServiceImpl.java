@@ -1,5 +1,7 @@
 package com.mokuroku.backend.member.service.Impl;
 
+import com.mokuroku.backend.exception.ErrorCode;
+import com.mokuroku.backend.exception.impl.CustomException;
 import com.mokuroku.backend.member.dto.*;
 import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.member.repository.MemberRepository;
@@ -30,13 +32,13 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public RegisterResponseDTO register(RegisterRequestDTO requestDTO) {
         // 중복 이메일 검사
-        if (memberRepository.existsByEmail(requestDTO.getEmail())) {
-            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+        if (memberRepository.existsById(requestDTO.getEmail())) {
+            throw new CustomException(ErrorCode.DUPLICATE_MEMBER);
         }
 
         // 중복 닉네임 검사
         if (memberRepository.existsByNickname(requestDTO.getNickname())) {
-            throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
+            throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
         }
 
         // 비밀번호 암호화
@@ -59,7 +61,6 @@ public class MemberServiceImpl implements MemberService {
 
         // 응답 반환
         return RegisterResponseDTO.builder()
-                .memberId(saved.getId())
                 .email(saved.getEmail())
                 .nickname(saved.getNickname())
                 .profileImage(saved.getProfileImage())

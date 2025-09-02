@@ -22,4 +22,6 @@ public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
           WHERE m.status = :status
       """)
   List<Wishlist> findAllByMemberStatusWithProducts(@Param("status") char status);
+
+  Optional<Wishlist> findByWishlistIdAndEmail(long wishlistId, Member member);
 }

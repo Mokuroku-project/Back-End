@@ -14,9 +14,6 @@ import java.time.LocalDateTime;
 @Schema(description = "회원가입 응답 DTO")
 public class RegisterResponseDTO {
 
-    @Schema(description = "회원 ID", example = "1")
-    private Long memberId;
-
     @Schema(description = "이메일", example = "user@example.com")
     private String email;
 
