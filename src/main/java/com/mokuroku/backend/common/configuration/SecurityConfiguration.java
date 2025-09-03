@@ -1,4 +1,4 @@
-package com.mokuroku.backend.configuration;
+package com.mokuroku.backend.common.configuration;
 
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.mokuroku.backend.member.config;
+package com.mokuroku.backend.common.configuration;
 
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.OpenAPI;
