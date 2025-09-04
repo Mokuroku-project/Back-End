@@ -29,10 +29,7 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(
             requests -> requests.requestMatchers(
                     "/",
-                            "/api",
-                            "/api/members/register",
-                            "/api/members/verify-email",
-                            "/api/members/resend-verification",
+                            "/members/**",
                             "/auth/**",
                             "/products/**",
                             "/dutch/**",
