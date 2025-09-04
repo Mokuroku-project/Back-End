@@ -29,7 +29,7 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(
             requests -> requests.requestMatchers(
                     "/",
-                            "/api",
+                            "/api/**",
                             "/auth/**",
                             "/products/**",
                             "/dutch/**",

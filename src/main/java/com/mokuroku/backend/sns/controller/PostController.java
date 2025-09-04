@@ -4,6 +4,9 @@ import com.mokuroku.backend.sns.dto.PostDTO;
 import com.mokuroku.backend.sns.service.PostService;
 import com.mokuroku.backend.common.ResultDTO;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +34,16 @@ public class PostController {
 
     // 게시글 목록 조회
     @GetMapping
-    public ResponseEntity<ResultDTO<String>> getAllPosts() {
-        return ResponseEntity.ok(new ResultDTO<>("게시글 목록 조회에 성공했습니다.", "posts list"));
+    public ResponseEntity<ResultDTO<List<PostDTO>>> getAllPosts() {
+        List<PostDTO> postList = postService.getAllPosts();
+        return ResponseEntity.ok(new ResultDTO<>("게시글 목록 조회에 성공했습니다.", postList));
+    }
+
+    // 특정 회원 게시글 목록 조회
+    @GetMapping("/member/{nickname}")
+    public ResponseEntity<ResultDTO<List<PostDTO>>> getPostsByNickname(@PathVariable String nickname) {
+        List<PostDTO> postList = postService.getPostsByNickname(nickname);
+        return ResponseEntity.ok(new ResultDTO<>("회원 게시글 목록 조회에 성공했습니다.", postList));
     }
 
     // 게시글 수정 (PUT)

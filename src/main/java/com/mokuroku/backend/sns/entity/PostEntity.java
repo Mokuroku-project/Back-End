@@ -6,6 +6,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.mokuroku.backend.member.entity.Member;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,8 +24,12 @@ public class PostEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @Column(nullable = false, unique = true, length = 255)
-    private String email;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
+    private Member member;
+
+    // @Column(nullable = false, unique = true, length = 255)
+    // private String email;
 
     @Column(columnDefinition = "TEXT")
     private String content;
