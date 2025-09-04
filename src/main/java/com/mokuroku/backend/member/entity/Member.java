@@ -37,7 +37,7 @@ public class Member {
   private LocalDateTime withdrawalDate;
 
   @Column(length = 1)
-  private String status; // '1' = 사용 가능, '0' = 정지/탈퇴
+  private String status; // '1' = 사용 가능, '0' = 정지/탈퇴, '2' = 임시가입
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)

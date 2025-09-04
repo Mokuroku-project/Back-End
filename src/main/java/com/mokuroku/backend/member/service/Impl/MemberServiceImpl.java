@@ -1,130 +1,107 @@
 package com.mokuroku.backend.member.service.Impl;
 
+import com.mokuroku.backend.common.ResultDTO;
+import com.mokuroku.backend.common.component.MailComponents;
+import com.mokuroku.backend.common.component.S3Uploader;
 import com.mokuroku.backend.exception.ErrorCode;
 import com.mokuroku.backend.exception.impl.CustomException;
 import com.mokuroku.backend.member.dto.*;
 import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.member.repository.MemberRepository;
-//import com.mokuroku.backend.member.security.JwtTokenProvider;
 import com.mokuroku.backend.member.service.MemberService;
-
+import jakarta.transaction.Transactional;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
-//    private final JwtTokenProvider jwtTokenProvider;
-//    private final StringRedisTemplate redisTemplate;
+  private static final Long MAIL_EXPIRES_IN = 300000L; // 5분
+  private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList("jpg", "jpeg", "png", "gif"); // 허용 가능한 이미지 파일 형식
 
-//    private static final String BLACKLIST_PREFIX = "blacklist:";
-//    private static final String REFRESH_PREFIX = "refresh:";
+  private final MemberRepository memberRepository;
+  private final S3Uploader s3Uploader;
+  private final RedisTemplate<String, String> redisTemplate;
+  private final MailComponents mailComponents;
 
-    @Override
-    public RegisterResponseDTO register(RegisterRequestDTO requestDTO) {
-        // 중복 이메일 검사
-        if (memberRepository.existsById(requestDTO.getEmail())) {
-            throw new CustomException(ErrorCode.DUPLICATE_MEMBER);
-        }
+  @Override
+  @Transactional
+  public ResponseEntity<ResultDTO> register(RegisterRequestDTO requestDTO, MultipartFile file) {
 
-        // 중복 닉네임 검사
-        if (memberRepository.existsByNickname(requestDTO.getNickname())) {
-            throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
-        }
-
-        // 비밀번호 암호화
-        String encodedPassword = passwordEncoder.encode(requestDTO.getPassword());
-
-        // Member 엔티티 생성
-        Member member = Member.builder()
-                .email(requestDTO.getEmail())
-                .password(encodedPassword)
-                .nickname(requestDTO.getNickname())
-                .profileImage(requestDTO.getProfileImage())
-                .socialLoginCheck(requestDTO.isSocialLoginCheck() ? "Y" : "N")
-                .regDate(LocalDateTime.now())
-                .role(Member.Role.USER)
-                .status("1")
-                .build();
-
-        // 저장
-        Member saved = memberRepository.save(member);
-
-        // 응답 반환
-        return RegisterResponseDTO.builder()
-                .email(saved.getEmail())
-                .nickname(saved.getNickname())
-                .profileImage(saved.getProfileImage())
-                .role(saved.getRole().name().toLowerCase())
-                .regDate(saved.getRegDate())
-                .build();
-
+    // 중복 이메일 검사
+    if (memberRepository.existsById(requestDTO.getEmail())) {
+      throw new CustomException(ErrorCode.DUPLICATE_MEMBER);
     }
+
+    // 중복 닉네임 검사
+    if (memberRepository.existsByNickname(requestDTO.getNickname())) {
+      throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
+    }
+
+    // 프로필 이미지 파일 있는지 확인
+    if (file != null && !file.isEmpty()) { // 있을 경우 이미지 파일 검사 후 회원정보 저장
+      // 파일 이름에서 확장자 추출
+      String fileExtension = StringUtils.getFilenameExtension(file.getOriginalFilename());
+
+      String imageUrl;
+      // 확장자가 이미지 파일인지 확인
+      if (fileExtension != null && ALLOWED_EXTENSIONS.contains(fileExtension.toLowerCase())) {
+        try {
+          imageUrl = s3Uploader.upload(file, "profile-images");
+        } catch (Exception e) {
+          throw new CustomException(ErrorCode.FAILED_IMAGE_SAVE);
+        }
+      } else { // 이미지 파일이 아닌 경우에 대한 처리
+        throw new CustomException(ErrorCode.UN_SUPPORTED_IMAGE_TYPE);
+      }
+    }
+
+    Member member = RegisterRequestDTO.joinMember(requestDTO, null);
+    memberRepository.save(member);
+
+    // 회원정보 저장 후 가입한 이메일로 본인인증 메일 전송 및 레디스에 토큰값 저장
+    String code = generateRandomUUID();
+
+    try {
+      sendVerificationEmail(requestDTO.getEmail(), code, "MOKUROKU 회원가입 인증메일", "join: ");
+      return ResponseEntity.ok(new ResultDTO<>("회원가입에 성공했습니다. 인증을 위해 가입한 이메일의 메일을 확인해주세요.", null));
+    } catch (Exception e) {
+      throw new CustomException(ErrorCode.REDIS_CONNECTION_FAILED);
+    }
+  }
+
+  public static String generateRandomUUID() {
+    SecureRandom random = new SecureRandom();
+    int code = random.nextInt(900000) + 100000; // 6자리 숫자
+    return String.valueOf(code);
+  }
+
+  private void sendVerificationEmail(String email, String code, String title,
+      String redisKeyPrefix) {
+    String message = "<h3>5분안에 인증번호를 입력해주세요</h3> <br>" +
+        "<h1>" + code + "</h1>";
+
+    // 기존 코드가 있다면 삭제
+    if (redisTemplate.opsForValue().get(redisKeyPrefix + email) != null) {
+      redisTemplate.delete(redisKeyPrefix + email);
+    }
+
+    // 메일 전송
+    mailComponents.sendMail(email, title, message);
+
+    // Redis에 저장
+    redisTemplate.opsForValue()
+        .set(redisKeyPrefix + email, code, MAIL_EXPIRES_IN, TimeUnit.MILLISECONDS);
+  }
 }
-
-//    @Override
-//    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
-//        Member member = memberRepository.findByEmail(loginRequestDTO.getEmail())
-//                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
-//
-//        if (!passwordEncoder.matches(loginRequestDTO.getPassword(), member.getPassword())) {
-//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-//        }
-//
-//        String accessToken = jwtTokenProvider.generateAccessToken(member.getEmail());
-//        String refreshToken = jwtTokenProvider.generateRefreshToken(member.getEmail());
-//
-//        redisTemplate.opsForValue().set(
-//                REFRESH_PREFIX + member.getEmail(),
-//                refreshToken,
-//                jwtTokenProvider.getRefreshExpirationMs(),
-//                TimeUnit.MILLISECONDS
-//        );
-//
-//        return LoginResponseDTO.builder()
-//                .userId(member.getId())
-//                .email(member.getEmail())
-//                .nickname(member.getNickname())
-//                .accessToken(accessToken)
-//                .refreshToken(refreshToken)
-//                .build();
-//    }
-
-//    @Override
-//    public void logout(String accessToken) {
-//        if (!jwtTokenProvider.validateToken(accessToken)) {
-//            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
-//        }
-//
-//        String email = jwtTokenProvider.getEmailFromToken(accessToken);
-//        log.info("로그아웃 요청 이메일: {}", email);
-//
-//        long expiration = jwtTokenProvider.getExpiration(accessToken);
-//        redisTemplate.opsForValue().set(
-//                BLACKLIST_PREFIX + accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
-//
-//        redisTemplate.delete(REFRESH_PREFIX + email);
-//    }
-
-/*
-사용된 컴포넌트 요약
-컴포넌트	설명
-PasswordEncoder	비밀번호 해시 비교
-JwtTokenProvider	JWT 액세스 토큰 발급
-MemberRepository	사용자 조회용 JPA Repository
-
-💡 추가 고려사항
-로그인 실패 횟수 제한 (보안)
-계정 상태 체크 (status가 unusable이면 로그인 막기)
-소셜 로그인 분기
-Refresh Token 발급 및 Redis 저장
-*/
