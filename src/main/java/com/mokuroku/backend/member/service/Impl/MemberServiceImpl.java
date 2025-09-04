@@ -6,15 +6,18 @@ import com.mokuroku.backend.member.dto.*;
 import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.member.repository.MemberRepository;
 //import com.mokuroku.backend.member.security.JwtTokenProvider;
+import com.mokuroku.backend.member.security.JwtTokenProvider;
 import com.mokuroku.backend.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -23,11 +26,11 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-//    private final JwtTokenProvider jwtTokenProvider;
-//    private final StringRedisTemplate redisTemplate;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final StringRedisTemplate redisTemplate;
 
 //    private static final String BLACKLIST_PREFIX = "blacklist:";
-//    private static final String REFRESH_PREFIX = "refresh:";
+    private static final String REFRESH_PREFIX = "refresh:";
 
     @Override
     public RegisterResponseDTO register(RegisterRequestDTO requestDTO) {
@@ -69,35 +72,39 @@ public class MemberServiceImpl implements MemberService {
                 .build();
 
     }
-}
 
-//    @Override
-//    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
-//        Member member = memberRepository.findByEmail(loginRequestDTO.getEmail())
-//                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
-//
-//        if (!passwordEncoder.matches(loginRequestDTO.getPassword(), member.getPassword())) {
-//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-//        }
-//
-//        String accessToken = jwtTokenProvider.generateAccessToken(member.getEmail());
-//        String refreshToken = jwtTokenProvider.generateRefreshToken(member.getEmail());
-//
-//        redisTemplate.opsForValue().set(
-//                REFRESH_PREFIX + member.getEmail(),
-//                refreshToken,
-//                jwtTokenProvider.getRefreshExpirationMs(),
-//                TimeUnit.MILLISECONDS
-//        );
-//
-//        return LoginResponseDTO.builder()
-//                .userId(member.getId())
-//                .email(member.getEmail())
-//                .nickname(member.getNickname())
-//                .accessToken(accessToken)
-//                .refreshToken(refreshToken)
-//                .build();
-//    }
+    @Override
+    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
+        Member member = memberRepository.findById(loginRequestDTO.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+        if (!passwordEncoder.matches(loginRequestDTO.getPassword(), member.getPassword())) {
+            throw new CustomException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        if ("0".equals(member.getStatus())) {
+            throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
+        }
+
+        String accessToken = jwtTokenProvider.generateAccessToken(member.getEmail());
+        String refreshToken = jwtTokenProvider.generateRefreshToken(member.getEmail());
+
+        // Redis에 리프레시 토큰 저장
+        redisTemplate.opsForValue().set(
+                REFRESH_PREFIX + member.getEmail(),
+                refreshToken,
+                jwtTokenProvider.getRefreshTokenExpiration(),
+                TimeUnit.MILLISECONDS
+        );
+
+        return LoginResponseDTO.builder()
+                .email(member.getEmail())
+                .nickname(member.getNickname())
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+}
 
 //    @Override
 //    public void logout(String accessToken) {

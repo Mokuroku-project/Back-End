@@ -1,5 +1,7 @@
 package com.mokuroku.backend.member.controller;
 
+import com.mokuroku.backend.member.dto.LoginRequestDTO;
+import com.mokuroku.backend.member.dto.LoginResponseDTO;
 import com.mokuroku.backend.member.dto.RegisterRequestDTO;
 import com.mokuroku.backend.member.dto.RegisterResponseDTO;
 import com.mokuroku.backend.member.service.MemberService;
@@ -34,6 +36,22 @@ public class MemberController {
             @Valid @RequestBody RegisterRequestDTO requestDTO) {
 
         RegisterResponseDTO responseDTO = memberService.register(requestDTO);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @Operation(
+            summary = "로그인",
+            description = "이메일과 비밀번호로 로그인하여 JWT 토큰을 발급받습니다."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "로그인 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "401", description = "인증 실패")
+    })
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(
+            @Valid @RequestBody LoginRequestDTO loginRequestDTO) {
+        LoginResponseDTO responseDTO = memberService.login(loginRequestDTO);
         return ResponseEntity.ok(responseDTO);
     }
 }
