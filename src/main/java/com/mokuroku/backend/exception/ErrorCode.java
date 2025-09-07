@@ -10,6 +10,10 @@ public enum ErrorCode {
   NOT_FOUND_MEMBER("존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND),
   DUPLICATE_MEMBER("이미 존재하는 회원입니다.", HttpStatus.CONFLICT),
   DUPLICATE_NICKNAME("이미 사용 중인 닉네임입니다.", HttpStatus.CONFLICT),
+  INVALID_PASSWORD("INVALID_PASSWORD", HttpStatus.UNAUTHORIZED),
+  ACCOUNT_DISABLED("ACCOUNT_DISABLED", HttpStatus.FORBIDDEN),
+  INVALID_TOKEN("INVALID_TOKEN", HttpStatus.UNAUTHORIZED),
+  REDIS_ERROR("REDIS_ERROR", HttpStatus.INTERNAL_SERVER_ERROR),
 
   // SNS
   NOT_FOUND_POST("존재하지 않는 게시글입니다.", HttpStatus.NOT_FOUND),
@@ -44,13 +48,15 @@ public enum ErrorCode {
   IMAGE_NOT_FOUND("이미지가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   SEND_MAIL_FAIL("메일전송에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
   INVALID_SEARCH_SCOPE("유효하지 않은 검색범위 입니다.", HttpStatus.BAD_REQUEST),
+  FILE_UPLOAD_ERROR("FILE_UPLOAD_ERROR", HttpStatus.INTERNAL_SERVER_ERROR),
+  FILE_TOO_LARGE("FILE_TOO_LARGE", HttpStatus.BAD_REQUEST),
+  INVALID_FILE_TYPE("INVALID_FILE_TYPE", HttpStatus.BAD_REQUEST),
 
   // Redis 관련 예외 추가
   REDIS_CONNECTION_FAILED("Redis 서버에 연결할 수 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
 
-
-  String message;
-  HttpStatus status;
+  private final String message;
+  private final HttpStatus status;
 
   ErrorCode(String message, HttpStatus status) {
     this.message = message;

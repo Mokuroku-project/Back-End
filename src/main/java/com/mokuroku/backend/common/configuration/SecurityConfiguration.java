@@ -1,6 +1,8 @@
 package com.mokuroku.backend.common.configuration;
 
 import java.util.Arrays;
+
+import com.mokuroku.backend.member.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
