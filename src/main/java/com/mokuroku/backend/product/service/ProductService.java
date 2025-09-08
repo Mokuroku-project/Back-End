@@ -15,5 +15,7 @@ public interface ProductService {
 
   ResponseEntity<ResultDTO> getProductInfo(long wishlistId);
 
+  ResponseEntity<ResultDTO> putWishlist(long wishlistId, WishlistDTO wishListDTO);
+
   Mono<ProductDTO> crawling(CrawlingRequestDTO crawlingRequestDTO);
 }

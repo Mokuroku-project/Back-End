@@ -20,6 +20,7 @@ import com.mokuroku.backend.product.service.ProductService;
 import jakarta.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -60,11 +61,14 @@ public class ProductServiceImpl implements ProductService {
         .email(member)
         .name(wishListDTO.getName())
         .description(wishListDTO.getDescription())
+        .regDate(LocalDateTime.now())
         .build();
 
     wishlistRepository.save(wishlist);
 
-    return ResponseEntity.ok(new ResultDTO<>("관심상품 등록에 성공했습니다.", wishlist));
+    WishlistDTO wishlistDTO = WishlistDTO.toDTO(wishlist);
+
+    return ResponseEntity.ok(new ResultDTO<>("관심상품 등록에 성공했습니다.", wishlistDTO));
   }
 
   @Override
@@ -92,6 +96,36 @@ public class ProductServiceImpl implements ProductService {
     });
 
     return ResponseEntity.ok(new ResultDTO<>("관심상품 상세 정보가져오기에 성공했습니다.", builder.build()));
+  }
+
+  @Override
+  public ResponseEntity<ResultDTO> putWishlist(long wishlistId, WishlistDTO wishListDTO) {
+
+    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
+    String email = "test@gmail.com";
+
+    // 회원 검증
+    Member member = memberRepository.findById(email)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+    Wishlist wishlist = wishlistRepository.findById(wishlistId)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_WISHLIST));
+
+    // 해당 회원의 위시리스트가 맞는지 확인
+    if (!wishlist.getEmail().equals(member)) {
+      throw new CustomException(ErrorCode.NOT_FOUND_WISHLIST);
+    }
+
+    Wishlist updateWishlist = wishlist.toBuilder()
+        .name(wishListDTO.getName())
+        .description(wishListDTO.getDescription())
+        .build();
+
+    wishlistRepository.save(updateWishlist);
+
+    WishlistDTO wishlistDTO = WishlistDTO.toDTO(wishlist);
+
+    return ResponseEntity.ok(new ResultDTO<>("관심상품 수정에 성공했습니다.", wishlistDTO));
   }
 
   @Override
