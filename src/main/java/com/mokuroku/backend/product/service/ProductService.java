@@ -19,5 +19,7 @@ public interface ProductService {
 
   ResponseEntity<ResultDTO> deleteWishlist(long wishlistId);
 
+  ResponseEntity<ResultDTO> getWishlistList();
+
   Mono<ProductDTO> crawling(CrawlingRequestDTO crawlingRequestDTO);
 }

@@ -9,6 +9,7 @@ import com.mokuroku.backend.product.dto.CrawlingRequestDTO;
 import com.mokuroku.backend.product.dto.CrawlingResponseDTO;
 import com.mokuroku.backend.product.dto.ProductDTO;
 import com.mokuroku.backend.product.dto.ProductInfoDTO;
+import com.mokuroku.backend.product.dto.ProductInfoDTO.ProductInfoDTOBuilder;
 import com.mokuroku.backend.product.dto.WishlistDTO;
 import com.mokuroku.backend.product.entity.DailyPrice;
 import com.mokuroku.backend.product.entity.Product;
@@ -21,6 +22,7 @@ import jakarta.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClient.Builder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -45,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
   private final WishlistRepository wishlistRepository;
   private final ProductRepository productRepository;
   private final DailyPriceRepository dailyPriceRepository;
-  private final WebClient.Builder webClientBuilder;
+  private final Builder webClientBuilder;
 
   @Override
   public ResponseEntity<ResultDTO> wishListRegist(WishlistDTO wishListDTO) {
@@ -85,7 +88,7 @@ public class ProductServiceImpl implements ProductService {
     Wishlist wishlist = wishlistRepository.findByWishlistIdAndEmail(wishlistId, member)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_WISHLIST));
 
-    ProductInfoDTO.ProductInfoDTOBuilder builder = ProductInfoDTO.builder()
+    ProductInfoDTOBuilder builder = ProductInfoDTO.builder()
         .name(wishlist.getName())
         .description(wishlist.getDescription());
 
@@ -149,6 +152,24 @@ public class ProductServiceImpl implements ProductService {
     wishlistRepository.delete(wishlist);
 
     return ResponseEntity.ok(new ResultDTO<>("관심상품 삭제에 성공했습니다.", null));
+  }
+
+  @Override
+  public ResponseEntity<ResultDTO> getWishlistList() {
+
+    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
+    String email = "test@gmail.com";
+
+    // 회원 검증
+    Member member = memberRepository.findById(email)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+    List<Wishlist> wishlists = wishlistRepository.findByEmail(member);
+    List<WishlistDTO> wishlistDTOList = wishlists.stream()
+        .map(WishlistDTO::toDTO)
+        .toList();
+
+    return ResponseEntity.ok(new ResultDTO<>("관심상품 리스트를 불러오는데 성공했습니다.", wishlistDTOList));
   }
 
   @Override

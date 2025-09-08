@@ -43,8 +43,14 @@ public class ProductController {
   }
 
   @DeleteMapping("/{wishlistId}")
-  public ResponseEntity<ResultDTO> deleteProductInfo(@PathVariable long wishlistId) {
+  public ResponseEntity<ResultDTO> deleteWishlist(@PathVariable long wishlistId) {
     ResponseEntity<ResultDTO> result = productService.deleteWishlist(wishlistId);
+    return result;
+  }
+
+  @GetMapping()
+  public ResponseEntity<ResultDTO> getWishlistList() {
+    ResponseEntity<ResultDTO> result = productService.getWishlistList();
     return result;
   }
 
