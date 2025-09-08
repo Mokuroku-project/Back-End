@@ -22,7 +22,6 @@ import jakarta.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,6 @@ import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -150,6 +148,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     wishlistRepository.delete(wishlist);
+
+    // 해당 위시리스트의 상품정보도 삭제
+    productRepository.findByWishlist(wishlist).ifPresent(productRepository::delete);
 
     return ResponseEntity.ok(new ResultDTO<>("관심상품 삭제에 성공했습니다.", null));
   }
