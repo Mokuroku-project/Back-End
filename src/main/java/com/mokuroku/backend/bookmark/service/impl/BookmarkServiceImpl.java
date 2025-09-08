@@ -35,7 +35,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     PostEntity post = postRepository.findById(postId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
-    bookmarkRepository.findByMemberAndPost(member, post)
+    bookmarkRepository.findByEmailAndPostId(member, post)
         .ifPresent(b -> {
           throw new CustomException(ErrorCode.ALREADY_BOOKMARKED);
         });
