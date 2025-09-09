@@ -27,7 +27,7 @@ public class SecurityConfiguration {
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(
-            requests -> requests.requestMatchers("/products/**", "/dutch/**", "/budgetbook/**").permitAll()
+            requests -> requests.requestMatchers("/products/**", "/dutch/**", "/budgetbook/**", "/member/**").permitAll()
                 .anyRequest().authenticated())
         .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
             SessionCreationPolicy.STATELESS))

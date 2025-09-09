@@ -1,0 +1,55 @@
+package com.mokuroku.backend.login.controller;
+
+import com.mokuroku.backend.login.dto.GoogleInfResponse;
+import com.mokuroku.backend.login.dto.GoogleRequest;
+import com.mokuroku.backend.login.dto.GoogleResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@CrossOrigin("*")
+public class LoginController {
+    @Value("${google.client.id}")
+    private String googleClientId;
+    @Value("${google.client.pw}")
+    private String googleClientPw;
+
+    @RequestMapping(value="/member/oauth2/google", method = RequestMethod.POST)
+    public String loginUrlGoogle(){
+        String reqUrl = "https://accounts.google.com/o/oauth2/v2/auth?client_id=" + googleClientId
+                + "&redirect_uri=http://localhost:8080/member/oauth2/google&response_type=code&scope=email%20profile%20openid&access_type=offline";
+        return reqUrl;
+    }
+
+
+    @RequestMapping(value="/member/oauth2/google", method = RequestMethod.GET)
+    public GoogleInfResponse loginGoogle(@RequestParam(value = "code") String authCode){
+        RestTemplate restTemplate = new RestTemplate();
+        GoogleRequest googleOAuthRequestParam = GoogleRequest
+                .builder()
+                .clientId(googleClientId)
+                .clientSecret(googleClientPw)
+                .code(authCode)
+                .redirectUri("http://localhost:8080/member/oauth2/google")
+                .grantType("authorization_code").build();
+        ResponseEntity<GoogleResponse> resultEntity = restTemplate.postForEntity("https://oauth2.googleapis.com/token",
+                googleOAuthRequestParam, GoogleResponse.class);
+        String jwtToken=resultEntity.getBody().getId_token();
+        Map<String, String> map=new HashMap<>();
+        map.put("id_token",jwtToken);
+        ResponseEntity<GoogleInfResponse> resultEntity2 = restTemplate.postForEntity("https://oauth2.googleapis.com/tokeninfo",
+                map, GoogleInfResponse.class);
+
+        GoogleInfResponse googleInfResponse=resultEntity2.getBody();
+        return googleInfResponse;
+    }
+
+
+
+
+}
