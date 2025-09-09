@@ -31,4 +31,6 @@ public interface MemberService {
      * @param accessToken 무효화할 액세스 토큰
      */
     void logout(String accessToken);
+
+    void withdraw(String accessToken);
 }

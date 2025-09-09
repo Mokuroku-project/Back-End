@@ -76,4 +76,27 @@ public class MemberController {
         memberService.logout(accessToken);
         return ResponseEntity.ok(new ResultDTO<>("success", null));
     }
+
+    @Operation(
+            summary = "회원 탈퇴",
+            description = "인증된 사용자의 계정을 비활성화하고 토큰을 무효화합니다.",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "회원 탈퇴 성공"),
+            @ApiResponse(responseCode = "400", description = "이미 탈퇴된 계정"),
+            @ApiResponse(responseCode = "401", description = "유효하지 않은 토큰"),
+            @ApiResponse(responseCode = "404", description = "회원을 찾을 수 없음")
+    })
+    @PostMapping("/withdrawal")
+    public ResponseEntity<ResultDTO<Void>> withdraw(
+            @Parameter(description = "액세스 토큰", required = true)
+            @RequestHeader("Authorization") String authorizationHeader) {
+        String accessToken = authorizationHeader.replace("Bearer ", "");
+        memberService.withdraw(accessToken);
+        return ResponseEntity.ok(ResultDTO.<Void>builder()
+                .status("success")
+                .data(null)
+                .build());
+    }
 }

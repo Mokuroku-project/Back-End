@@ -144,6 +144,40 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    @Override
+    public void withdraw(String accessToken) {
+        if (!jwtTokenProvider.validateToken(accessToken)) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
+
+        String email = jwtTokenProvider.getEmailFromToken(accessToken);
+        log.info("Withdrawal request for email: {}", email);
+
+        Member member = memberRepository.findById(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+        if (member.getStatus() == Member.Status.UNUSABLE) {
+            throw new CustomException(ErrorCode.ACCOUNT_ALREADY_WITHDRAWN);
+        }
+
+        // 계정 비활성화 및 탈퇴 일시 설정
+        member.setStatus(Member.Status.UNUSABLE);
+        member.setWithdrawalDate(LocalDateTime.now());
+        memberRepository.save(member);
+
+        // Redis에서 리프레시 토큰 삭제 및 액세스 토큰 블랙리스트 추가
+        redisTemplate.delete(Constants.REFRESH_PREFIX + email);
+        long expiration = jwtTokenProvider.getExpiration(accessToken);
+        if (expiration > 0) {
+            redisTemplate.opsForValue().set(
+                    Constants.BLACKLIST_PREFIX + accessToken,
+                    "withdrawal",
+                    expiration,
+                    TimeUnit.MILLISECONDS
+            );
+        }
+    }
+
     private MemberDTO toMemberDTO(Member member) {
         return MemberDTO.builder()
                 .email(member.getEmail())
