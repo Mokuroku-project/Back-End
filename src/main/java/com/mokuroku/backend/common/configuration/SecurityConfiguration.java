@@ -1,4 +1,4 @@
-package com.mokuroku.backend.common;
+package com.mokuroku.backend.common.configuration;
 
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(
             requests -> requests.requestMatchers(
                     "/",
-                            "/api/**",
+                            "/members/**",
                             "/auth/**",
                             "/products/**",
                             "/dutch/**",

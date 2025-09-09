@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 public class MemberDTO {
+  
     private String email;
     private String password;
     private String nickname;

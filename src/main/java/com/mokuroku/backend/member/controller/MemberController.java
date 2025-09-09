@@ -1,5 +1,6 @@
 package com.mokuroku.backend.member.controller;
 
+import com.mokuroku.backend.common.ResultDTO;
 import com.mokuroku.backend.member.dto.RegisterRequestDTO;
 import com.mokuroku.backend.member.dto.RegisterResponseDTO;
 import com.mokuroku.backend.member.service.MemberService;
@@ -11,31 +12,32 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/members")
+@RequestMapping("/members")
 @RequiredArgsConstructor
 @Tag(name = "회원", description = "회원 관련 API")
 public class MemberController {
 
-    private final MemberService memberService;
+  private final MemberService memberService;
 
-    @Operation(
-            summary = "회원가입",
-            description = "회원가입 요청을 처리하고, 가입된 회원 정보를 반환합니다."
-    )
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "회원가입 성공"),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
-            @ApiResponse(responseCode = "409", description = "이메일 또는 닉네임 중복")
-    })
-    @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDTO> register(
-            @Valid @RequestBody RegisterRequestDTO requestDTO) {
+  @Operation(
+      summary = "회원가입",
+      description = "회원가입 요청을 처리하고, 가입된 회원 정보를 반환합니다."
+  )
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", description = "회원가입 성공"),
+      @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+      @ApiResponse(responseCode = "409", description = "이메일 또는 닉네임 중복")
+  })
+  @PostMapping("/join")
+  public ResponseEntity<ResultDTO> register(
+      @Valid @RequestPart RegisterRequestDTO requestDTO, @RequestPart MultipartFile file) {
 
-        RegisterResponseDTO responseDTO = memberService.register(requestDTO);
-        return ResponseEntity.ok(responseDTO);
-    }
+    ResponseEntity<ResultDTO> result = memberService.register(requestDTO, file);
+    return result;
+  }
 }
 
 /*

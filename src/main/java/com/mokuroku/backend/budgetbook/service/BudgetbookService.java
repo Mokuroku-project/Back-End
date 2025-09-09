@@ -16,4 +16,6 @@ public interface BudgetbookService {
     ResponseEntity<ResultDTO> budgetbookEdit(Long budgetbookId, BudgetbookEditDTO budgetbookEditDTO);
 
     ResponseEntity<ResultDTO> budgetbook(Long budgetbookId);
+
+    ResponseEntity<ResultDTO> budgetbookList(String email, String startDate, String endDate, String type);
 }

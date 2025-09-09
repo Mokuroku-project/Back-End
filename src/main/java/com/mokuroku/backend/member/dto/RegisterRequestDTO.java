@@ -1,12 +1,18 @@
 package com.mokuroku.backend.member.dto;
 
+import com.mokuroku.backend.member.entity.Member;
+import com.mokuroku.backend.member.entity.Member.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -28,11 +34,21 @@ public class RegisterRequestDTO {
     @Schema(description = "사용자 닉네임", example = "mokuroku", required = true)
     private String nickname;
 
-    @Schema(description = "프로필 이미지 URL (선택)", example = "https://example.com/profile.jpg")
-    private String profileImage;
+    public static Member joinMember(RegisterRequestDTO requestDTO, String imageUrl) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(requestDTO.getPassword());
 
-    @Schema(description = "소셜 로그인 여부 (true=소셜, false=일반)", example = "false")
-    private boolean socialLoginCheck;
+        return Member.builder()
+            .email(requestDTO.getEmail())
+            .password(encodedPassword)
+            .nickname(requestDTO.getNickname())
+            .profileImage(imageUrl)
+            .socialLoginCheck("0")
+            .regDate(LocalDateTime.now())
+            .status("2")
+            .role(Role.USER)
+            .build();
+    }
 }
 
 // ✅ 결과 (Swagger 문서에서 보이게 되는 설명)
