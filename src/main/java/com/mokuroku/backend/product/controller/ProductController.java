@@ -30,20 +30,20 @@ public class ProductController {
   }
 
   @GetMapping("/{wishlistId}")
-  public ResponseEntity<ResultDTO> getProductInfo(@PathVariable long wishlistId) {
+  public ResponseEntity<ResultDTO> getProductInfo(@PathVariable Long wishlistId) {
     ResponseEntity<ResultDTO> result = productService.getProductInfo(wishlistId);
     return result;
   }
 
   @PutMapping("/{wishlistId}")
-  public ResponseEntity<ResultDTO> putWishlist(@PathVariable long wishlistId,
+  public ResponseEntity<ResultDTO> putWishlist(@PathVariable Long wishlistId,
       @RequestBody WishlistDTO wishListDTO) {
     ResponseEntity<ResultDTO> result = productService.putWishlist(wishlistId, wishListDTO);
     return result;
   }
 
   @DeleteMapping("/{wishlistId}")
-  public ResponseEntity<ResultDTO> deleteWishlist(@PathVariable long wishlistId) {
+  public ResponseEntity<ResultDTO> deleteWishlist(@PathVariable Long wishlistId) {
     ResponseEntity<ResultDTO> result = productService.deleteWishlist(wishlistId);
     return result;
   }

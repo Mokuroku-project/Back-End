@@ -16,6 +16,7 @@ public enum ErrorCode {
   // Comments
 
   // Bookmark
+  ALREADY_BOOKMARKED("이미 추가한 게시글입니다.", HttpStatus.CONFLICT),
 
   // BudgetBook
   NOT_FOUND_BUDGETBOOK("존재하지 않는 가계부입니다.", HttpStatus.NOT_FOUND),
