@@ -129,6 +129,29 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
+  public ResponseEntity<ResultDTO> deleteWishlist(long wishlistId) {
+
+    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
+    String email = "test@gmail.com";
+
+    // 회원 검증
+    Member member = memberRepository.findById(email)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+    Wishlist wishlist = wishlistRepository.findById(wishlistId)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_WISHLIST));
+
+    // 해당 회원의 위시리스트가 맞는지 확인
+    if (!wishlist.getEmail().equals(member)) {
+      throw new CustomException(ErrorCode.NOT_FOUND_WISHLIST);
+    }
+
+    wishlistRepository.delete(wishlist);
+
+    return ResponseEntity.ok(new ResultDTO<>("관심상품 삭제에 성공했습니다.", null));
+  }
+
+  @Override
   public Mono<ProductDTO> crawling(CrawlingRequestDTO crawlingRequestDTO) {
 
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
