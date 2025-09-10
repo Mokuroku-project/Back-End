@@ -56,14 +56,14 @@ public class DutchServiceImpl implements DutchService {
     }
 
     @Override
-    public ResponseEntity<ResultDTO> dutchToBudgetbook(DutchToBudgetbookDTO dutchToBudgetbookDTO){
+    public ResponseEntity<ResultDTO> dutchToBudgetbook(DutchToBudgetbookDTO dutchToBudgetbookDTO) {
         String email = "test@gmail.com";
         Member member = memberRepository.findById(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
 
         ResultDTO<Map<String, Integer>> dutchResult = this.dutch(dutchToBudgetbookDTO.getDutchDTO()).getBody();
 
-        String selectPerson =  dutchToBudgetbookDTO.getSelectPerson();
+        String selectPerson = dutchToBudgetbookDTO.getSelectPerson();
         Integer amount = dutchResult.data().get(selectPerson);
 
 
@@ -79,12 +79,8 @@ public class DutchServiceImpl implements DutchService {
         budgetbookRepository.save(budgetbook);
 
 
-
-        return ResponseEntity.ok(new ResultDTO<>("더치페이 가계부 추가에 성공했습니다",  budgetbook));
+        return ResponseEntity.ok(new ResultDTO<>("더치페이 가계부 추가에 성공했습니다", budgetbook));
     }
-
-
-
 
 
 }

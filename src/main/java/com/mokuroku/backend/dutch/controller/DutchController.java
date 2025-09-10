@@ -23,8 +23,8 @@ public class DutchController {
 
     @PostMapping("/")
     public ResponseEntity<ResultDTO> dutch(@RequestBody DutchDTO dutchDTO){
-    ResponseEntity<ResultDTO> result = dutchService.dutch(dutchDTO);
-    return result;
+        ResponseEntity<ResultDTO> result = dutchService.dutch(dutchDTO);
+        return result;
     }
 
     @PostMapping("/budgetbook")

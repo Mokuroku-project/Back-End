@@ -1,5 +1,6 @@
 package com.mokuroku.backend.sns.dto;
 
+import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.sns.entity.PostEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,10 +28,10 @@ public class PostDTO {
     private char status;
 
     // Entity를 DTO로
-    public static PostDTO fromEntity(PostEntity postEntity) {
+    public static PostDTO fromEntity(PostEntity postEntity, Member member) {
         return PostDTO.builder()
                 .postId(postEntity.getPostId())
-                .email(postEntity.getEmail())
+                .email(member.getEmail())
                 .content(postEntity.getContent())
                 .location(postEntity.getLocation())
                 .visibility(postEntity.getVisibility())
@@ -42,14 +43,15 @@ public class PostDTO {
     }
 
     // DTO를 Entity로
-    public PostEntity toEntity(PostDTO postDTO) {
+    public PostEntity toEntity(PostDTO postDTO, Member member) {
         return PostEntity.builder()
                 .postId(postDTO.getPostId())
-                .email(postDTO.getEmail())
+                .member(member)
                 .content(postDTO.getContent())
                 .location(postDTO.getLocation())
                 .visibility(postDTO.getVisibility())
                 .status('1') //항상 활성 상태로
                 .build();
     }
+
 }
