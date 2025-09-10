@@ -1,6 +1,7 @@
 package com.mokuroku.backend.bookmark.service.impl;
 
 import com.mokuroku.backend.bookmark.dto.BookmarkDTO;
+import com.mokuroku.backend.bookmark.dto.BookmarkRequestDTO;
 import com.mokuroku.backend.bookmark.entity.Bookmark;
 import com.mokuroku.backend.bookmark.repository.BookmarkRepository;
 import com.mokuroku.backend.bookmark.service.BookmarkService;
@@ -24,7 +25,7 @@ public class BookmarkServiceImpl implements BookmarkService {
   private final BookmarkRepository bookmarkRepository;
 
   @Override
-  public ResponseEntity<ResultDTO> addBookmark(Long postId) {
+  public ResponseEntity<ResultDTO> addBookmark(BookmarkRequestDTO bookmarkRequestDTO) {
 
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
@@ -32,6 +33,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     Member member = memberRepository.findById(email)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
 
+    Long postId = bookmarkRequestDTO.getPostId();
     PostEntity post = postRepository.findById(postId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 

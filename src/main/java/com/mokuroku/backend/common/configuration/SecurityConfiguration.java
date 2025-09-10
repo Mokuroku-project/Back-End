@@ -34,6 +34,7 @@ public class SecurityConfiguration {
                     "/products/**",
                     "/dutch/**",
                     "/sns/**",
+                    "/bookmark/**",
                     "/swagger-ui.html",     //
                     "/swagger-ui/**",       // ✅ JS, CSS 리소스
                     "/v3/api-docs",         // ✅ JSON 문서

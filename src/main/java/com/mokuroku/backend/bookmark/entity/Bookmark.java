@@ -3,6 +3,8 @@ package com.mokuroku.backend.bookmark.entity;
 import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.sns.entity.PostEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,7 +21,8 @@ import lombok.NoArgsConstructor;
 public class Bookmark {
 
   @Id
-  private Long BookmarkId;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long bookmarkId;
 
   @ManyToOne
   @JoinColumn(name = "email")
