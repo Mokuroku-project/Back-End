@@ -12,6 +12,7 @@ import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.member.repository.MemberRepository;
 import com.mokuroku.backend.sns.entity.PostEntity;
 import com.mokuroku.backend.sns.repository.PostRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,6 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
-
     Member member = memberRepository.findById(email)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
 
@@ -46,5 +46,21 @@ public class BookmarkServiceImpl implements BookmarkService {
     bookmarkRepository.save(bookmark);
 
     return ResponseEntity.ok(new ResultDTO<>("북마크 저장에 성공했습니다.", null));
+  }
+
+  @Override
+  public ResponseEntity<ResultDTO> getBookmark() {
+
+    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
+    String email = "test@gmail.com";
+    Member member = memberRepository.findById(email)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+    List<Bookmark> bookmarks = bookmarkRepository.findByEmail(member);
+    List<BookmarkDTO> bookmarkDTOS = bookmarks.stream()
+        .map(BookmarkDTO::toDTO)
+        .toList();
+
+    return ResponseEntity.ok(new ResultDTO<>("북마크 조회를 성공했습니다.", bookmarkDTOS));
   }
 }

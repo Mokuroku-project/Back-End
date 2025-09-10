@@ -24,4 +24,12 @@ public class BookmarkDTO {
         .postId(post)
         .build();
   }
+
+  public static BookmarkDTO toDTO(Bookmark bookmark) {
+    return BookmarkDTO.builder()
+        .bookmarkId(bookmark.getBookmarkId())
+        .email(bookmark.getEmail().getEmail())
+        .postId(bookmark.getPostId().getPostId())
+        .build();
+  }
 }
