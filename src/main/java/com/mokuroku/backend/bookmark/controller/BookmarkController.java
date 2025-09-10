@@ -23,4 +23,10 @@ public class BookmarkController {
     ResponseEntity<ResultDTO> result = bookmarkService.addBookmark(bookmarkRequestDTO);
     return result;
   }
+
+  @GetMapping()
+  public ResponseEntity<ResultDTO> getBookmark() {
+    ResponseEntity<ResultDTO> result = bookmarkService.getBookmark();
+    return result;
+  }
 }

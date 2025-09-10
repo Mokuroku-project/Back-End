@@ -9,4 +9,6 @@ import org.springframework.stereotype.Service;
 public interface BookmarkService {
 
   ResponseEntity<ResultDTO> addBookmark(BookmarkRequestDTO bookmarkRequestDTO);
+
+  ResponseEntity<ResultDTO> getBookmark();
 }
