@@ -17,6 +17,9 @@ public enum ErrorCode {
 
   // Bookmark
   ALREADY_BOOKMARKED("이미 추가한 게시글입니다.", HttpStatus.CONFLICT),
+  NOT_FOUND_BOOKMARK("존재하지 않는 북마크입니다.", HttpStatus.NOT_FOUND),
+  INVALID_BOOKMARK_OWNERSHIP("해당 회원의 북마크가 아닙니다.", HttpStatus.FORBIDDEN),
+
 
   // BudgetBook
   NOT_FOUND_BUDGETBOOK("존재하지 않는 가계부입니다.", HttpStatus.NOT_FOUND),
