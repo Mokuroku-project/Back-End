@@ -6,4 +6,5 @@ import lombok.Getter;
 public class BookmarkRequestDTO {
 
   private Long postId;
+  private Long bookmarkId;
 }
