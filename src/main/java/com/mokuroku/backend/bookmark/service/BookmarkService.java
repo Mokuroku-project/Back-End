@@ -11,4 +11,6 @@ public interface BookmarkService {
   ResponseEntity<ResultDTO> addBookmark(BookmarkRequestDTO bookmarkRequestDTO);
 
   ResponseEntity<ResultDTO> getBookmark();
+
+  ResponseEntity<ResultDTO> deleteBookmark(BookmarkRequestDTO bookmarkRequestDTO);
 }
