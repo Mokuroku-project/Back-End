@@ -29,8 +29,8 @@ public class PostServiceImpl implements PostService {
         // 기본값 설정
         postDTO.setStatus('1'); // 활성 상태로 설정
         
-        Member member = memberRepository.findByEmail(postDTO.getEmail())
-    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        Member member = memberRepository.findById(postDTO.getEmail())
+    .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         
         PostEntity postEntity = postDTO.toEntity(postDTO, member);

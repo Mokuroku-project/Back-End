@@ -59,7 +59,7 @@ public class DutchServiceImpl implements DutchService {
     public ResponseEntity<ResultDTO> dutchToBudgetbook(DutchToBudgetbookDTO dutchToBudgetbookDTO) {
         String email = "test@gmail.com";
         Member member = memberRepository.findById(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         ResultDTO<Map<String, Integer>> dutchResult = this.dutch(dutchToBudgetbookDTO.getDutchDTO()).getBody();
 
