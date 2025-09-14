@@ -5,6 +5,7 @@ import com.mokuroku.backend.member.dto.LoginRequestDTO;
 import com.mokuroku.backend.member.dto.LoginResponseDTO;
 import com.mokuroku.backend.member.dto.RegisterRequestDTO;
 import com.mokuroku.backend.member.dto.RegisterResponseDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
@@ -18,4 +19,6 @@ public interface MemberService {
 
     @Transactional
     LoginResponseDTO login(LoginRequestDTO req, HttpServletResponse res);
+
+    void logout(HttpServletRequest req, HttpServletResponse res);
 }

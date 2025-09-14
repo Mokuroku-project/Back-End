@@ -7,11 +7,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.CacheControl;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,7 +45,7 @@ public class MemberController {
   }
 
   @PostMapping("/verify-email")
-  public ResponseEntity<ResultDTO<Void>> verifyEmail(@RequestBody @Valid VerifyEmailRequest req) {
+  public ResponseEntity<ResultDTO<Void>> verifyEmail(@RequestBody @Valid VerifyEmailRequestDTO req) {
       memberService.verifyEmail(req.getEmail(), req.getCode());
       return ResponseEntity.ok(new ResultDTO<>("OK", null));
   }
@@ -82,4 +82,10 @@ public class MemberController {
               .cacheControl(CacheControl.noStore()) // ← 민감 응답 캐시 금지
               .body(new ResultDTO<>("OK", body)); // // ← 문자열 "success" 대신 표준 코드
   }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ResultDTO<Void>> logout(HttpServletRequest req, HttpServletResponse res) {
+        memberService.logout(req, res);
+        return ResponseEntity.ok(new ResultDTO<>("OK", null));
+    }
 }
