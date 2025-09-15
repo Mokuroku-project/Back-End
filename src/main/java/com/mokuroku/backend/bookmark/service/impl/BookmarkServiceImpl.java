@@ -63,4 +63,24 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     return ResponseEntity.ok(new ResultDTO<>("북마크 조회를 성공했습니다.", bookmarkDTOS));
   }
+
+  @Override
+  public ResponseEntity<ResultDTO> deleteBookmark(BookmarkRequestDTO bookmarkRequestDTO) {
+
+    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
+    String email = "test@gmail.com";
+    Member member = memberRepository.findById(email)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+    Bookmark bookmark = bookmarkRepository.findById(bookmarkRequestDTO.getBookmarkId())
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOOKMARK));
+
+    if (bookmark.getEmail().equals(member)) {
+      bookmarkRepository.delete(bookmark);
+    } else {
+      throw new CustomException(ErrorCode.INVALID_BOOKMARK_OWNERSHIP);
+    }
+
+    return ResponseEntity.ok(new ResultDTO<>("북마크 삭제에 성공했습니다.", null));
+  }
 }
