@@ -35,13 +35,17 @@ public class SecurityConfiguration {
                     "/dutch/**",
                     "/sns/**",
                     "/bookmark/**",
+                    "/push/**",
                     "/swagger-ui.html",     //
                     "/swagger-ui/**",       // ✅ JS, CSS 리소스
                     "/v3/api-docs",         // ✅ JSON 문서
                     "/v3/api-docs/**",      // ✅ 그룹화된 문서
                     "/webjars/**",          // ✅ swagger-ui 리소스
                     "/favicon.ico",         // ✅ 404 방지
-                    "/error"
+                    "/error",
+                    "/index.html", "/push-test.html", "/firebase-messaging-sw.js",
+                    "/manifest.json", "/favicon.ico", "/assets/**",
+                    "/css/**", "/js/**", "/images/**"
                 ).permitAll()
                 .anyRequest().authenticated())
         .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(

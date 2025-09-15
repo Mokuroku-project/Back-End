@@ -5,6 +5,7 @@ import com.mokuroku.backend.product.dto.CrawlingRequestDTO;
 import com.mokuroku.backend.product.dto.ProductDTO;
 import com.mokuroku.backend.product.dto.WishlistDTO;
 import com.mokuroku.backend.product.service.ProductService;
+import com.mokuroku.backend.product.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
   private final ProductService productService;
+  private final ProductServiceImpl productServiceImpl;
 
   @PostMapping()
   public ResponseEntity<ResultDTO> wishlistRegist(@RequestBody WishlistDTO wishListDTO) {
@@ -59,4 +61,11 @@ public class ProductController {
     ProductDTO productInfo = productService.crawling(crawlingRequestDTO).block();
     return ResponseEntity.ok(new ResultDTO<>("크롤링 성공", productInfo));
   }
+
+  @PostMapping("/test")
+  public String test() {
+    productServiceImpl.scheduledCrawling();
+    return "성공";
+  }
 }
+

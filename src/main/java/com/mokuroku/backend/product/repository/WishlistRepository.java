@@ -21,7 +21,7 @@ public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
           LEFT JOIN FETCH w.products p
           WHERE m.status = :status
       """)
-  List<Wishlist> findAllByMemberStatusWithProducts(@Param("status") char status);
+  List<Wishlist> findAllByMemberStatusWithProducts(@Param("status") String status);
 
   Optional<Wishlist> findByWishlistIdAndEmail(long wishlistId, Member member);
 }
