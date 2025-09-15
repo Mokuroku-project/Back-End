@@ -50,11 +50,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 프로필 이미지 파일 있는지 확인
+    String imageUrl = null;
+
     if (file != null && !file.isEmpty()) { // 있을 경우 이미지 파일 검사 후 회원정보 저장
       // 파일 이름에서 확장자 추출
       String fileExtension = StringUtils.getFilenameExtension(file.getOriginalFilename());
 
-      String imageUrl;
       // 확장자가 이미지 파일인지 확인
       if (fileExtension != null && ALLOWED_EXTENSIONS.contains(fileExtension.toLowerCase())) {
         try {
@@ -67,7 +68,7 @@ public class MemberServiceImpl implements MemberService {
       }
     }
 
-    Member member = RegisterRequestDTO.joinMember(requestDTO, null);
+    Member member = RegisterRequestDTO.joinMember(requestDTO, imageUrl);
     memberRepository.save(member);
 
     // 회원정보 저장 후 가입한 이메일로 본인인증 메일 전송 및 레디스에 토큰값 저장
