@@ -1,3 +1,4 @@
+
 package com.mokuroku.backend.member.dto;
 
 import jakarta.validation.constraints.Email;
@@ -12,3 +13,4 @@ public class EmailOnlyDTO {
     @NotBlank
     private String email;
 }
+

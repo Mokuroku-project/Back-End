@@ -10,7 +10,12 @@ import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.member.repository.MemberRepository;
 import com.mokuroku.backend.member.security.JwtTokenProvider;
 import com.mokuroku.backend.member.service.MemberService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -73,10 +78,12 @@ public class MemberServiceImpl implements MemberService {
             }
         }
 
+        String imageUrl = null;
+
         // 3) 회원 저장 (임시 가입 상태 "2")
         //    RegisterRequestDTO.joinMember가 내부에서 BCrypt를 사용한다면 OK.
         //    만약 서비스의 PasswordEncoder를 쓰고 싶으면 joinMember를 바꾸거나 여기서 인코딩하세요.
-        Member member = RegisterRequestDTO.joinMember(requestDTO, null);
+        Member member = RegisterRequestDTO.joinMember(requestDTO, imageUrl); // ✅ null → imageUrl
         memberRepository.save(member);
 
         // 회원정보 저장 후 가입한 이메일로 본인인증 메일 전송 및 레디스에 토큰값 저장
@@ -208,5 +215,44 @@ public class MemberServiceImpl implements MemberService {
                 .accessToken(accessToken)
                 .refreshToken(null) // 쿠키 전략이면 본문에 넣지 않는 걸 권장
                 .build();
+    }
+
+    @Override
+    public void logout(HttpServletRequest req, HttpServletResponse res) {
+        String refresh = null;
+        Cookie[] cookies = req.getCookies();
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                if ("refresh_token".equals(c.getName())) {
+                    refresh = c.getValue();
+                    break;
+                }
+            }
+        }
+
+        // (선택) refresh 파싱하여 jti/subject 꺼내기 → Redis 키 제거
+        if (refresh != null && !refresh.isBlank()) {
+            try {
+                // jwtTokenProvider.parseAndValidate(refresh);
+                // String jti = jwtTokenProvider.getJti(refresh);  // jti를 쓴다면
+                // redisTemplate.delete("RT:" + jti);              // 혹은 "RT:{email}:{device}"
+                // 또는 email로 관리했다면 해당 키 삭제 로직
+            } catch (Exception ignored) {
+                // 만료/위조여도 쿠키만 만료시키면 됨
+            }
+        }
+
+        // 클라이언트 쿠키 즉시 만료 (path/도메인 반드시 동일)
+        ResponseCookie expired = ResponseCookie.from("refresh_token", "")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("Strict")
+                .path("/auth/refresh")                 // 발급 때와 동일해야 함
+                .maxAge(0)
+                .build();
+        res.addHeader(HttpHeaders.SET_COOKIE, expired.toString());
+
+        // (선택) SecurityContext 정리
+        SecurityContextHolder.clearContext();
     }
 }

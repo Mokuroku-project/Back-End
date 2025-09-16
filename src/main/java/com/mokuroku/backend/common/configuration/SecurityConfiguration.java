@@ -40,9 +40,10 @@ public class SecurityConfiguration {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+                .logout(l -> l.disable()) // 폼 로그아웃 안 씀
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(HttpMethod.POST, "/members/login", "/members/join",
-                                "/members/verify-email", "/members/verify-email/resend").permitAll()
+                                "/members/verify-email", "/members/verify-email/resend", "/members/logout").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/webjars/**").permitAll()
                         .requestMatchers(
                                 "/",
