@@ -34,7 +34,7 @@ public class BudgetbookServiceImpl implements BudgetbookService {
     public ResponseEntity<ResultDTO> budgetbookRegist(BudgetbookDTO budgetbookDTO){
         String email = "test@gmail.com";
         Member member = memberRepository.findById(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         BudgetbookEntity budgetbook = BudgetbookEntity.builder()
                 .member(member)
@@ -59,7 +59,7 @@ public class BudgetbookServiceImpl implements BudgetbookService {
     public ResponseEntity<ResultDTO> budgetbookDelete(Long budgetbookId){
         String email = "test@gmail.com";
         Member member = memberRepository.findById(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         BudgetbookEntity budgetbook = budgetbookRepository.findById(budgetbookId)
                         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BUDGETBOOK));
@@ -80,7 +80,7 @@ public class BudgetbookServiceImpl implements BudgetbookService {
     public ResponseEntity<ResultDTO> budgetbookEdit(Long budgetbookId, BudgetbookEditDTO budgetbookEditDTO){
         String email = "test@gmail.com";
         Member member = memberRepository.findById(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         BudgetbookEntity budgetbook = budgetbookRepository.findById(budgetbookId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BUDGETBOOK));
@@ -102,7 +102,7 @@ public class BudgetbookServiceImpl implements BudgetbookService {
     public ResponseEntity<ResultDTO> budgetbook(Long budgetbookId){
         String email = "test@gmail.com";
         Member member = memberRepository.findById(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         BudgetbookEntity budgetbook = budgetbookRepository.findById(budgetbookId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BUDGETBOOK));
@@ -122,7 +122,7 @@ public class BudgetbookServiceImpl implements BudgetbookService {
     public ResponseEntity<ResultDTO> budgetbookList(String email, String startDate, String endDate, String type) {
 
         Member member = memberRepository.findById(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end   = LocalDate.parse(endDate);
