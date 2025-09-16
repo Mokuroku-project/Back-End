@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
 
     // 회원인지 검증 -> 회원상태에 대한 검증 추가 필요함
     Member member = memberRepository.findById(email)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     Wishlist wishlist = Wishlist.builder()
         .email(member)
@@ -80,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
 
     // 회원 검증
     Member member = memberRepository.findById(email)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     // Wishlist 조회
     Wishlist wishlist = wishlistRepository.findByWishlistIdAndEmail(wishlistId, member)
@@ -107,7 +107,7 @@ public class ProductServiceImpl implements ProductService {
 
     // 회원 검증
     Member member = memberRepository.findById(email)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     Wishlist wishlist = wishlistRepository.findById(wishlistId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_WISHLIST));
@@ -137,7 +137,7 @@ public class ProductServiceImpl implements ProductService {
 
     // 회원 검증
     Member member = memberRepository.findById(email)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     Wishlist wishlist = wishlistRepository.findById(wishlistId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_WISHLIST));
@@ -163,7 +163,7 @@ public class ProductServiceImpl implements ProductService {
 
     // 회원 검증
     Member member = memberRepository.findById(email)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     List<Wishlist> wishlists = wishlistRepository.findByEmail(member);
     List<WishlistDTO> wishlistDTOList = wishlists.stream()
@@ -186,7 +186,7 @@ public class ProductServiceImpl implements ProductService {
           if (member.isPresent()) {
             return Mono.just(member.get());
           } else {
-            return Mono.error(new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+            return Mono.error(new CustomException(ErrorCode.MEMBER_NOT_FOUND));
           }
         })
         .flatMap(member -> {
