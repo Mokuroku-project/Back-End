@@ -7,14 +7,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "daily_price")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class DailyPrice {
 
   @Id
@@ -25,5 +30,7 @@ public class DailyPrice {
   @JoinColumn(name = "product_id")
   private Product product;
 
+  private Integer price;
+  private LocalDateTime capturedAt;
   private LocalDate date;
 }

@@ -5,6 +5,7 @@ import com.mokuroku.backend.exception.ErrorCode;
 import com.mokuroku.backend.exception.impl.CustomException;
 import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.member.repository.MemberRepository;
+import com.mokuroku.backend.notification.event.PriceChangedEvent;
 import com.mokuroku.backend.product.dto.CrawlingRequestDTO;
 import com.mokuroku.backend.product.dto.CrawlingResponseDTO;
 import com.mokuroku.backend.product.dto.ProductDTO;
@@ -20,16 +21,21 @@ import com.mokuroku.backend.product.repository.WishlistRepository;
 import com.mokuroku.backend.product.service.ProductService;
 import jakarta.transaction.Transactional;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -47,6 +53,8 @@ public class ProductServiceImpl implements ProductService {
   private final ProductRepository productRepository;
   private final DailyPriceRepository dailyPriceRepository;
   private final Builder webClientBuilder;
+  private final TransactionTemplate tx;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Override
   public ResponseEntity<ResultDTO> wishListRegist(WishlistDTO wishListDTO) {
@@ -214,7 +222,7 @@ public class ProductServiceImpl implements ProductService {
                   ProductDTO product = wrapper.getData().get(0);
 
                   // nationCode가 null일 수도 있으므로, 크롤링 서버에서 채워지지 않았으면 기본값 설정
-                  if (!(product.getNationCode() != null)) {
+                  if (product.getNationCode() == null) {
                     product.setNationCode(nationCode);
                   }
 
@@ -247,61 +255,81 @@ public class ProductServiceImpl implements ProductService {
   }
 
   // 자정마다 실행 (cron: 초 분 시 일 월 요일)
-  @Scheduled(cron = "0 0 0 * * *")
-  @Transactional
+  @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
   public void scheduledCrawling() {
-    // 전체 회원의 활성 위시리스트 가져오기
-    List<Wishlist> wishlists = wishlistRepository.findAllByMemberStatusWithProducts('1');
+    List<Wishlist> wishlists = wishlistRepository.findAllByMemberStatusWithProducts("1");
 
     crawlMultipleProducts(wishlists)
         .filter(pair -> {
           ProductDTO productDTO = pair.getSecond();
-          return productDTO.getName() != null && !productDTO.getName().isEmpty();
+          return productDTO.getName() != null && !productDTO.getName().isEmpty() && productDTO.getPrice() > 0;
         })
-        .flatMap(pair -> {
-          Wishlist wishlist = pair.getFirst();
-          ProductDTO productDTO = pair.getSecond();
-
-          // DB에서 존재 여부 확인
-          Optional<Product> existingProductOpt = productRepository.findByWishlist(wishlist);
-
-          if (existingProductOpt.isPresent()) {
-            Product existingProduct = existingProductOpt.get();
-            int oldPrice = existingProduct.getPrice();
-            int newPrice = productDTO.getPrice();
-
-            // 가격이 변경된 경우만 업데이트
-            if (newPrice > 0 && newPrice != oldPrice) {
-              return Mono.fromCallable(() -> {
-                Product updated = ProductDTO.updateEntity(productDTO, existingProduct);
-                Product saved = productRepository.save(updated);
-
-                dailyPriceRepository.save(DailyPrice.builder()
-                    .product(saved)
-                    .date(LocalDate.now())
-                    .build());
-                return saved;
-              }).subscribeOn(Schedulers.boundedElastic());
-            } else {
-              return Mono.empty();
-            }
-          } else {
-            // 새 상품이면 바로 저장
-            return Mono.fromCallable(() -> {
-              Product newProduct = ProductDTO.toNewEntity(productDTO, wishlist);
-              Product saved = productRepository.save(newProduct);
-
-              dailyPriceRepository.save(DailyPrice.builder()
-                  .product(saved)
-                  .date(LocalDate.now())
-                  .build());
-              return saved;
-            }).subscribeOn(Schedulers.boundedElastic());
-          }
-        }, CRAWL_CONCURRENCY)
-        .doOnComplete(() -> log.info("scheduledCrawling completed. Total wishlists processed: {}",
-            wishlists.size()))
+        .flatMap(pair ->
+                Mono.fromCallable(() ->
+                    tx.execute(status -> updateProduct(pair.getFirst(), pair.getSecond()))
+                ).subscribeOn(Schedulers.boundedElastic()),
+            CRAWL_CONCURRENCY
+        )
+        .doOnComplete(() -> log.info("scheduledCrawling completed. Total wishlists processed: {}", wishlists.size()))
         .onErrorContinue((e, o) -> log.error("scheduledCrawling error: {}", e.getMessage(), e))
         .subscribe();
+  }
+
+  public Product updateProduct(Wishlist wishlist, ProductDTO productDTO) {
+
+    int newPrice = productDTO.getPrice();
+
+    Product product;
+    // DB에서 존재 여부 확인
+    Optional<Product> existingProductOpt = productRepository.findByWishlist(wishlist);
+
+    if (existingProductOpt.isPresent()) {
+      Product existing = existingProductOpt.get();
+      int oldPrice = existing.getPrice();
+
+      // 가격 변동 없으면 저장 생략
+      if (newPrice > 0 && newPrice != existing.getPrice()) {
+        product = productRepository.save(ProductDTO.updateEntity(productDTO, existing));
+
+        // 가격 변동시 이벤트 발생
+        eventPublisher.publishEvent(
+            new PriceChangedEvent(
+                wishlist.getEmail().getEmail(),
+                product.getProductId(),
+                product.getName(),
+                oldPrice,
+                newPrice
+            )
+        );
+      } else {
+        product = existing;
+      }
+    } else {
+      product = productRepository.save(ProductDTO.toNewEntity(productDTO, wishlist));
+    }
+
+    LocalDate date = LocalDate.now(ZoneId.of("Asia/Seoul"));
+    LocalDateTime capturedUtc = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC);
+
+    // DailyPrice 저장
+    dailyPriceRepository.findByProductAndDate(product, date).ifPresentOrElse(dp -> {
+      DailyPrice updateDp = dp.toBuilder()
+          .price(newPrice)
+          .capturedAt(capturedUtc)
+          .build();
+
+      dailyPriceRepository.save(updateDp);
+    }, () -> {
+      DailyPrice newDp = DailyPrice.builder()
+          .product(product)
+          .price(newPrice)
+          .capturedAt(capturedUtc)
+          .date(date)
+          .build();
+
+      dailyPriceRepository.save(newDp);
+    });
+
+    return product;
   }
 }

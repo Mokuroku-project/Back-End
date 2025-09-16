@@ -53,6 +53,7 @@ public class SecurityConfiguration {
                                 "/dutch/**",
                                 "/sns/**",
                                 "/bookmark/**",
+                                "/push/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs",         // ✅ JSON 문서
                                 "/v3/api-docs/**",      // ✅ 그룹화된 문서

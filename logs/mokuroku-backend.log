@@ -1,0 +1,386 @@
+2025-09-15 18:02:27.841 [background-preinit] INFO  org.hibernate.validator.internal.util.Version  - HV000001: Hibernate Validator 8.0.2.Final
+2025-09-15 18:02:27.874 [restartedMain] INFO  com.mokuroku.backend.BackEndApplication  - Starting BackEndApplication using Java 17.0.5 with PID 9944 (D:\Mokuroku\Back-End\build\classes\java\main started by d1018 in D:\Mokuroku\Back-End)
+2025-09-15 18:02:27.874 [restartedMain] INFO  com.mokuroku.backend.BackEndApplication  - No active profile set, falling back to 1 default profile: "default"
+2025-09-15 18:02:27.898 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor  - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-09-15 18:02:27.899 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor  - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-09-15 18:02:28.639 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate  - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-09-15 18:02:28.640 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate  - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-15 18:02:28.789 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate  - Finished Spring Data repository scanning in 142 ms. Found 8 JPA repository interfaces.
+2025-09-15 18:02:28.801 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate  - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-09-15 18:02:28.801 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate  - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-09-15 18:02:28.820 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport  - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.mokuroku.backend.bookmark.repository.BookmarkRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-15 18:02:28.821 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport  - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.mokuroku.backend.budgetbook.repository.BudgetbookRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-15 18:02:28.821 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport  - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.mokuroku.backend.member.repository.MemberRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-15 18:02:28.821 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport  - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.mokuroku.backend.notification.repository.MemberPushTokenRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-15 18:02:28.821 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport  - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.mokuroku.backend.product.repository.DailyPriceRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-15 18:02:28.821 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport  - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.mokuroku.backend.product.repository.ProductRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-15 18:02:28.821 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport  - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.mokuroku.backend.product.repository.WishlistRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-15 18:02:28.822 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport  - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.mokuroku.backend.sns.repository.PostRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-15 18:02:28.823 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate  - Finished Spring Data repository scanning in 13 ms. Found 0 Redis repository interfaces.
+2025-09-15 18:02:29.307 [restartedMain] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer  - Tomcat initialized with port 8080 (http)
+2025-09-15 18:02:29.316 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol  - Initializing ProtocolHandler ["http-nio-8080"]
+2025-09-15 18:02:29.317 [restartedMain] INFO  org.apache.catalina.core.StandardService  - Starting service [Tomcat]
+2025-09-15 18:02:29.317 [restartedMain] INFO  org.apache.catalina.core.StandardEngine  - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-09-15 18:02:29.385 [restartedMain] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]  - Initializing Spring embedded WebApplicationContext
+2025-09-15 18:02:29.385 [restartedMain] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext  - Root WebApplicationContext: initialization completed in 1486 ms
+2025-09-15 18:02:29.500 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper  - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-15 18:02:29.552 [restartedMain] INFO  org.hibernate.Version  - HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-09-15 18:02:29.580 [restartedMain] INFO  org.hibernate.cache.internal.RegionFactoryInitiator  - HHH000026: Second-level cache disabled
+2025-09-15 18:02:29.817 [restartedMain] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo  - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-15 18:02:29.840 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource  - HikariPool-1 - Starting...
+2025-09-15 18:02:29.995 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool  - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@32b28342
+2025-09-15 18:02:29.996 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource  - HikariPool-1 - Start completed.
+2025-09-15 18:02:30.042 [restartedMain] WARN  org.hibernate.orm.deprecation  - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-09-15 18:02:30.055 [restartedMain] INFO  org.hibernate.orm.connections.pooling  - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-15 18:02:30.778 [restartedMain] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator  - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-15 18:02:30.930 [restartedMain] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean  - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-15 18:02:31.761 [restartedMain] INFO  org.springframework.data.jpa.repository.query.QueryEnhancerFactory  - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-09-15 18:02:32.560 [restartedMain] WARN  org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration  - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-15 18:02:32.647 [restartedMain] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - 35 mappings in 'requestMappingHandlerMapping'
+2025-09-15 18:02:32.721 [restartedMain] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping  - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-09-15 18:02:32.734 [restartedMain] DEBUG org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration$DefaultPasswordEncoderAuthenticationManagerBuilder  - No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2025-09-15 18:02:32.825 [restartedMain] DEBUG org.springframework.security.web.DefaultSecurityFilterChain  - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-09-15 18:02:32.879 [restartedMain] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter  - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-09-15 18:02:32.916 [restartedMain] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver  - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-09-15 18:02:33.070 [restartedMain] INFO  org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer  - LiveReload server is running on port 35729
+2025-09-15 18:02:33.096 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol  - Starting ProtocolHandler ["http-nio-8080"]
+2025-09-15 18:02:33.103 [restartedMain] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer  - Tomcat started on port 8080 (http) with context path '/'
+2025-09-15 18:02:33.110 [restartedMain] INFO  com.mokuroku.backend.BackEndApplication  - Started BackEndApplication in 5.595 seconds (process running for 6.232)
+2025-09-15 18:03:49.938 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]  - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-15 18:03:49.939 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet  - Initializing Servlet 'dispatcherServlet'
+2025-09-15 18:03:49.939 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.DispatcherServlet  - Detected StandardServletMultipartResolver
+2025-09-15 18:03:49.939 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.DispatcherServlet  - Detected AcceptHeaderLocaleResolver
+2025-09-15 18:03:49.939 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.DispatcherServlet  - Detected FixedThemeResolver
+2025-09-15 18:03:49.940 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.DispatcherServlet  - Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@4df3a75f
+2025-09-15 18:03:49.940 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.DispatcherServlet  - Detected org.springframework.web.servlet.support.SessionFlashMapManager@2bb2e1fd
+2025-09-15 18:03:49.940 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.DispatcherServlet  - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2025-09-15 18:03:49.940 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet  - Completed initialization in 1 ms
+2025-09-15 18:03:49.952 [http-nio-8080-exec-1] DEBUG org.springframework.security.web.FilterChainProxy  - Securing POST /products/test
+2025-09-15 18:03:49.957 [http-nio-8080-exec-1] DEBUG org.springframework.security.web.authentication.AnonymousAuthenticationFilter  - Set SecurityContextHolder to anonymous SecurityContext
+2025-09-15 18:03:49.958 [http-nio-8080-exec-1] DEBUG org.springframework.security.web.FilterChainProxy  - Secured POST /products/test
+2025-09-15 18:03:49.960 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.DispatcherServlet  - POST "/products/test", parameters={}
+2025-09-15 18:03:49.961 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - Mapped to com.mokuroku.backend.product.controller.ProductController#test()
+2025-09-15 18:03:50.390 [http-nio-8080-exec-1] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [3004d394] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=%EB%A7%A5%EB%B6%81%EC%97%90%EC%96%B4%20m3%2013%EC%9D%B8%EC%B9%98
+2025-09-15 18:03:50.494 [http-nio-8080-exec-1] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [49f1efca] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=rtx%205090
+2025-09-15 18:03:50.502 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json, application/cbor, application/yaml]
+2025-09-15 18:03:50.503 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Writing ["성공"]
+2025-09-15 18:03:50.507 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.DispatcherServlet  - Completed 200 OK
+2025-09-15 18:04:49.073 [reactor-http-nio-2] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [3004d394] [fb445e4b-1] Response 200 OK
+2025-09-15 18:04:49.091 [reactor-http-nio-2] DEBUG org.springframework.web.HttpLogging  - [3004d394] [fb445e4b-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@457407b7]
+2025-09-15 18:04:49.614 [reactor-http-nio-3] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [49f1efca] [fd92dc93-1] Response 200 OK
+2025-09-15 18:04:49.615 [reactor-http-nio-3] DEBUG org.springframework.web.HttpLogging  - [49f1efca] [fd92dc93-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@737503bf]
+2025-09-15 18:04:49.615 [reactor-http-nio-3] INFO  com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling completed. Total wishlists processed: 2
+2025-09-15 18:10:17.608 [http-nio-8080-exec-5] DEBUG org.springframework.security.web.FilterChainProxy  - Securing POST /products/test
+2025-09-15 18:10:17.608 [http-nio-8080-exec-5] DEBUG org.springframework.security.web.authentication.AnonymousAuthenticationFilter  - Set SecurityContextHolder to anonymous SecurityContext
+2025-09-15 18:10:17.608 [http-nio-8080-exec-5] DEBUG org.springframework.security.web.FilterChainProxy  - Secured POST /products/test
+2025-09-15 18:10:17.608 [http-nio-8080-exec-5] DEBUG org.springframework.web.servlet.DispatcherServlet  - POST "/products/test", parameters={}
+2025-09-15 18:10:17.609 [http-nio-8080-exec-5] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - Mapped to com.mokuroku.backend.product.controller.ProductController#test()
+2025-09-15 18:10:17.618 [http-nio-8080-exec-5] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [28c9830] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=%EB%A7%A5%EB%B6%81%EC%97%90%EC%96%B4%20m3%2013%EC%9D%B8%EC%B9%98
+2025-09-15 18:10:17.622 [http-nio-8080-exec-5] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [205fce08] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=rtx%205090
+2025-09-15 18:10:17.623 [http-nio-8080-exec-5] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json, application/cbor, application/yaml]
+2025-09-15 18:10:17.623 [http-nio-8080-exec-5] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Writing ["성공"]
+2025-09-15 18:10:17.623 [http-nio-8080-exec-5] DEBUG org.springframework.web.servlet.DispatcherServlet  - Completed 200 OK
+2025-09-15 18:10:37.462 [reactor-http-nio-4] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [28c9830] [0fe699f3-1] Response 200 OK
+2025-09-15 18:10:37.469 [reactor-http-nio-4] ERROR com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling error: 예기치 못한 크롤링 오류가 발생했습니다.
+com.mokuroku.backend.exception.impl.CustomException: 예기치 못한 크롤링 오류가 발생했습니다.
+	at com.mokuroku.backend.product.service.impl.ProductServiceImpl.lambda$crawling$12(ProductServiceImpl.java:235)
+	at reactor.core.publisher.Mono.lambda$onErrorMap$29(Mono.java:3862)
+	at reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onError(FluxOnErrorResume.java:94)
+	at reactor.core.publisher.SerializedSubscriber.onError(SerializedSubscriber.java:124)
+	at reactor.core.publisher.FluxTimeout$TimeoutMainSubscriber.onError(FluxTimeout.java:220)
+	at reactor.core.publisher.FluxMapFuseable$MapFuseableSubscriber.onError(FluxMapFuseable.java:142)
+	at reactor.core.publisher.MonoFlatMap$FlatMapMain.secondError(MonoFlatMap.java:241)
+	at reactor.core.publisher.MonoFlatMap$FlatMapInner.onError(MonoFlatMap.java:315)
+	at reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onError(FluxOnErrorResume.java:106)
+	at reactor.core.publisher.Operators.error(Operators.java:198)
+	at reactor.core.publisher.MonoError.subscribe(MonoError.java:53)
+	at reactor.core.publisher.Mono.subscribe(Mono.java:4576)
+	at reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onError(FluxOnErrorResume.java:103)
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onError(FluxOnAssembly.java:544)
+	at reactor.core.publisher.MonoFlatMap$FlatMapMain.onNext(MonoFlatMap.java:136)
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.onNext(FluxContextWrite.java:107)
+	at reactor.core.publisher.FluxMapFuseable$MapFuseableConditionalSubscriber.onNext(FluxMapFuseable.java:299)
+	at reactor.core.publisher.FluxFilterFuseable$FilterFuseableConditionalSubscriber.onNext(FluxFilterFuseable.java:337)
+	at reactor.core.publisher.Operators$BaseFluxToMonoOperator.completePossiblyEmpty(Operators.java:2096)
+	at reactor.core.publisher.MonoCollect$CollectSubscriber.onComplete(MonoCollect.java:145)
+	at reactor.core.publisher.FluxMap$MapSubscriber.onComplete(FluxMap.java:144)
+	at reactor.core.publisher.FluxPeek$PeekSubscriber.onComplete(FluxPeek.java:260)
+	at reactor.core.publisher.FluxMap$MapSubscriber.onComplete(FluxMap.java:144)
+	at reactor.netty.channel.FluxReceive.onInboundComplete(FluxReceive.java:413)
+	at reactor.netty.channel.ChannelOperations.onInboundComplete(ChannelOperations.java:455)
+	at reactor.netty.channel.ChannelOperations.terminate(ChannelOperations.java:509)
+	at reactor.netty.http.client.HttpClientOperations.onInboundNext(HttpClientOperations.java:821)
+	at reactor.netty.channel.ChannelOperationsHandler.channelRead(ChannelOperationsHandler.java:115)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:107)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.channel.CombinedChannelDuplexHandler$DelegatingChannelHandlerContext.fireChannelRead(CombinedChannelDuplexHandler.java:436)
+	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:346)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:318)
+	at io.netty.channel.CombinedChannelDuplexHandler.channelRead(CombinedChannelDuplexHandler.java:251)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:442)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1357)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:440)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:868)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:166)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:796)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:732)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:658)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:998)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2025-09-15 18:11:17.188 [reactor-http-nio-5] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [205fce08] [0cc4a08f-1] Response 200 OK
+2025-09-15 18:11:17.190 [reactor-http-nio-5] ERROR com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling error: 예기치 못한 크롤링 오류가 발생했습니다.
+com.mokuroku.backend.exception.impl.CustomException: 예기치 못한 크롤링 오류가 발생했습니다.
+	at com.mokuroku.backend.product.service.impl.ProductServiceImpl.lambda$crawling$12(ProductServiceImpl.java:235)
+	at reactor.core.publisher.Mono.lambda$onErrorMap$29(Mono.java:3862)
+	at reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onError(FluxOnErrorResume.java:94)
+	at reactor.core.publisher.SerializedSubscriber.onError(SerializedSubscriber.java:124)
+	at reactor.core.publisher.FluxTimeout$TimeoutMainSubscriber.onError(FluxTimeout.java:220)
+	at reactor.core.publisher.FluxMapFuseable$MapFuseableSubscriber.onError(FluxMapFuseable.java:142)
+	at reactor.core.publisher.MonoFlatMap$FlatMapMain.secondError(MonoFlatMap.java:241)
+	at reactor.core.publisher.MonoFlatMap$FlatMapInner.onError(MonoFlatMap.java:315)
+	at reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onError(FluxOnErrorResume.java:106)
+	at reactor.core.publisher.Operators.error(Operators.java:198)
+	at reactor.core.publisher.MonoError.subscribe(MonoError.java:53)
+	at reactor.core.publisher.Mono.subscribe(Mono.java:4576)
+	at reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onError(FluxOnErrorResume.java:103)
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onError(FluxOnAssembly.java:544)
+	at reactor.core.publisher.MonoFlatMap$FlatMapMain.onNext(MonoFlatMap.java:136)
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.onNext(FluxContextWrite.java:107)
+	at reactor.core.publisher.FluxMapFuseable$MapFuseableConditionalSubscriber.onNext(FluxMapFuseable.java:299)
+	at reactor.core.publisher.FluxFilterFuseable$FilterFuseableConditionalSubscriber.onNext(FluxFilterFuseable.java:337)
+	at reactor.core.publisher.Operators$BaseFluxToMonoOperator.completePossiblyEmpty(Operators.java:2096)
+	at reactor.core.publisher.MonoCollect$CollectSubscriber.onComplete(MonoCollect.java:145)
+	at reactor.core.publisher.FluxMap$MapSubscriber.onComplete(FluxMap.java:144)
+	at reactor.core.publisher.FluxPeek$PeekSubscriber.onComplete(FluxPeek.java:260)
+	at reactor.core.publisher.FluxMap$MapSubscriber.onComplete(FluxMap.java:144)
+	at reactor.netty.channel.FluxReceive.onInboundComplete(FluxReceive.java:413)
+	at reactor.netty.channel.ChannelOperations.onInboundComplete(ChannelOperations.java:455)
+	at reactor.netty.channel.ChannelOperations.terminate(ChannelOperations.java:509)
+	at reactor.netty.http.client.HttpClientOperations.onInboundNext(HttpClientOperations.java:821)
+	at reactor.netty.channel.ChannelOperationsHandler.channelRead(ChannelOperationsHandler.java:115)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:107)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.channel.CombinedChannelDuplexHandler$DelegatingChannelHandlerContext.fireChannelRead(CombinedChannelDuplexHandler.java:436)
+	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:346)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:318)
+	at io.netty.channel.CombinedChannelDuplexHandler.channelRead(CombinedChannelDuplexHandler.java:251)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:442)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1357)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:440)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:868)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:166)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:796)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:732)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:658)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:998)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2025-09-15 18:11:17.190 [reactor-http-nio-5] INFO  com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling completed. Total wishlists processed: 2
+2025-09-15 18:19:11.254 [http-nio-8080-exec-7] DEBUG org.springframework.security.web.FilterChainProxy  - Securing POST /products/test
+2025-09-15 18:19:11.255 [http-nio-8080-exec-7] DEBUG org.springframework.security.web.authentication.AnonymousAuthenticationFilter  - Set SecurityContextHolder to anonymous SecurityContext
+2025-09-15 18:19:11.255 [http-nio-8080-exec-7] DEBUG org.springframework.security.web.FilterChainProxy  - Secured POST /products/test
+2025-09-15 18:19:11.255 [http-nio-8080-exec-7] DEBUG org.springframework.web.servlet.DispatcherServlet  - POST "/products/test", parameters={}
+2025-09-15 18:19:11.255 [http-nio-8080-exec-7] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - Mapped to com.mokuroku.backend.product.controller.ProductController#test()
+2025-09-15 18:19:11.264 [http-nio-8080-exec-7] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [2e753def] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=%EB%A7%A5%EB%B6%81%EC%97%90%EC%96%B4%20m3%2013%EC%9D%B8%EC%B9%98
+2025-09-15 18:19:11.268 [http-nio-8080-exec-7] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [3fc48abf] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=rtx%205090
+2025-09-15 18:19:11.269 [http-nio-8080-exec-7] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json, application/cbor, application/yaml]
+2025-09-15 18:19:11.269 [http-nio-8080-exec-7] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Writing ["성공"]
+2025-09-15 18:19:11.270 [http-nio-8080-exec-7] DEBUG org.springframework.web.servlet.DispatcherServlet  - Completed 200 OK
+2025-09-15 18:19:30.969 [reactor-http-nio-6] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [2e753def] [8e98d768-1] Response 200 OK
+2025-09-15 18:19:30.970 [reactor-http-nio-6] DEBUG org.springframework.web.HttpLogging  - [2e753def] [8e98d768-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@2ab09a14]
+2025-09-15 18:19:31.880 [boundedElastic-1] INFO  com.mokuroku.backend.notification.service.PushSender  - push multicast: requested=1, success=1, failure=0
+2025-09-15 18:19:38.402 [reactor-http-nio-7] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [3fc48abf] [8ccf082d-1] Response 200 OK
+2025-09-15 18:19:38.403 [reactor-http-nio-7] DEBUG org.springframework.web.HttpLogging  - [3fc48abf] [8ccf082d-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@e753b66]
+2025-09-15 18:19:38.403 [reactor-http-nio-7] INFO  com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling completed. Total wishlists processed: 2
+2025-09-15 18:20:20.816 [http-nio-8080-exec-3] DEBUG org.springframework.security.web.FilterChainProxy  - Securing POST /products/test
+2025-09-15 18:20:20.816 [http-nio-8080-exec-3] DEBUG org.springframework.security.web.authentication.AnonymousAuthenticationFilter  - Set SecurityContextHolder to anonymous SecurityContext
+2025-09-15 18:20:20.816 [http-nio-8080-exec-3] DEBUG org.springframework.security.web.FilterChainProxy  - Secured POST /products/test
+2025-09-15 18:20:20.816 [http-nio-8080-exec-3] DEBUG org.springframework.web.servlet.DispatcherServlet  - POST "/products/test", parameters={}
+2025-09-15 18:20:20.817 [http-nio-8080-exec-3] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - Mapped to com.mokuroku.backend.product.controller.ProductController#test()
+2025-09-15 18:20:20.826 [http-nio-8080-exec-3] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [228d6242] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=%EB%A7%A5%EB%B6%81%EC%97%90%EC%96%B4%20m3%2013%EC%9D%B8%EC%B9%98
+2025-09-15 18:20:20.832 [http-nio-8080-exec-3] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [dcd8494] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=rtx%205090
+2025-09-15 18:20:20.833 [http-nio-8080-exec-3] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json, application/cbor, application/yaml]
+2025-09-15 18:20:20.834 [http-nio-8080-exec-3] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Writing ["성공"]
+2025-09-15 18:20:20.834 [http-nio-8080-exec-3] DEBUG org.springframework.web.servlet.DispatcherServlet  - Completed 200 OK
+2025-09-15 18:21:15.708 [reactor-http-nio-8] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [228d6242] [fdfaf7cc-1] Response 200 OK
+2025-09-15 18:21:15.709 [reactor-http-nio-8] DEBUG org.springframework.web.HttpLogging  - [228d6242] [fdfaf7cc-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@a1a243e]
+2025-09-15 18:21:18.855 [reactor-http-nio-9] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [dcd8494] [7750035f-1] Response 200 OK
+2025-09-15 18:21:18.855 [reactor-http-nio-9] DEBUG org.springframework.web.HttpLogging  - [dcd8494] [7750035f-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@55c7b751]
+2025-09-15 18:21:19.084 [boundedElastic-1] INFO  com.mokuroku.backend.notification.service.PushSender  - push multicast: requested=1, success=1, failure=0
+2025-09-15 18:21:19.084 [boundedElastic-1] INFO  com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling completed. Total wishlists processed: 2
+2025-09-15 18:22:25.445 [http-nio-8080-exec-4] DEBUG org.springframework.security.web.FilterChainProxy  - Securing POST /products/test
+2025-09-15 18:22:25.445 [http-nio-8080-exec-4] DEBUG org.springframework.security.web.authentication.AnonymousAuthenticationFilter  - Set SecurityContextHolder to anonymous SecurityContext
+2025-09-15 18:22:25.445 [http-nio-8080-exec-4] DEBUG org.springframework.security.web.FilterChainProxy  - Secured POST /products/test
+2025-09-15 18:22:25.445 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet  - POST "/products/test", parameters={}
+2025-09-15 18:22:25.445 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - Mapped to com.mokuroku.backend.product.controller.ProductController#test()
+2025-09-15 18:22:25.452 [http-nio-8080-exec-4] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [6969f6a2] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=%EB%A7%A5%EB%B6%81%EC%97%90%EC%96%B4%20m3%2013%EC%9D%B8%EC%B9%98
+2025-09-15 18:22:25.457 [http-nio-8080-exec-4] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [c1340fd] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=rtx%205090
+2025-09-15 18:22:25.457 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json, application/cbor, application/yaml]
+2025-09-15 18:22:25.458 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Writing ["성공"]
+2025-09-15 18:22:25.458 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet  - Completed 200 OK
+2025-09-15 18:22:43.643 [reactor-http-nio-10] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [6969f6a2] [ec268b4c-1] Response 200 OK
+2025-09-15 18:22:43.644 [reactor-http-nio-10] DEBUG org.springframework.web.HttpLogging  - [6969f6a2] [ec268b4c-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@5483a304]
+2025-09-15 18:22:43.876 [boundedElastic-2] INFO  com.mokuroku.backend.notification.service.PushSender  - push multicast: requested=1, success=1, failure=0
+2025-09-15 18:23:21.660 [reactor-http-nio-11] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [c1340fd] [e28d35d0-1] Response 200 OK
+2025-09-15 18:23:21.661 [reactor-http-nio-11] DEBUG org.springframework.web.HttpLogging  - [c1340fd] [e28d35d0-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@2dcb29a3]
+2025-09-15 18:23:21.661 [reactor-http-nio-11] INFO  com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling completed. Total wishlists processed: 2
+2025-09-15 18:26:15.875 [http-nio-8080-exec-8] DEBUG org.springframework.security.web.FilterChainProxy  - Securing POST /products/test
+2025-09-15 18:26:15.876 [http-nio-8080-exec-8] DEBUG org.springframework.security.web.authentication.AnonymousAuthenticationFilter  - Set SecurityContextHolder to anonymous SecurityContext
+2025-09-15 18:26:15.876 [http-nio-8080-exec-8] DEBUG org.springframework.security.web.FilterChainProxy  - Secured POST /products/test
+2025-09-15 18:26:15.876 [http-nio-8080-exec-8] DEBUG org.springframework.web.servlet.DispatcherServlet  - POST "/products/test", parameters={}
+2025-09-15 18:26:15.876 [http-nio-8080-exec-8] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - Mapped to com.mokuroku.backend.product.controller.ProductController#test()
+2025-09-15 18:26:15.884 [http-nio-8080-exec-8] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [8d28f86] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=%EB%A7%A5%EB%B6%81%EC%97%90%EC%96%B4%20m3%2013%EC%9D%B8%EC%B9%98
+2025-09-15 18:26:15.888 [http-nio-8080-exec-8] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [3a4ef795] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=rtx%205090
+2025-09-15 18:26:15.889 [http-nio-8080-exec-8] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json, application/cbor, application/yaml]
+2025-09-15 18:26:15.889 [http-nio-8080-exec-8] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Writing ["성공"]
+2025-09-15 18:26:15.889 [http-nio-8080-exec-8] DEBUG org.springframework.web.servlet.DispatcherServlet  - Completed 200 OK
+2025-09-15 18:27:13.122 [reactor-http-nio-12] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [8d28f86] [0d4c1f37-1] Response 200 OK
+2025-09-15 18:27:13.123 [reactor-http-nio-12] DEBUG org.springframework.web.HttpLogging  - [8d28f86] [0d4c1f37-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@3dfb5cfb]
+2025-09-15 18:27:15.803 [reactor-http-nio-1] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [3a4ef795] [3d301479-1] Response 200 OK
+2025-09-15 18:27:15.804 [reactor-http-nio-1] DEBUG org.springframework.web.HttpLogging  - [3a4ef795] [3d301479-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@73585606]
+2025-09-15 18:27:16.171 [boundedElastic-3] INFO  com.mokuroku.backend.notification.service.PushSender  - push multicast: requested=1, success=1, failure=0
+2025-09-15 18:27:16.171 [boundedElastic-3] INFO  com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling completed. Total wishlists processed: 2
+2025-09-15 18:27:48.849 [http-nio-8080-exec-10] DEBUG org.springframework.security.web.FilterChainProxy  - Securing POST /products/test
+2025-09-15 18:27:48.849 [http-nio-8080-exec-10] DEBUG org.springframework.security.web.authentication.AnonymousAuthenticationFilter  - Set SecurityContextHolder to anonymous SecurityContext
+2025-09-15 18:27:48.849 [http-nio-8080-exec-10] DEBUG org.springframework.security.web.FilterChainProxy  - Secured POST /products/test
+2025-09-15 18:27:48.850 [http-nio-8080-exec-10] DEBUG org.springframework.web.servlet.DispatcherServlet  - POST "/products/test", parameters={}
+2025-09-15 18:27:48.850 [http-nio-8080-exec-10] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - Mapped to com.mokuroku.backend.product.controller.ProductController#test()
+2025-09-15 18:27:48.857 [http-nio-8080-exec-10] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [368bab5a] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=%EB%A7%A5%EB%B6%81%EC%97%90%EC%96%B4%20m3%2013%EC%9D%B8%EC%B9%98
+2025-09-15 18:27:48.861 [http-nio-8080-exec-10] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [53e8968] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=rtx%205090
+2025-09-15 18:27:48.861 [http-nio-8080-exec-10] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json, application/cbor, application/yaml]
+2025-09-15 18:27:48.861 [http-nio-8080-exec-10] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Writing ["성공"]
+2025-09-15 18:27:48.862 [http-nio-8080-exec-10] DEBUG org.springframework.web.servlet.DispatcherServlet  - Completed 200 OK
+2025-09-15 18:28:45.794 [reactor-http-nio-2] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [368bab5a] [c354aeec-1] Response 200 OK
+2025-09-15 18:28:45.795 [reactor-http-nio-2] DEBUG org.springframework.web.HttpLogging  - [368bab5a] [c354aeec-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@23d749d9]
+2025-09-15 18:28:45.867 [reactor-http-nio-3] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [53e8968] [69d25553-1] Response 200 OK
+2025-09-15 18:28:45.868 [reactor-http-nio-3] DEBUG org.springframework.web.HttpLogging  - [53e8968] [69d25553-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@4570e6ea]
+2025-09-15 18:28:45.868 [reactor-http-nio-3] INFO  com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling completed. Total wishlists processed: 2
+2025-09-15 18:39:40.932 [http-nio-8080-exec-2] DEBUG org.springframework.security.web.FilterChainProxy  - Securing POST /products/test
+2025-09-15 18:39:40.932 [http-nio-8080-exec-2] DEBUG org.springframework.security.web.authentication.AnonymousAuthenticationFilter  - Set SecurityContextHolder to anonymous SecurityContext
+2025-09-15 18:39:40.932 [http-nio-8080-exec-2] DEBUG org.springframework.security.web.FilterChainProxy  - Secured POST /products/test
+2025-09-15 18:39:40.932 [http-nio-8080-exec-2] DEBUG org.springframework.web.servlet.DispatcherServlet  - POST "/products/test", parameters={}
+2025-09-15 18:39:40.932 [http-nio-8080-exec-2] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - Mapped to com.mokuroku.backend.product.controller.ProductController#test()
+2025-09-15 18:39:40.941 [http-nio-8080-exec-2] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [73f4c0d] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=%EB%A7%A5%EB%B6%81%EC%97%90%EC%96%B4%20m3%2013%EC%9D%B8%EC%B9%98
+2025-09-15 18:39:40.944 [http-nio-8080-exec-2] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [5bb8d953] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=rtx%205090
+2025-09-15 18:39:40.946 [http-nio-8080-exec-2] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json, application/cbor, application/yaml]
+2025-09-15 18:39:40.946 [http-nio-8080-exec-2] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Writing ["성공"]
+2025-09-15 18:39:40.947 [http-nio-8080-exec-2] DEBUG org.springframework.web.servlet.DispatcherServlet  - Completed 200 OK
+2025-09-15 18:40:09.900 [reactor-http-nio-4] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [73f4c0d] [976e7bbd-1] Response 200 OK
+2025-09-15 18:40:09.901 [reactor-http-nio-4] DEBUG org.springframework.web.HttpLogging  - [73f4c0d] [976e7bbd-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@4e42aa7c]
+2025-09-15 18:40:10.319 [boundedElastic-4] INFO  com.mokuroku.backend.notification.service.PushSender  - push multicast: requested=1, success=1, failure=0
+2025-09-15 18:40:38.465 [reactor-http-nio-5] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [5bb8d953] [412d4599-1] Response 200 OK
+2025-09-15 18:40:38.465 [reactor-http-nio-5] DEBUG org.springframework.web.HttpLogging  - [5bb8d953] [412d4599-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@174697d3]
+2025-09-15 18:40:38.465 [reactor-http-nio-5] INFO  com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling completed. Total wishlists processed: 2
+2025-09-15 18:43:54.693 [http-nio-8080-exec-6] DEBUG org.springframework.security.web.FilterChainProxy  - Securing POST /products/test
+2025-09-15 18:43:54.693 [http-nio-8080-exec-6] DEBUG org.springframework.security.web.authentication.AnonymousAuthenticationFilter  - Set SecurityContextHolder to anonymous SecurityContext
+2025-09-15 18:43:54.693 [http-nio-8080-exec-6] DEBUG org.springframework.security.web.FilterChainProxy  - Secured POST /products/test
+2025-09-15 18:43:54.693 [http-nio-8080-exec-6] DEBUG org.springframework.web.servlet.DispatcherServlet  - POST "/products/test", parameters={}
+2025-09-15 18:43:54.694 [http-nio-8080-exec-6] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - Mapped to com.mokuroku.backend.product.controller.ProductController#test()
+2025-09-15 18:43:54.701 [http-nio-8080-exec-6] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [3f5b7433] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=%EB%A7%A5%EB%B6%81%EC%97%90%EC%96%B4%20m3%2013%EC%9D%B8%EC%B9%98
+2025-09-15 18:43:54.705 [http-nio-8080-exec-6] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [3b72efef] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=rtx%205090
+2025-09-15 18:43:54.706 [http-nio-8080-exec-6] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json, application/cbor, application/yaml]
+2025-09-15 18:43:54.706 [http-nio-8080-exec-6] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Writing ["성공"]
+2025-09-15 18:43:54.706 [http-nio-8080-exec-6] DEBUG org.springframework.web.servlet.DispatcherServlet  - Completed 200 OK
+2025-09-15 18:44:23.785 [reactor-http-nio-6] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [3f5b7433] [070f0524-1] Response 200 OK
+2025-09-15 18:44:23.786 [reactor-http-nio-6] DEBUG org.springframework.web.HttpLogging  - [3f5b7433] [070f0524-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@51d9389b]
+2025-09-15 18:44:24.204 [boundedElastic-5] INFO  com.mokuroku.backend.notification.service.PushSender  - push multicast: requested=1, success=1, failure=0
+2025-09-15 18:44:52.204 [reactor-http-nio-7] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [3b72efef] [a2ada37e-1] Response 200 OK
+2025-09-15 18:44:52.205 [reactor-http-nio-7] DEBUG org.springframework.web.HttpLogging  - [3b72efef] [a2ada37e-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@1c1e8fae]
+2025-09-15 18:44:52.205 [reactor-http-nio-7] INFO  com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling completed. Total wishlists processed: 2
+2025-09-15 18:45:29.321 [http-nio-8080-exec-9] DEBUG org.springframework.security.web.FilterChainProxy  - Securing POST /products/test
+2025-09-15 18:45:29.321 [http-nio-8080-exec-9] DEBUG org.springframework.security.web.authentication.AnonymousAuthenticationFilter  - Set SecurityContextHolder to anonymous SecurityContext
+2025-09-15 18:45:29.321 [http-nio-8080-exec-9] DEBUG org.springframework.security.web.FilterChainProxy  - Secured POST /products/test
+2025-09-15 18:45:29.321 [http-nio-8080-exec-9] DEBUG org.springframework.web.servlet.DispatcherServlet  - POST "/products/test", parameters={}
+2025-09-15 18:45:29.322 [http-nio-8080-exec-9] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - Mapped to com.mokuroku.backend.product.controller.ProductController#test()
+2025-09-15 18:45:29.328 [http-nio-8080-exec-9] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [2c1ab2c2] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=%EB%A7%A5%EB%B6%81%EC%97%90%EC%96%B4%20m3%2013%EC%9D%B8%EC%B9%98
+2025-09-15 18:45:29.332 [http-nio-8080-exec-9] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [76a2cf7] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=rtx%205090
+2025-09-15 18:45:29.332 [http-nio-8080-exec-9] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json, application/cbor, application/yaml]
+2025-09-15 18:45:29.332 [http-nio-8080-exec-9] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Writing ["성공"]
+2025-09-15 18:45:29.333 [http-nio-8080-exec-9] DEBUG org.springframework.web.servlet.DispatcherServlet  - Completed 200 OK
+2025-09-15 18:46:08.086 [reactor-http-nio-8] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [2c1ab2c2] [4508f187-1] Response 200 OK
+2025-09-15 18:46:08.087 [reactor-http-nio-8] DEBUG org.springframework.web.HttpLogging  - [2c1ab2c2] [4508f187-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@6a35db71]
+2025-09-15 18:46:29.315 [reactor-http-nio-9] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [76a2cf7] [a9c8659e-1] Response 200 OK
+2025-09-15 18:46:29.315 [reactor-http-nio-9] DEBUG org.springframework.web.HttpLogging  - [76a2cf7] [a9c8659e-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@35e8481e]
+2025-09-15 18:46:29.535 [boundedElastic-6] INFO  com.mokuroku.backend.notification.service.PushSender  - push multicast: requested=1, success=1, failure=0
+2025-09-15 18:46:29.535 [boundedElastic-6] INFO  com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling completed. Total wishlists processed: 2
+2025-09-15 19:14:52.662 [http-nio-8080-exec-1] DEBUG org.springframework.security.web.FilterChainProxy  - Securing POST /products/test
+2025-09-15 19:14:52.662 [http-nio-8080-exec-1] DEBUG org.springframework.security.web.authentication.AnonymousAuthenticationFilter  - Set SecurityContextHolder to anonymous SecurityContext
+2025-09-15 19:14:52.662 [http-nio-8080-exec-1] DEBUG org.springframework.security.web.FilterChainProxy  - Secured POST /products/test
+2025-09-15 19:14:52.662 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.DispatcherServlet  - POST "/products/test", parameters={}
+2025-09-15 19:14:52.662 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - Mapped to com.mokuroku.backend.product.controller.ProductController#test()
+2025-09-15 19:14:52.674 [http-nio-8080-exec-1] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [cba097c] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=%EB%A7%A5%EB%B6%81%EC%97%90%EC%96%B4%20m3%2013%EC%9D%B8%EC%B9%98
+2025-09-15 19:14:52.678 [http-nio-8080-exec-1] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [5281febd] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=rtx%205090
+2025-09-15 19:14:52.679 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json, application/cbor, application/yaml]
+2025-09-15 19:14:52.679 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Writing ["성공"]
+2025-09-15 19:14:52.681 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.DispatcherServlet  - Completed 200 OK
+2025-09-15 19:15:21.736 [reactor-http-nio-10] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [cba097c] [6edc7797-1] Response 200 OK
+2025-09-15 19:15:21.737 [reactor-http-nio-10] DEBUG org.springframework.web.HttpLogging  - [cba097c] [6edc7797-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@3272887f]
+2025-09-15 19:15:22.149 [boundedElastic-7] INFO  com.mokuroku.backend.notification.service.PushSender  - push multicast: requested=1, success=1, failure=0
+2025-09-15 19:15:50.129 [reactor-http-nio-11] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [5281febd] [433abb40-1] Response 200 OK
+2025-09-15 19:15:50.130 [reactor-http-nio-11] DEBUG org.springframework.web.HttpLogging  - [5281febd] [433abb40-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@4de4d6ec]
+2025-09-15 19:15:50.130 [reactor-http-nio-11] INFO  com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling completed. Total wishlists processed: 2
+2025-09-15 19:16:09.128 [http-nio-8080-exec-5] DEBUG org.springframework.security.web.FilterChainProxy  - Securing POST /products/test
+2025-09-15 19:16:09.128 [http-nio-8080-exec-5] DEBUG org.springframework.security.web.authentication.AnonymousAuthenticationFilter  - Set SecurityContextHolder to anonymous SecurityContext
+2025-09-15 19:16:09.128 [http-nio-8080-exec-5] DEBUG org.springframework.security.web.FilterChainProxy  - Secured POST /products/test
+2025-09-15 19:16:09.128 [http-nio-8080-exec-5] DEBUG org.springframework.web.servlet.DispatcherServlet  - POST "/products/test", parameters={}
+2025-09-15 19:16:09.128 [http-nio-8080-exec-5] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - Mapped to com.mokuroku.backend.product.controller.ProductController#test()
+2025-09-15 19:16:09.137 [http-nio-8080-exec-5] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [1a631a86] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=%EB%A7%A5%EB%B6%81%EC%97%90%EC%96%B4%20m3%2013%EC%9D%B8%EC%B9%98
+2025-09-15 19:16:09.140 [http-nio-8080-exec-5] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [11d52529] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=rtx%205090
+2025-09-15 19:16:09.141 [http-nio-8080-exec-5] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json, application/cbor, application/yaml]
+2025-09-15 19:16:09.141 [http-nio-8080-exec-5] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Writing ["성공"]
+2025-09-15 19:16:09.141 [http-nio-8080-exec-5] DEBUG org.springframework.web.servlet.DispatcherServlet  - Completed 200 OK
+2025-09-15 19:17:06.054 [reactor-http-nio-12] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [1a631a86] [e5595225-1] Response 200 OK
+2025-09-15 19:17:06.054 [reactor-http-nio-12] DEBUG org.springframework.web.HttpLogging  - [1a631a86] [e5595225-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@5dd4a3b4]
+2025-09-15 19:17:06.065 [reactor-http-nio-1] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [11d52529] [1e68a2f6-1] Response 200 OK
+2025-09-15 19:17:06.066 [reactor-http-nio-1] DEBUG org.springframework.web.HttpLogging  - [11d52529] [1e68a2f6-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@5c50b9b6]
+2025-09-15 19:17:06.066 [reactor-http-nio-1] INFO  com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling completed. Total wishlists processed: 2
+2025-09-15 19:17:44.954 [http-nio-8080-exec-7] DEBUG org.springframework.security.web.FilterChainProxy  - Securing POST /products/test
+2025-09-15 19:17:44.954 [http-nio-8080-exec-7] DEBUG org.springframework.security.web.authentication.AnonymousAuthenticationFilter  - Set SecurityContextHolder to anonymous SecurityContext
+2025-09-15 19:17:44.954 [http-nio-8080-exec-7] DEBUG org.springframework.security.web.FilterChainProxy  - Secured POST /products/test
+2025-09-15 19:17:44.954 [http-nio-8080-exec-7] DEBUG org.springframework.web.servlet.DispatcherServlet  - POST "/products/test", parameters={}
+2025-09-15 19:17:44.954 [http-nio-8080-exec-7] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping  - Mapped to com.mokuroku.backend.product.controller.ProductController#test()
+2025-09-15 19:17:44.962 [http-nio-8080-exec-7] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [289644c4] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=%EB%A7%A5%EB%B6%81%EC%97%90%EC%96%B4%20m3%2013%EC%9D%B8%EC%B9%98
+2025-09-15 19:17:44.965 [http-nio-8080-exec-7] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [25ffa1f4] HTTP GET http://localhost:5000/api/crawl?nationCode=kr&keyword=rtx%205090
+2025-09-15 19:17:44.966 [http-nio-8080-exec-7] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json, application/cbor, application/yaml]
+2025-09-15 19:17:44.966 [http-nio-8080-exec-7] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor  - Writing ["성공"]
+2025-09-15 19:17:44.966 [http-nio-8080-exec-7] DEBUG org.springframework.web.servlet.DispatcherServlet  - Completed 200 OK
+2025-09-15 19:18:14.132 [reactor-http-nio-2] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [289644c4] [bad77a0b-1] Response 200 OK
+2025-09-15 19:18:14.132 [reactor-http-nio-2] DEBUG org.springframework.web.HttpLogging  - [289644c4] [bad77a0b-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@513b7922]
+2025-09-15 19:18:14.544 [boundedElastic-8] INFO  com.mokuroku.backend.notification.service.PushSender  - push multicast: requested=1, success=1, failure=0
+2025-09-15 19:18:44.613 [reactor-http-nio-3] DEBUG org.springframework.web.reactive.function.client.ExchangeFunctions  - [25ffa1f4] [4280e43a-1] Response 200 OK
+2025-09-15 19:18:44.613 [reactor-http-nio-3] DEBUG org.springframework.web.HttpLogging  - [25ffa1f4] [4280e43a-1] Decoded [com.mokuroku.backend.product.dto.CrawlingResponseDTO@63237388]
+2025-09-15 19:18:44.819 [boundedElastic-8] INFO  com.mokuroku.backend.notification.service.PushSender  - push multicast: requested=1, success=1, failure=0
+2025-09-15 19:18:44.819 [boundedElastic-8] INFO  com.mokuroku.backend.product.service.impl.ProductServiceImpl  - scheduledCrawling completed. Total wishlists processed: 2
+2025-09-15 19:19:03.574 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown  - Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-15 19:19:03.900 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown  - Graceful shutdown complete
+2025-09-15 19:19:04.029 [SpringApplicationShutdownHook] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean  - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-15 19:19:04.031 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource  - HikariPool-1 - Shutdown initiated...
+2025-09-15 19:19:04.032 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource  - HikariPool-1 - Shutdown completed.
