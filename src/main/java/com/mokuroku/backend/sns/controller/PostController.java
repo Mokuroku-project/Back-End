@@ -20,6 +20,7 @@ public class PostController {
     // 게시글 등록 (POST)
     @PostMapping
     public ResponseEntity<ResultDTO<PostDTO>> registerPost(@RequestBody PostDTO postDTO) {
+        System.out.println("status: "+postDTO.getStatus());
         PostDTO registeredPost = postService.createPost(postDTO);
         return ResponseEntity.ok()
                 .body(new ResultDTO<>("게시글 등록에 성공했습니다.", registeredPost));

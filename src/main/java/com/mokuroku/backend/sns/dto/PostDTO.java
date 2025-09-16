@@ -1,6 +1,7 @@
 package com.mokuroku.backend.sns.dto;
 
 import com.mokuroku.backend.member.entity.Member;
+import com.mokuroku.backend.sns.entity.LocationEntity;
 import com.mokuroku.backend.sns.entity.PostEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,8 @@ public class PostDTO {
     private Long postId;
     private String email;
     private String content;
-    private String location;
+    private Double latitude;
+    private Double longitude;
     private PostEntity.Visibility visibility;
     private LocalDateTime regDate;
     private LocalDateTime updatedDate;
@@ -29,11 +31,14 @@ public class PostDTO {
 
     // Entity를 DTO로
     public static PostDTO fromEntity(PostEntity postEntity, Member member) {
+        LocationEntity locationEntity = postEntity.getLocation();
+
         return PostDTO.builder()
                 .postId(postEntity.getPostId())
                 .email(member.getEmail())
                 .content(postEntity.getContent())
-                .location(postEntity.getLocation())
+                .latitude(locationEntity.getLatitude())
+                .longitude(locationEntity.getLongitude())
                 .visibility(postEntity.getVisibility())
                 .regDate(postEntity.getRegDate())
                 .updatedDate(postEntity.getUpdatedDate())
@@ -43,14 +48,15 @@ public class PostDTO {
     }
 
     // DTO를 Entity로
-    public PostEntity toEntity(PostDTO postDTO, Member member) {
+    public PostEntity toEntity(PostDTO postDTO, Member member,
+                               LocationEntity locationEntity) {
         return PostEntity.builder()
                 .postId(postDTO.getPostId())
                 .member(member)
                 .content(postDTO.getContent())
-                .location(postDTO.getLocation())
+                .location(locationEntity)
                 .visibility(postDTO.getVisibility())
-                .status('1') //항상 활성 상태로
+                .status(postDTO.getStatus())
                 .build();
     }
 

@@ -1,8 +1,11 @@
 package com.mokuroku.backend.sns.service.impl;
 
 import com.mokuroku.backend.sns.dto.PostDTO;
+import com.mokuroku.backend.sns.entity.LocationEntity;
 import com.mokuroku.backend.sns.entity.PostEntity;
+import com.mokuroku.backend.sns.repository.LocationRepository;
 import com.mokuroku.backend.sns.repository.PostRepository;
+import com.mokuroku.backend.sns.service.LocationService;
 import com.mokuroku.backend.sns.service.PostService;
 import com.mokuroku.backend.exception.impl.CustomException;
 import com.mokuroku.backend.member.entity.Member;
@@ -15,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -23,18 +27,29 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
-    
+    private final LocationRepository locationRepository;
+    private final LocationService locationService;
+
     @Override
     public PostDTO createPost(PostDTO postDTO) {
         // 기본값 설정
         postDTO.setStatus('1'); // 활성 상태로 설정
         
-        Member member = memberRepository.findByEmail(postDTO.getEmail())
+        Member member = memberRepository.findById(postDTO.getEmail())
     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
 
-        
-        PostEntity postEntity = postDTO.toEntity(postDTO, member);
+        // 위경도 기반으로 locationEntity 조회 또는 생성
+        LocationEntity locationEntity = locationService.findOrCreate(
+                postDTO.getLatitude(), postDTO.getLongitude()
+        );
+
+        PostEntity postEntity = new PostEntity();
+        postEntity.setMember(member);
+        postEntity.setContent(postDTO.getContent());
+        postEntity.setVisibility(postDTO.getVisibility());
         postEntity.setRegDate(LocalDateTime.now());
+        postEntity.setLocation(locationEntity);
+
         PostEntity savedEntity = postRepository.save(postEntity);
         
         return PostDTO.fromEntity(savedEntity, member);
@@ -61,10 +76,14 @@ public class PostServiceImpl implements PostService {
         if (postEntity.getStatus() == '0') {
             throw new CustomException(ErrorCode.NOT_FOUND_POST);
         }
-        
+
+        LocationEntity locationEntity = locationService.findOrCreate(
+                postDTO.getLatitude(), postDTO.getLongitude()
+        );
+
         // 게시글 수정 - 직접 필드 설정
         postEntity.setContent(postDTO.getContent());
-        postEntity.setLocation(postDTO.getLocation());
+        postEntity.setLocation(locationEntity);
         postEntity.setVisibility(postDTO.getVisibility());
         
         PostEntity updatedEntity = postRepository.save(postEntity);
@@ -111,4 +130,4 @@ public class PostServiceImpl implements PostService {
         }
         return result;
     }
-} 
+}
