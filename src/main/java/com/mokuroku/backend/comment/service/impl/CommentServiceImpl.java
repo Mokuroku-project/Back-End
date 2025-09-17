@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
 
     // 회원인지 검증 -> 회원상태에 대한 검증 추가 필요함
     memberRepository.findById(email)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     PostEntity post = postRepository.findById(postId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
