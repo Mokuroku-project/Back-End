@@ -31,7 +31,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
     Member member = memberRepository.findById(email)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     Long postId = bookmarkRequestDTO.getPostId();
     PostEntity post = postRepository.findById(postId)
@@ -54,7 +54,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
     Member member = memberRepository.findById(email)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     List<Bookmark> bookmarks = bookmarkRepository.findByEmail(member);
     List<BookmarkDTO> bookmarkDTOS = bookmarks.stream()
@@ -70,7 +70,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
     Member member = memberRepository.findById(email)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     Bookmark bookmark = bookmarkRepository.findById(bookmarkRequestDTO.getBookmarkId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOOKMARK));
