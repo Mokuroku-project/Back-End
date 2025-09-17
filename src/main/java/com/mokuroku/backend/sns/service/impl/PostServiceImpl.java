@@ -21,24 +21,20 @@ import java.util.ArrayList;
 @Transactional
 public class PostServiceImpl implements PostService {
 
-    private final PostRepository postRepository;
-    private final MemberRepository memberRepository;
-    
-    @Override
-    public PostDTO createPost(PostDTO postDTO) {
-        // 기본값 설정
-        postDTO.setStatus('1'); // 활성 상태로 설정
-        
-        Member member = memberRepository.findById(postDTO.getEmail())
-    .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+  private final PostRepository postRepository;
+  private final MemberRepository memberRepository;
 
-        
-        PostEntity postEntity = postDTO.toEntity(postDTO, member);
-        postEntity.setRegDate(LocalDateTime.now());
-        PostEntity savedEntity = postRepository.save(postEntity);
-        
-        return PostDTO.fromEntity(savedEntity, member);
-    }
+  @Override
+  public PostDTO createPost(PostDTO postDTO) {
+    // 기본값 설정
+    postDTO.setStatus('1'); // 활성 상태로 설정
+
+    Member member = memberRepository.findById(postDTO.getEmail())
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    PostEntity postEntity = postDTO.toEntity(postDTO, member);
+    postEntity.setRegDate(LocalDateTime.now());
+    PostEntity savedEntity = postRepository.save(postEntity);
 
     return PostDTO.fromEntity(savedEntity, member);
   }
