@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
   private final ApplicationEventPublisher eventPublisher;
 
   @Override
-  public ResponseEntity<ResultDTO> wishListRegist(WishlistDTO wishListDTO) {
+  public WishlistDTO wishListRegist(WishlistDTO wishListDTO) {
 
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
@@ -77,11 +77,11 @@ public class ProductServiceImpl implements ProductService {
 
     WishlistDTO wishlistDTO = WishlistDTO.toDTO(wishlist);
 
-    return ResponseEntity.ok(new ResultDTO<>("관심상품 등록에 성공했습니다.", wishlistDTO));
+    return wishlistDTO;
   }
 
   @Override
-  public ResponseEntity<ResultDTO> getProductInfo(long wishlistId) {
+  public ProductInfoDTO getProductInfo(long wishlistId) {
 
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
@@ -104,11 +104,11 @@ public class ProductServiceImpl implements ProductService {
           .regDate(product.getRegDate());
     });
 
-    return ResponseEntity.ok(new ResultDTO<>("관심상품 상세 정보가져오기에 성공했습니다.", builder.build()));
+    return builder.build();
   }
 
   @Override
-  public ResponseEntity<ResultDTO> putWishlist(long wishlistId, WishlistDTO wishListDTO) {
+  public WishlistDTO putWishlist(long wishlistId, WishlistDTO wishListDTO) {
 
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
@@ -134,11 +134,11 @@ public class ProductServiceImpl implements ProductService {
 
     WishlistDTO wishlistDTO = WishlistDTO.toDTO(wishlist);
 
-    return ResponseEntity.ok(new ResultDTO<>("관심상품 수정에 성공했습니다.", wishlistDTO));
+    return wishlistDTO;
   }
 
   @Override
-  public ResponseEntity<ResultDTO> deleteWishlist(long wishlistId) {
+  public void deleteWishlist(long wishlistId) {
 
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
@@ -159,12 +159,10 @@ public class ProductServiceImpl implements ProductService {
 
     // 해당 위시리스트의 상품정보도 삭제
     productRepository.findByWishlist(wishlist).ifPresent(productRepository::delete);
-
-    return ResponseEntity.ok(new ResultDTO<>("관심상품 삭제에 성공했습니다.", null));
   }
 
   @Override
-  public ResponseEntity<ResultDTO> getWishlistList() {
+  public List<WishlistDTO> getWishlistList() {
 
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
@@ -178,7 +176,7 @@ public class ProductServiceImpl implements ProductService {
         .map(WishlistDTO::toDTO)
         .toList();
 
-    return ResponseEntity.ok(new ResultDTO<>("관심상품 리스트를 불러오는데 성공했습니다.", wishlistDTOList));
+    return wishlistDTOList;
   }
 
   @Override

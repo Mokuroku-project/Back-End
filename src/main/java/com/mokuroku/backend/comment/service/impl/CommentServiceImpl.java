@@ -5,7 +5,6 @@ import com.mokuroku.backend.comment.entity.Comment;
 import com.mokuroku.backend.comment.repository.CommentRepository;
 import com.mokuroku.backend.comment.service.CommentService;
 import com.mokuroku.backend.comment.type.CommentStatus;
-import com.mokuroku.backend.common.ResultDTO;
 import com.mokuroku.backend.exception.ErrorCode;
 import com.mokuroku.backend.exception.impl.CustomException;
 import com.mokuroku.backend.member.entity.Member;
@@ -14,7 +13,6 @@ import com.mokuroku.backend.sns.entity.PostEntity;
 import com.mokuroku.backend.sns.repository.PostRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,7 +25,7 @@ public class CommentServiceImpl implements CommentService {
 
   // 현재 대댓글 기능이 없기 때문에 그 부분은 제외하고 만듬
   @Override
-  public ResponseEntity<ResultDTO> getComment(Long postId) {
+  public List<CommentDTO> getComment(Long postId) {
 
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
@@ -50,6 +48,31 @@ public class CommentServiceImpl implements CommentService {
         .map(CommentDTO::toDTO)
         .toList();
 
-    return ResponseEntity.ok(new ResultDTO<>("댓글 조회에 성공했습니다.", commentDTOs));
+    return commentDTOs;
+  }
+
+  @Override
+  public CommentDTO createComment(Long postId, CommentDTO commentDTO) {
+
+    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
+    String email = "test@gmail.com";
+
+    // 회원인지 검증 -> 회원상태에 대한 검증 추가 필요함
+    Member member = memberRepository.findById(email)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+    PostEntity post = postRepository.findById(postId)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+
+    if (post.getStatus() != '1') {
+      throw new CustomException(ErrorCode.NOT_FOUND_POST);
+    }
+
+    Comment comment = CommentDTO.createComment(commentDTO, post, member);
+    commentRepository.save(comment);
+
+    CommentDTO result = CommentDTO.toDTO(comment);
+
+    return result;
   }
 }
