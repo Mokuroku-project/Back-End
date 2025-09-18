@@ -69,7 +69,7 @@ public class CommentServiceImpl implements CommentService {
       throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
     }
 
-    PostEntity post = postRepository.findByIdAndStatus(postId, '1')
+    PostEntity post = postRepository.findByPostIdAndStatus(postId, '1')
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
     Comment comment = CommentDTO.createComment(commentDTO, post, member);
@@ -94,10 +94,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     // enum 값으로 변경시 그에 맞게 수정
-    PostEntity post = postRepository.findByIdAndStatus(postId, '1')
+    PostEntity post = postRepository.findByPostIdAndStatus(postId, '1')
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
-    Comment comment = commentRepository.findByIdAndStatus(commentId, CommentStatus.POSTED)
+    Comment comment = commentRepository.findByCommentIdAndStatus(commentId, CommentStatus.POSTED)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
 
     if (!comment.getPost().equals(post)) {

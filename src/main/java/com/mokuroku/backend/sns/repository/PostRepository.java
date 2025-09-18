@@ -16,5 +16,5 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
   // 특정 회원의 활성 게시글을 등록일 기준 내림차순으로 조회
   List<PostEntity> findByMember_NicknameAndStatusOrderByRegDateDesc(String nickname, char status);
 
-  Optional<PostEntity> findByIdAndStatus(Long postId, char c);
+  Optional<PostEntity> findByPostIdAndStatus(Long postId, char c);
 }
