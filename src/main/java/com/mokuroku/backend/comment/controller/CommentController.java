@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +30,12 @@ public class CommentController {
       @RequestBody CommentDTO commentDTO) {
     CommentDTO result = commentService.createComment(postId, commentDTO);
     return ResponseEntity.ok(new ResultDTO<>("댓글 작성에 성공했습니다.", result));
+  }
+
+  @PutMapping("/sns/{postId}/comment/{commentId}")
+  public ResponseEntity<ResultDTO<CommentDTO>> updateComment(@PathVariable Long postId,
+      @PathVariable Long commentId, @RequestBody CommentDTO commentDTO) {
+    CommentDTO result = commentService.updateComment(postId, commentId, commentDTO);
+    return ResponseEntity.ok(new ResultDTO<>("댓글 수정에 성공했습니다.", result));
   }
 }

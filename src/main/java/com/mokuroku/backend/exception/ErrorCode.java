@@ -22,7 +22,10 @@ public enum ErrorCode {
 
   // SNS
   NOT_FOUND_POST("존재하지 않는 게시글입니다.", HttpStatus.NOT_FOUND),
+
   // Comments
+  NOT_FOUND_COMMENT("존재하지 않는 댓글입니다.", HttpStatus.NOT_FOUND),
+  INVALID_COMMENT_OWNERSHIP("해당 회원이 작성한 댓글이 아닙니다.", HttpStatus.FORBIDDEN),
 
   // Bookmark
   ALREADY_BOOKMARKED("이미 추가한 게시글입니다.", HttpStatus.CONFLICT),

@@ -4,6 +4,7 @@ import com.mokuroku.backend.exception.ErrorCode;
 import com.mokuroku.backend.exception.impl.CustomException;
 import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.member.repository.MemberRepository;
+import com.mokuroku.backend.member.security.MemberAuthUtil;
 import com.mokuroku.backend.notification.dto.MemberPushTokenDTO;
 import com.mokuroku.backend.notification.entity.MemberPushToken;
 import com.mokuroku.backend.notification.repository.MemberPushTokenRepository;
@@ -23,12 +24,15 @@ public class PushTokenServiceImpl implements PushTokenService {
   @Override
   public void save(MemberPushTokenDTO pushTokenDTO) {
 
-    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
-    String email = "test@gmail.com";
+    String email = MemberAuthUtil.getLoginUserId();
 
-    // 회원인지 검증 -> 회원상태에 대한 검증 추가 필요함
+    // 회원인지 검증 -> 회원상태 enum 값으로 변경되면 그 상태에 맞게 수정
     Member member = memberRepository.findById(email)
         .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    if (!member.getStatus().equals("1")) {
+      throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
+    }
 
     Optional<MemberPushToken> byToken = pushTokenRepository.findByToken(pushTokenDTO.getToken());
 

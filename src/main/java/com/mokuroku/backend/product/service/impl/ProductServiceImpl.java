@@ -5,6 +5,7 @@ import com.mokuroku.backend.exception.ErrorCode;
 import com.mokuroku.backend.exception.impl.CustomException;
 import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.member.repository.MemberRepository;
+import com.mokuroku.backend.member.security.MemberAuthUtil;
 import com.mokuroku.backend.notification.event.PriceChangedEvent;
 import com.mokuroku.backend.product.dto.CrawlingRequestDTO;
 import com.mokuroku.backend.product.dto.CrawlingResponseDTO;
@@ -59,12 +60,15 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public WishlistDTO wishListRegist(WishlistDTO wishListDTO) {
 
-    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
-    String email = "test@gmail.com";
+    String email = MemberAuthUtil.getLoginUserId();
 
-    // 회원인지 검증 -> 회원상태에 대한 검증 추가 필요함
+    // 회원인지 검증 -> 회원상태 enum 값으로 변경되면 그 상태에 맞게 수정
     Member member = memberRepository.findById(email)
         .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    if (!member.getStatus().equals("1")) {
+      throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
+    }
 
     Wishlist wishlist = Wishlist.builder()
         .email(member)
@@ -83,12 +87,15 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public ProductInfoDTO getProductInfo(long wishlistId) {
 
-    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
-    String email = "test@gmail.com";
+    String email = MemberAuthUtil.getLoginUserId();
 
-    // 회원 검증
+    // 회원인지 검증 -> 회원상태 enum 값으로 변경되면 그 상태에 맞게 수정
     Member member = memberRepository.findById(email)
         .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    if (!member.getStatus().equals("1")) {
+      throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
+    }
 
     // Wishlist 조회
     Wishlist wishlist = wishlistRepository.findByWishlistIdAndEmail(wishlistId, member)
@@ -110,12 +117,15 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public WishlistDTO putWishlist(long wishlistId, WishlistDTO wishListDTO) {
 
-    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
-    String email = "test@gmail.com";
+    String email = MemberAuthUtil.getLoginUserId();
 
-    // 회원 검증
+    // 회원인지 검증 -> 회원상태 enum 값으로 변경되면 그 상태에 맞게 수정
     Member member = memberRepository.findById(email)
         .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    if (!member.getStatus().equals("1")) {
+      throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
+    }
 
     Wishlist wishlist = wishlistRepository.findById(wishlistId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_WISHLIST));
@@ -140,12 +150,15 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public void deleteWishlist(long wishlistId) {
 
-    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
-    String email = "test@gmail.com";
+    String email = MemberAuthUtil.getLoginUserId();
 
-    // 회원 검증
+    // 회원인지 검증 -> 회원상태 enum 값으로 변경되면 그 상태에 맞게 수정
     Member member = memberRepository.findById(email)
         .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    if (!member.getStatus().equals("1")) {
+      throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
+    }
 
     Wishlist wishlist = wishlistRepository.findById(wishlistId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_WISHLIST));
@@ -164,12 +177,15 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public List<WishlistDTO> getWishlistList() {
 
-    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
-    String email = "test@gmail.com";
+    String email = MemberAuthUtil.getLoginUserId();
 
-    // 회원 검증
+    // 회원인지 검증 -> 회원상태 enum 값으로 변경되면 그 상태에 맞게 수정
     Member member = memberRepository.findById(email)
         .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    if (!member.getStatus().equals("1")) {
+      throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
+    }
 
     List<Wishlist> wishlists = wishlistRepository.findByEmail(member);
     List<WishlistDTO> wishlistDTOList = wishlists.stream()
@@ -179,77 +195,62 @@ public class ProductServiceImpl implements ProductService {
     return wishlistDTOList;
   }
 
-  @Override
-  public Mono<ProductDTO> crawling(CrawlingRequestDTO crawlingRequestDTO) {
+  // 1) 내부 공용: 인증 불필요, 핵심 크롤링만 수행
+  private Mono<ProductDTO> crawlCore(String nationCode, String keyword) {
+    String baseUrl = "http://localhost:5000";
+    String nation = nationCode.toLowerCase();
 
-    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
-    String email = "test@gmail.com";
+    if (!nation.equals("kr") && !nation.equals("jp")) {
+      return Mono.error(new CustomException(ErrorCode.INVALID_NATION_CODE));
+    }
 
-    // 회원인지 검증 -> 회원상태에 대한 검증 추가 필요함
-    return Mono.just(email)
-        .flatMap(id -> {
-          Optional<Member> member = memberRepository.findById(email);
-          if (member.isPresent()) {
-            return Mono.just(member.get());
-          } else {
-            return Mono.error(new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    return webClientBuilder.baseUrl(baseUrl)
+        .build()
+        .get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/api/crawl")
+            .queryParam("nationCode", nation)
+            .queryParam("keyword", keyword)
+            .build())
+        .retrieve()
+        .bodyToMono(CrawlingResponseDTO.class)
+        .map(wrapper -> {
+          if (wrapper.getData() != null && !wrapper.getData().isEmpty()) {
+            ProductDTO product = wrapper.getData().get(0);
+            if (product.getNationCode() == null) product.setNationCode(nation);
+            return product;
           }
+          return new ProductDTO();
         })
-        .flatMap(member -> {
-          String keyword = crawlingRequestDTO.getName();
-          String nationCode = crawlingRequestDTO.getNationCode().toLowerCase();
-
-          if (!nationCode.equals("kr") && !nationCode.equals("jp")) {
-            return Mono.error(new CustomException(ErrorCode.INVALID_NATION_CODE));
-          }
-
-          String baseUrl = "http://localhost:5000";
-
-          Mono<ProductDTO> productInfo = webClientBuilder.baseUrl(baseUrl)
-              .build()
-              .get()
-              .uri(uriBuilder -> uriBuilder
-                  .path("/api/crawl")
-                  .queryParam("nationCode", nationCode)
-                  .queryParam("keyword", keyword)
-                  .build())
-              .retrieve()
-              .bodyToMono(CrawlingResponseDTO.class)  // Wrapper DTO
-              .map(wrapper -> {
-                if (wrapper.getData() != null && !wrapper.getData().isEmpty()) {
-                  ProductDTO product = wrapper.getData().get(0);
-
-                  // nationCode가 null일 수도 있으므로, 크롤링 서버에서 채워지지 않았으면 기본값 설정
-                  if (product.getNationCode() == null) {
-                    product.setNationCode(nationCode);
-                  }
-
-                  return product;
-                } else {
-                  return new ProductDTO();
-                }
-              })
-              .timeout(Duration.ofSeconds(60))
-              .onErrorMap(e -> new CustomException(ErrorCode.CRAWLING_UNKNOWN_ERROR));
-
-          return productInfo;
-        });
+        .timeout(Duration.ofSeconds(60))
+        .onErrorMap(e -> new CustomException(ErrorCode.CRAWLING_UNKNOWN_ERROR));
   }
 
+  // 2) 사용자 호출용: 여기서만 로그인/회원상태 검증
+  @Override
+  public Mono<ProductDTO> crawling(CrawlingRequestDTO req) {
+    String email = MemberAuthUtil.getLoginUserId();
+    Member member = memberRepository.findById(email)
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    if (!"1".equals(member.getStatus())) {
+      throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
+    }
+
+    return crawlCore(req.getNationCode(), req.getName());
+  }
+
+  // 3) 스케줄러/배치용: 회원 검증 없이 core 호출
   public Flux<Pair<Wishlist, ProductDTO>> crawlMultipleProducts(List<Wishlist> wishlists) {
-
     return Flux.fromIterable(wishlists)
-        .flatMap(wishlist -> {
-          // Wishlist → CrawlingDTO 변환
-          CrawlingRequestDTO dto = new CrawlingRequestDTO();
-          dto.setNationCode(wishlist.getNationCode());
-          dto.setName(wishlist.getName());
-
-          return crawling(dto)
-              .map(productInfo -> Pair.of(wishlist, productInfo))
-              .onErrorContinue((e, o) -> log.error("Crawling error for {}: {}", wishlist.getName(),
-                  e.getMessage(), e));
-        }, CRAWL_CONCURRENCY);
+        .flatMap(wl ->
+                crawlCore(wl.getNationCode(), wl.getName())
+                    .map(dto -> Pair.of(wl, dto))
+                    .onErrorContinue((e, o) ->
+                        log.error("Crawling error for {}: {}", wl.getName(), e.getMessage(), e)
+                    ),
+            CRAWL_CONCURRENCY
+        );
   }
 
   // 자정마다 실행 (cron: 초 분 시 일 월 요일)
@@ -260,7 +261,8 @@ public class ProductServiceImpl implements ProductService {
     crawlMultipleProducts(wishlists)
         .filter(pair -> {
           ProductDTO productDTO = pair.getSecond();
-          return productDTO.getName() != null && !productDTO.getName().isEmpty() && productDTO.getPrice() > 0;
+          return productDTO.getName() != null && !productDTO.getName().isEmpty()
+              && productDTO.getPrice() > 0;
         })
         .flatMap(pair ->
                 Mono.fromCallable(() ->
@@ -268,7 +270,8 @@ public class ProductServiceImpl implements ProductService {
                 ).subscribeOn(Schedulers.boundedElastic()),
             CRAWL_CONCURRENCY
         )
-        .doOnComplete(() -> log.info("scheduledCrawling completed. Total wishlists processed: {}", wishlists.size()))
+        .doOnComplete(() -> log.info("scheduledCrawling completed. Total wishlists processed: {}",
+            wishlists.size()))
         .onErrorContinue((e, o) -> log.error("scheduledCrawling error: {}", e.getMessage(), e))
         .subscribe();
   }
