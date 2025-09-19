@@ -6,12 +6,7 @@ import com.mokuroku.backend.common.ResultDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,5 +32,12 @@ public class CommentController {
       @PathVariable Long commentId, @RequestBody CommentDTO commentDTO) {
     CommentDTO result = commentService.updateComment(postId, commentId, commentDTO);
     return ResponseEntity.ok(new ResultDTO<>("댓글 수정에 성공했습니다.", result));
+  }
+
+  @DeleteMapping("/sns/{postId}/comment/{commentId}")
+  public ResponseEntity<ResultDTO>  deleteComment(@PathVariable Long postId,
+                                                  @PathVariable Long commentId) {
+      commentService.deleteComment(postId, commentId);
+      return ResponseEntity.ok(new ResultDTO<>("댓글 삭제 성공했습니다.", null));
   }
 }
