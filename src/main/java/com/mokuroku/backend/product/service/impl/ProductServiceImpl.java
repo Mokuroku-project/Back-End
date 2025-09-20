@@ -71,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     Wishlist wishlist = Wishlist.builder()
-        .email(member)
+        .member(member)
         .name(wishListDTO.getName())
         .description(wishListDTO.getDescription())
         .regDate(LocalDateTime.now())
@@ -98,7 +98,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // Wishlist 조회
-    Wishlist wishlist = wishlistRepository.findByWishlistIdAndEmail(wishlistId, member)
+    Wishlist wishlist = wishlistRepository.findByWishlistIdAndMember(wishlistId, member)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_WISHLIST));
 
     ProductInfoDTOBuilder builder = ProductInfoDTO.builder()
@@ -131,7 +131,7 @@ public class ProductServiceImpl implements ProductService {
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_WISHLIST));
 
     // 해당 회원의 위시리스트가 맞는지 확인
-    if (!wishlist.getEmail().equals(member)) {
+    if (!wishlist.getMember().equals(member)) {
       throw new CustomException(ErrorCode.NOT_FOUND_WISHLIST);
     }
 
@@ -164,7 +164,7 @@ public class ProductServiceImpl implements ProductService {
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_WISHLIST));
 
     // 해당 회원의 위시리스트가 맞는지 확인
-    if (!wishlist.getEmail().equals(member)) {
+    if (!wishlist.getMember().equals(member)) {
       throw new CustomException(ErrorCode.NOT_FOUND_WISHLIST);
     }
 
@@ -187,7 +187,7 @@ public class ProductServiceImpl implements ProductService {
       throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
     }
 
-    List<Wishlist> wishlists = wishlistRepository.findByEmail(member);
+    List<Wishlist> wishlists = wishlistRepository.findByMember(member);
     List<WishlistDTO> wishlistDTOList = wishlists.stream()
         .map(WishlistDTO::toDTO)
         .toList();
@@ -295,7 +295,7 @@ public class ProductServiceImpl implements ProductService {
         // 가격 변동시 이벤트 발생
         eventPublisher.publishEvent(
             new PriceChangedEvent(
-                wishlist.getEmail().getEmail(),
+                wishlist.getMember().getEmail(),
                 product.getProductId(),
                 product.getName(),
                 oldPrice,

@@ -33,7 +33,7 @@ public class Wishlist {
 
   @ManyToOne
   @JoinColumn(name = "email")
-  private Member email;
+  private Member member;
 
   private String name;
   private String description;

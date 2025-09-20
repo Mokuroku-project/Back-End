@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberPushTokenRepository extends JpaRepository<MemberPushToken, Long> {
 
-  @Query("select t.token from MemberPushToken t where t.email.email = :email and t.revoked = false")
+  @Query("select t.token from MemberPushToken t where t.member.email = :email and t.revoked = false")
   List<String> findActiveTokensByEmail(@Param("email") String email);
 
   Optional<MemberPushToken> findByToken(String token);

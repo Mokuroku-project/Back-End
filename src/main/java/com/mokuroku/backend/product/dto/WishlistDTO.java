@@ -22,7 +22,7 @@ public class WishlistDTO {
   public static WishlistDTO toDTO(Wishlist wishlist) {
     return WishlistDTO.builder()
         .wishListId(wishlist.getWishlistId())
-        .email(wishlist.getEmail().getEmail())
+        .email(wishlist.getMember().getEmail())
         .name(wishlist.getName())
         .description(wishlist.getDescription())
         .regDate(wishlist.getRegDate())

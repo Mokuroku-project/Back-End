@@ -1,8 +1,12 @@
 package com.mokuroku.backend.comment.service.impl;
 
 import com.mokuroku.backend.comment.dto.CommentDTO;
+import com.mokuroku.backend.comment.dto.CommentListDTO;
+import com.mokuroku.backend.comment.dto.ReplyCommentDTO;
 import com.mokuroku.backend.comment.entity.Comment;
+import com.mokuroku.backend.comment.entity.ReplyComment;
 import com.mokuroku.backend.comment.repository.CommentRepository;
+import com.mokuroku.backend.comment.repository.ReplyCommentRepository;
 import com.mokuroku.backend.comment.service.CommentService;
 import com.mokuroku.backend.comment.type.CommentStatus;
 import com.mokuroku.backend.exception.ErrorCode;
@@ -13,6 +17,7 @@ import com.mokuroku.backend.member.security.MemberAuthUtil;
 import com.mokuroku.backend.sns.entity.PostEntity;
 import com.mokuroku.backend.sns.repository.PostRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,10 +29,11 @@ public class CommentServiceImpl implements CommentService {
   private final MemberRepository memberRepository;
   private final PostRepository postRepository;
   private final CommentRepository commentRepository;
+  private final ReplyCommentRepository replyCommentRepository;
 
   // 현재 대댓글 기능이 없기 때문에 그 부분은 제외하고 만듬
   @Override
-  public List<CommentDTO> getComment(Long postId) {
+  public List<CommentListDTO> getComment(Long postId) {
 
     String email = MemberAuthUtil.getLoginUserId();
 
@@ -46,14 +52,20 @@ public class CommentServiceImpl implements CommentService {
       throw new CustomException(ErrorCode.NOT_FOUND_POST);
     }
 
-    List<Comment> comments = commentRepository.findAllByPostAndStatusOrderByRegDateDesc(
-        post, CommentStatus.POSTED);
+      List<CommentListDTO> result = commentRepository.findAllByPostAndStatusOrderByRegDateDesc(
+              post, CommentStatus.POSTED)
+              .stream()
+              .map(comment -> {
+                  List<ReplyCommentDTO> replies = replyCommentRepository
+                          .findAllByCommentAndStatus(comment, CommentStatus.POSTED)
+                          .stream()
+                          .map(ReplyCommentDTO::toDTO)
+                          .toList();
+                  return CommentListDTO.toDTO(comment, replies);
+              })
+              .toList();
 
-    List<CommentDTO> commentDTOs = comments.stream()
-        .map(CommentDTO::toDTO)
-        .toList();
-
-    return commentDTOs;
+      return result;
   }
 
   @Override
@@ -104,7 +116,7 @@ public class CommentServiceImpl implements CommentService {
       throw new CustomException(ErrorCode.NOT_FOUND_COMMENT);
     }
 
-    if (!comment.getEmail().equals(member)) {
+    if (!comment.getMember().equals(member)) {
       throw new CustomException(ErrorCode.INVALID_COMMENT_OWNERSHIP);
     }
 
@@ -143,7 +155,7 @@ public class CommentServiceImpl implements CommentService {
             throw new CustomException(ErrorCode.NOT_FOUND_COMMENT);
         }
 
-        if (!comment.getEmail().equals(member)) {
+        if (!comment.getMember().equals(member)) {
             throw new CustomException(ErrorCode.INVALID_COMMENT_OWNERSHIP);
         }
 
