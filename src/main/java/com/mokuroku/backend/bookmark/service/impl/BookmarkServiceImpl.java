@@ -37,7 +37,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     PostEntity post = postRepository.findById(postId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
-    bookmarkRepository.findByEmailAndPostId(member, post)
+    bookmarkRepository.findByMemberAndPostId(member, post)
         .ifPresent(b -> {
           throw new CustomException(ErrorCode.ALREADY_BOOKMARKED);
         });
@@ -54,7 +54,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     Member member = memberRepository.findById(email)
         .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-    List<Bookmark> bookmarks = bookmarkRepository.findByEmail(member);
+    List<Bookmark> bookmarks = bookmarkRepository.findByMember(member);
     List<BookmarkDTO> bookmarkDTOs = bookmarks.stream()
         .map(BookmarkDTO::toDTO)
         .toList();
@@ -73,7 +73,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     Bookmark bookmark = bookmarkRepository.findById(bookmarkRequestDTO.getBookmarkId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOOKMARK));
 
-    if (bookmark.getEmail().equals(member)) {
+    if (bookmark.getMember().equals(member)) {
       bookmarkRepository.delete(bookmark);
     } else {
       throw new CustomException(ErrorCode.INVALID_BOOKMARK_OWNERSHIP);

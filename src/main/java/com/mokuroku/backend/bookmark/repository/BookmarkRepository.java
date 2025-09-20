@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
-  Optional<Object> findByEmailAndPostId(Member member, PostEntity post);
+  Optional<Object> findByMemberAndPostId(Member member, PostEntity post);
 
-  List<Bookmark> findByEmail(Member member);
+  List<Bookmark> findByMember(Member member);
 }

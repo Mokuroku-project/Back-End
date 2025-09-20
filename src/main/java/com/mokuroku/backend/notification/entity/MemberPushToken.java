@@ -31,7 +31,7 @@ public class MemberPushToken {
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "email")
-  private Member email;
+  private Member member;
 
   private String token;
   private String platform;

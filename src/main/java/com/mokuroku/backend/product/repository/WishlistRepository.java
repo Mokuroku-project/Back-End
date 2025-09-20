@@ -12,16 +12,16 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
 
-  List<Wishlist> findByEmail(Member member);
+  List<Wishlist> findByMember(Member member);
 
   @Query("""
           SELECT DISTINCT w
           FROM Wishlist w
-          JOIN FETCH w.email m
+          JOIN FETCH w.member m
           LEFT JOIN FETCH w.products p
           WHERE m.status = :status
       """)
   List<Wishlist> findAllByMemberStatusWithProducts(@Param("status") String status);
 
-  Optional<Wishlist> findByWishlistIdAndEmail(long wishlistId, Member member);
+  Optional<Wishlist> findByWishlistIdAndMember(long wishlistId, Member member);
 }
