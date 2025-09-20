@@ -28,13 +28,12 @@ public class PostEntity {
     @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
     private Member member;
 
-    // @Column(nullable = false, unique = true, length = 255)
-    // private String email;
-
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private String location;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private LocationEntity location;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -49,8 +48,8 @@ public class PostEntity {
 
     private LocalDateTime deleteDate;
 
-    @Column(nullable = false, length = 1)
-    private char status;
+    @Column(nullable = false)
+    private char status = '1';
 
     public enum Visibility {
         PUBLIC, PRIVATE, LIMITED
@@ -76,9 +75,9 @@ public class PostEntity {
     }
 
     // 게시물 수정 처리
-    public void update(String content, String location, Visibility visibility) {
+    public void update(String content, LocationEntity locationEntity, Visibility visibility) {
         this.content = content;
-        this.location = location;
+        this.setLocation(locationEntity);
         this.visibility = visibility;
         // updatedDate는 @LastModifiedDate로 자동 업뎃됨
     }

@@ -22,6 +22,7 @@ public enum ErrorCode {
 
   // SNS
   NOT_FOUND_POST("존재하지 않는 게시글입니다.", HttpStatus.NOT_FOUND),
+  NOT_FOUND_LOCATION("존재하지 않는 위치입니다.", HttpStatus.NOT_FOUND),
 
   // Comments
   NOT_FOUND_COMMENT("존재하지 않는 댓글입니다.", HttpStatus.NOT_FOUND),
