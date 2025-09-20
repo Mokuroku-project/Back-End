@@ -7,17 +7,32 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
   // Members
-  NOT_FOUND_MEMBER("존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND),
+  MEMBER_NOT_FOUND("존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND),
   DUPLICATE_MEMBER("이미 존재하는 회원입니다.", HttpStatus.CONFLICT),
   DUPLICATE_NICKNAME("이미 사용 중인 닉네임입니다.", HttpStatus.CONFLICT),
+  INVALID_PASSWORD("INVALID_PASSWORD", HttpStatus.UNAUTHORIZED),
+  INVALID_CREDENTIALS("이메일 또는 비밀번호가 올바르지 않습니다.", HttpStatus.UNAUTHORIZED), // ✅ 추가
+  ACCOUNT_DISABLED("ACCOUNT_DISABLED", HttpStatus.FORBIDDEN),
+  INVALID_TOKEN("INVALID_TOKEN", HttpStatus.UNAUTHORIZED),
+  REDIS_ERROR("REDIS_ERROR", HttpStatus.INTERNAL_SERVER_ERROR),
+  ACCOUNT_ALREADY_WITHDRAWN("ACCOUNT_ALREADY_WITHDRAWN", HttpStatus.BAD_REQUEST),
+  ACCOUNT_SUSPENDED("정지된 계정입니다.", HttpStatus.FORBIDDEN),
+  SOCIAL_ACCOUNT_ONLY("소셜 로그인 전용 계정입니다.", HttpStatus.BAD_REQUEST),
+
 
   // SNS
   NOT_FOUND_POST("존재하지 않는 게시글입니다.", HttpStatus.NOT_FOUND),
   NOT_FOUND_LOCATION("존재하지 않는 위치입니다.", HttpStatus.NOT_FOUND),
+
   // Comments
+  NOT_FOUND_COMMENT("존재하지 않는 댓글입니다.", HttpStatus.NOT_FOUND),
+  INVALID_COMMENT_OWNERSHIP("해당 회원이 작성한 댓글이 아닙니다.", HttpStatus.FORBIDDEN),
 
   // Bookmark
   ALREADY_BOOKMARKED("이미 추가한 게시글입니다.", HttpStatus.CONFLICT),
+  NOT_FOUND_BOOKMARK("존재하지 않는 북마크입니다.", HttpStatus.NOT_FOUND),
+  INVALID_BOOKMARK_OWNERSHIP("해당 회원의 북마크가 아닙니다.", HttpStatus.FORBIDDEN),
+
 
   // BudgetBook
   NOT_FOUND_BUDGETBOOK("존재하지 않는 가계부입니다.", HttpStatus.NOT_FOUND),
@@ -49,7 +64,6 @@ public enum ErrorCode {
 
   // Redis 관련 예외 추가
   REDIS_CONNECTION_FAILED("Redis 서버에 연결할 수 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
-
 
   String message;
   HttpStatus status;

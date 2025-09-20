@@ -1,14 +1,18 @@
 package com.mokuroku.backend.bookmark.service;
 
+import com.mokuroku.backend.bookmark.dto.BookmarkDTO;
 import com.mokuroku.backend.bookmark.dto.BookmarkRequestDTO;
 import com.mokuroku.backend.common.ResultDTO;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface BookmarkService {
 
-  ResponseEntity<ResultDTO> addBookmark(BookmarkRequestDTO bookmarkRequestDTO);
+  void addBookmark(BookmarkRequestDTO bookmarkRequestDTO);
 
-  ResponseEntity<ResultDTO> getBookmark();
+  List<BookmarkDTO> getBookmark();
+
+  void deleteBookmark(BookmarkRequestDTO bookmarkRequestDTO);
 }

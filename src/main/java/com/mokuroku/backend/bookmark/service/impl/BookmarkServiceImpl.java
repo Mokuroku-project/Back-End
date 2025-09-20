@@ -26,12 +26,12 @@ public class BookmarkServiceImpl implements BookmarkService {
   private final BookmarkRepository bookmarkRepository;
 
   @Override
-  public ResponseEntity<ResultDTO> addBookmark(BookmarkRequestDTO bookmarkRequestDTO) {
+  public void addBookmark(BookmarkRequestDTO bookmarkRequestDTO) {
 
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
     Member member = memberRepository.findById(email)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     Long postId = bookmarkRequestDTO.getPostId();
     PostEntity post = postRepository.findById(postId)
@@ -44,23 +44,39 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     Bookmark bookmark = BookmarkDTO.toEntity(member, post);
     bookmarkRepository.save(bookmark);
-
-    return ResponseEntity.ok(new ResultDTO<>("북마크 저장에 성공했습니다.", null));
   }
 
   @Override
-  public ResponseEntity<ResultDTO> getBookmark() {
+  public List<BookmarkDTO> getBookmark() {
 
     // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
     String email = "test@gmail.com";
     Member member = memberRepository.findById(email)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     List<Bookmark> bookmarks = bookmarkRepository.findByEmail(member);
-    List<BookmarkDTO> bookmarkDTOS = bookmarks.stream()
+    List<BookmarkDTO> bookmarkDTOs = bookmarks.stream()
         .map(BookmarkDTO::toDTO)
         .toList();
 
-    return ResponseEntity.ok(new ResultDTO<>("북마크 조회를 성공했습니다.", bookmarkDTOS));
+    return bookmarkDTOs;
+  }
+
+  @Override
+  public void deleteBookmark(BookmarkRequestDTO bookmarkRequestDTO) {
+
+    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
+    String email = "test@gmail.com";
+    Member member = memberRepository.findById(email)
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    Bookmark bookmark = bookmarkRepository.findById(bookmarkRequestDTO.getBookmarkId())
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOOKMARK));
+
+    if (bookmark.getEmail().equals(member)) {
+      bookmarkRepository.delete(bookmark);
+    } else {
+      throw new CustomException(ErrorCode.INVALID_BOOKMARK_OWNERSHIP);
+    }
   }
 }

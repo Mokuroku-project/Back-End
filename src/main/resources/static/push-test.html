@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Push Test</title></head>
+<body>
+<h1>Mokuroku Push Test</h1>
+<button id="btn">권한요청/토큰발급/서버저장</button>
+<pre id="log"></pre>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
+
+  const firebaseConfig  = {
+    apiKey: "AIzaSyDkYKfMwvD2-RsW2exNrBiRpbJ6EdjWPdc",
+    authDomain: "mokuroku-ad999.firebaseapp.com",
+    projectId: "mokuroku-ad999",
+    storageBucket: "mokuroku-ad999.firebasestorage.app",
+    messagingSenderId: "585869115548",
+    appId: "1:585869115548:web:f99c882aecd0a3fd66ed59",
+    measurementId: "G-WQRW9079RG"
+  };
+
+  const vapidKey = "BGt8xkNflIzs3FkDfud42vuTqo-YKzUSibQIvD7txERuwheUEPmyOCvDtL78KtyyKhVAnnLjohKde9Cqv_DV9RU"
+
+  const log = (m) => (document.getElementById("log").textContent += m + "\n");
+  const app = initializeApp(firebaseConfig);
+
+  document.getElementById("btn").onclick = async () => {
+    try {
+      if (!(await isSupported())) return log("이 브라우저는 FCM 미지원");
+      const reg = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+      const perm = await Notification.requestPermission();
+      log("권한: " + perm); if (perm !== "granted") return;
+
+      const messaging = getMessaging(app);
+      const token = await getToken(messaging, { vapidKey, serviceWorkerRegistration: reg });
+      log("토큰: " + token);
+
+      const res = await fetch("/push/token", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, platform: "chrome", userAgent: navigator.userAgent })
+      });
+      log("서버 저장 응답: " + res.status);
+
+      onMessage(messaging, (payload) => log("포그라운드 수신: " + JSON.stringify(payload)));
+    } catch (e) { log("오류: " + e); }
+  };
+</script>
+</body>
+</html>
