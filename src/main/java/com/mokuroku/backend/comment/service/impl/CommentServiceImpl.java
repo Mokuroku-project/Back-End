@@ -9,8 +9,10 @@ import com.mokuroku.backend.exception.ErrorCode;
 import com.mokuroku.backend.exception.impl.CustomException;
 import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.member.repository.MemberRepository;
+import com.mokuroku.backend.member.security.MemberAuthUtil;
 import com.mokuroku.backend.sns.entity.PostEntity;
 import com.mokuroku.backend.sns.repository.PostRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,12 +29,15 @@ public class CommentServiceImpl implements CommentService {
   @Override
   public List<CommentDTO> getComment(Long postId) {
 
-    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
-    String email = "test@gmail.com";
+    String email = MemberAuthUtil.getLoginUserId();
 
-    // 회원인지 검증 -> 회원상태에 대한 검증 추가 필요함
-    memberRepository.findById(email)
+    // 회원인지 검증 -> 회원상태 enum 값으로 변경되면 그 상태에 맞게 수정
+    Member member = memberRepository.findById(email)
         .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    if (!member.getStatus().equals("1")) {
+      throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
+    }
 
     PostEntity post = postRepository.findById(postId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
@@ -54,24 +59,62 @@ public class CommentServiceImpl implements CommentService {
   @Override
   public CommentDTO createComment(Long postId, CommentDTO commentDTO) {
 
-    // 임시 테스트 이메일 -> 나중에는 accessToken에서 사용자 정보를 가져올 것임
-    String email = "test@gmail.com";
+    String email = MemberAuthUtil.getLoginUserId();
 
-    // 회원인지 검증 -> 회원상태에 대한 검증 추가 필요함
+    // 회원인지 검증 -> 회원상태 enum 값으로 변경되면 그 상태에 맞게 수정
     Member member = memberRepository.findById(email)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-    PostEntity post = postRepository.findById(postId)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
-
-    if (post.getStatus() != '1') {
-      throw new CustomException(ErrorCode.NOT_FOUND_POST);
+    if (!member.getStatus().equals("1")) {
+      throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
     }
+
+    PostEntity post = postRepository.findByPostIdAndStatus(postId, '1')
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
     Comment comment = CommentDTO.createComment(commentDTO, post, member);
     commentRepository.save(comment);
 
     CommentDTO result = CommentDTO.toDTO(comment);
+
+    return result;
+  }
+
+  @Override
+  public CommentDTO updateComment(Long postId, Long commentId, CommentDTO commentDTO) {
+
+    String email = MemberAuthUtil.getLoginUserId();
+
+    // 회원인지 검증 -> 회원상태 enum 값으로 변경되면 그 상태에 맞게 수정
+    Member member = memberRepository.findById(email)
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    if (!member.getStatus().equals("1")) {
+      throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
+    }
+
+    // enum 값으로 변경시 그에 맞게 수정
+    PostEntity post = postRepository.findByPostIdAndStatus(postId, '1')
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+
+    Comment comment = commentRepository.findByCommentIdAndStatus(commentId, CommentStatus.POSTED)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
+
+    if (!comment.getPost().equals(post)) {
+      throw new CustomException(ErrorCode.NOT_FOUND_COMMENT);
+    }
+
+    if (!comment.getEmail().equals(member)) {
+      throw new CustomException(ErrorCode.INVALID_COMMENT_OWNERSHIP);
+    }
+
+    Comment build = comment.toBuilder()
+        .content(commentDTO.getContent())
+        .updateDate(LocalDateTime.now())
+        .build();
+    commentRepository.save(build);
+
+    CommentDTO result = CommentDTO.toDTO(build);
 
     return result;
   }
