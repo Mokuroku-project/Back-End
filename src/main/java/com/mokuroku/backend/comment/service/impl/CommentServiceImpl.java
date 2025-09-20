@@ -118,4 +118,39 @@ public class CommentServiceImpl implements CommentService {
 
     return result;
   }
+
+    @Override
+    public void deleteComment(Long postId, Long commentId) {
+
+        String email = MemberAuthUtil.getLoginUserId();
+
+        // 회원인지 검증 -> 회원상태 enum 값으로 변경되면 그 상태에 맞게 수정
+        Member member = memberRepository.findById(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        if (!member.getStatus().equals("1")) {
+            throw new CustomException(ErrorCode.ACCOUNT_DISABLED);
+        }
+
+        // enum 값으로 변경시 그에 맞게 수정
+        PostEntity post = postRepository.findByPostIdAndStatus(postId, '1')
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+
+        Comment comment = commentRepository.findByCommentIdAndStatus(commentId, CommentStatus.POSTED)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
+
+        if (!comment.getPost().equals(post)) {
+            throw new CustomException(ErrorCode.NOT_FOUND_COMMENT);
+        }
+
+        if (!comment.getEmail().equals(member)) {
+            throw new CustomException(ErrorCode.INVALID_COMMENT_OWNERSHIP);
+        }
+
+        Comment deleteComment = comment.toBuilder()
+                .deletedDate(LocalDateTime.now())
+                .status(CommentStatus.DELETED)
+                .build();
+        commentRepository.save(deleteComment);
+    }
 }
