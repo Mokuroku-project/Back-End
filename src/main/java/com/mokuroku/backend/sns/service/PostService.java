@@ -3,6 +3,9 @@ package com.mokuroku.backend.sns.service;
 import java.util.List;
 
 import com.mokuroku.backend.sns.dto.PostDTO;
+import com.mokuroku.backend.sns.entity.LocationEntity;
+
+import javax.xml.stream.Location;
 
 public interface PostService {
 
@@ -23,4 +26,5 @@ public interface PostService {
 
     // 게시물 삭제
     void deletePost(Long postId);
+
 }
