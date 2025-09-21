@@ -2,20 +2,23 @@ package com.mokuroku.backend.budgetbook.service;
 
 import com.mokuroku.backend.budgetbook.dto.BudgetbookDTO;
 import com.mokuroku.backend.budgetbook.dto.BudgetbookEditDTO;
+import com.mokuroku.backend.budgetbook.entity.BudgetbookEntity;
 import com.mokuroku.backend.common.ResultDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public interface BudgetbookService {
 
-    ResponseEntity<ResultDTO> budgetbookRegist(BudgetbookDTO budgetbookDTO);
+    BudgetbookEntity budgetbookRegist(BudgetbookDTO budgetbookDTO);
 
-    ResponseEntity<ResultDTO> budgetbookDelete(Long budgetbookId);
+    void budgetbookDelete(Long budgetbookId);
 
-    ResponseEntity<ResultDTO> budgetbookEdit(Long budgetbookId, BudgetbookEditDTO budgetbookEditDTO);
+    BudgetbookEntity budgetbookEdit(Long budgetbookId, BudgetbookEditDTO budgetbookEditDTO);
 
-    ResponseEntity<ResultDTO> budgetbook(Long budgetbookId);
+    BudgetbookEntity budgetbook(Long budgetbookId);
 
-    ResponseEntity<ResultDTO> budgetbookList(String email, String startDate, String endDate, String type);
+    Map<String, Object> budgetbookList(String email, String startDate, String endDate, String type);
 }

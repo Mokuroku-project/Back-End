@@ -31,7 +31,7 @@ public class BudgetbookServiceImpl implements BudgetbookService {
 
     //가계부 생성
     @Override
-    public ResponseEntity<ResultDTO> budgetbookRegist(BudgetbookDTO budgetbookDTO){
+    public BudgetbookEntity budgetbookRegist(BudgetbookDTO budgetbookDTO){
         String email = "test@gmail.com";
         Member member = memberRepository.findById(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
@@ -45,10 +45,8 @@ public class BudgetbookServiceImpl implements BudgetbookService {
                 .date(budgetbookDTO.getDate())
                 .build();
 
-        budgetbookRepository.save(budgetbook);
 
-
-        return ResponseEntity.ok(new ResultDTO<>("가계부 작성에 성공했습니다",  budgetbook));
+        return budgetbookRepository.save(budgetbook);
     }
 
 
@@ -56,7 +54,7 @@ public class BudgetbookServiceImpl implements BudgetbookService {
 
     //가계부 삭제
     @Override
-    public ResponseEntity<ResultDTO> budgetbookDelete(Long budgetbookId){
+    public void budgetbookDelete(Long budgetbookId){
         String email = "test@gmail.com";
         Member member = memberRepository.findById(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
@@ -69,15 +67,13 @@ public class BudgetbookServiceImpl implements BudgetbookService {
         }
 
         budgetbookRepository.deleteById(budgetbookId);
-
-        return ResponseEntity.ok(new ResultDTO<>("가계부 삭제에 성공했습니다",""));
     }
 
 
     //가계부 수정
     @Override
     @Transactional
-    public ResponseEntity<ResultDTO> budgetbookEdit(Long budgetbookId, BudgetbookEditDTO budgetbookEditDTO){
+    public BudgetbookEntity budgetbookEdit(Long budgetbookId, BudgetbookEditDTO budgetbookEditDTO){
         String email = "test@gmail.com";
         Member member = memberRepository.findById(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
@@ -91,15 +87,13 @@ public class BudgetbookServiceImpl implements BudgetbookService {
         budgetbook.setMemo(budgetbookEditDTO.getMemo());
         budgetbook.setDate(budgetbookEditDTO.getDate());
 
-        budgetbookRepository.save(budgetbook);
-
-        return ResponseEntity.ok(new ResultDTO<>("가계부 수정에 성공했습니다",budgetbook));
+        return budgetbookRepository.save(budgetbook);
     }
 
 
     //가계부 조회
     @Override
-    public ResponseEntity<ResultDTO> budgetbook(Long budgetbookId){
+    public BudgetbookEntity budgetbook(Long budgetbookId){
         String email = "test@gmail.com";
         Member member = memberRepository.findById(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
@@ -110,16 +104,13 @@ public class BudgetbookServiceImpl implements BudgetbookService {
         if(!budgetbook.getMember().getEmail().equals(email) || !budgetbook.getBudgetbookId().equals(budgetbookId)) {
             throw new CustomException(ErrorCode.NOT_FOUND_BUDGETBOOK);
         }
-        budgetbookRepository.findById(budgetbookId);
-
-        return ResponseEntity.ok(new ResultDTO<>("가계부 조회에 성공했습니다", budgetbook));
-
+        return budgetbook;
     }
 
 
     //가계부 리스트 조회
     @Override
-    public ResponseEntity<ResultDTO> budgetbookList(String email, String startDate, String endDate, String type) {
+    public Map<String, Object> budgetbookList(String email, String startDate, String endDate, String type) {
 
         Member member = memberRepository.findById(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
@@ -149,7 +140,7 @@ public class BudgetbookServiceImpl implements BudgetbookService {
         resultMap.put("totalExpense", totalExpense);
         resultMap.put("items", budgetbookList);
 
-        return ResponseEntity.ok(new ResultDTO<>("가계부 리스트 조회에 성공했습니다", resultMap));
+        return resultMap;
     }
 
 
