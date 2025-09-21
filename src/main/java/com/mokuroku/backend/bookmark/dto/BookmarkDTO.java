@@ -20,7 +20,7 @@ public class BookmarkDTO {
 
   public static Bookmark toEntity(Member member, PostEntity post) {
     return Bookmark.builder()
-        .email(member)
+        .member(member)
         .postId(post)
         .build();
   }
@@ -28,7 +28,7 @@ public class BookmarkDTO {
   public static BookmarkDTO toDTO(Bookmark bookmark) {
     return BookmarkDTO.builder()
         .bookmarkId(bookmark.getBookmarkId())
-        .email(bookmark.getEmail().getEmail())
+        .email(bookmark.getMember().getEmail())
         .postId(bookmark.getPostId().getPostId())
         .build();
   }

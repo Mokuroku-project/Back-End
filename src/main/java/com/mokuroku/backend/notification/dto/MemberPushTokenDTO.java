@@ -14,7 +14,7 @@ public class MemberPushTokenDTO {
 
   public static MemberPushToken toEntity(MemberPushTokenDTO dto, Member member) {
     return MemberPushToken.builder()
-        .email(member)
+        .member(member)
         .token(dto.getToken())
         .platform(dto.getPlatform())
         .userAgent(dto.getUserAgent())
