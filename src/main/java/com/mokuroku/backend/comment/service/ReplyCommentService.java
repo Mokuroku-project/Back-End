@@ -7,4 +7,6 @@ import org.springframework.stereotype.Service;
 public interface ReplyCommentService {
 
     ReplyCommentDTO creteReplyComment(Long commentId, ReplyCommentDTO replyCommentDTO);
+
+    ReplyCommentDTO updateReplyComment(Long commentId, Long replyCommentId, ReplyCommentDTO replyCommentDTO);
 }
