@@ -4,6 +4,7 @@ import com.mokuroku.backend.member.security.MemberAuthUtil;
 import com.mokuroku.backend.sns.dto.PostDTO;
 import com.mokuroku.backend.sns.entity.LocationEntity;
 import com.mokuroku.backend.sns.entity.PostEntity;
+import com.mokuroku.backend.sns.entity.PostStatus;
 import com.mokuroku.backend.sns.repository.LocationRepository;
 import com.mokuroku.backend.sns.repository.PostRepository;
 import com.mokuroku.backend.sns.service.LocationService;
@@ -33,7 +34,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO createPost(PostDTO postDTO) {
         // 기본값 설정
-        postDTO.setStatus('1'); // 활성 상태로 설정
+        postDTO.setStatus(PostStatus.ACTIVE); // 활성 상태로 설정
 
         Member member = memberRepository.findById(postDTO.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
@@ -72,7 +73,7 @@ public class PostServiceImpl implements PostService {
         PostEntity postEntity = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
-        if (postEntity.getStatus() == '0') {
+        if (postEntity.getStatus() == PostStatus.DELETED) {
             throw new CustomException(ErrorCode.NOT_FOUND_POST);
         }
 
@@ -84,7 +85,7 @@ public class PostServiceImpl implements PostService {
         PostEntity postEntity = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
-        if (postEntity.getStatus() == '0') {
+        if (postEntity.getStatus() == PostStatus.DELETED) {
             throw new CustomException(ErrorCode.NOT_FOUND_POST);
         }
 
@@ -107,7 +108,7 @@ public class PostServiceImpl implements PostService {
         PostEntity postEntity = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
-        if (postEntity.getStatus() == '0') {
+        if (postEntity.getStatus() == PostStatus.DELETED) {
             throw new CustomException(ErrorCode.NOT_FOUND_POST);
         }
 
@@ -119,7 +120,7 @@ public class PostServiceImpl implements PostService {
     @Override // 게시글 목록 조회
     @Transactional(readOnly = true)
     public List<PostDTO> getAllPosts() {
-        List<PostEntity> postEntities = postRepository.findByStatusOrderByRegDateDesc('1');
+        List<PostEntity> postEntities = postRepository.findByStatusOrderByRegDateDesc(PostStatus.ACTIVE);
 
         List<PostDTO> result = new ArrayList<>();
         for (PostEntity postEntity : postEntities) {

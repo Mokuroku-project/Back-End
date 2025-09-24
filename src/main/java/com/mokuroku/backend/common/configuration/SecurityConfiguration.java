@@ -32,7 +32,7 @@ public class SecurityConfiguration {
     private final AccessDeniedHandler accessDeniedHandler;   // 403
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         return http
                 .csrf(AbstractHttpConfigurer::disable)
