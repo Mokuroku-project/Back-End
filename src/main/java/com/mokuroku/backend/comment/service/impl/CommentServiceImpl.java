@@ -15,6 +15,7 @@ import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.member.repository.MemberRepository;
 import com.mokuroku.backend.member.security.MemberAuthUtil;
 import com.mokuroku.backend.sns.entity.PostEntity;
+import com.mokuroku.backend.sns.entity.PostStatus;
 import com.mokuroku.backend.sns.repository.PostRepository;
 
 import java.time.LocalDateTime;
@@ -50,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
         PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
-        if (post.getStatus() != '1') {
+        if (post.getStatus() != PostStatus.ACTIVE) {
             throw new CustomException(ErrorCode.NOT_FOUND_POST);
         }
 

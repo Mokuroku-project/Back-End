@@ -48,8 +48,9 @@ public class PostEntity {
 
     private LocalDateTime deleteDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private char status = '1';
+    private PostStatus status;
 
     public enum Visibility {
         PUBLIC, PRIVATE, LIMITED
@@ -64,13 +65,13 @@ public class PostEntity {
       */
     // 게시물 삭제 처리
     public void delete() {
-        this.status = '0';
+        this.status = PostStatus.DELETED;
         this.deleteDate = LocalDateTime.now();
     }
 
     // 게시물 복구 처리
     public void restore() {
-        this.status = '1';
+        this.status = PostStatus.ACTIVE;
         this.deleteDate = null;
     }
 

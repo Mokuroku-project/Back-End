@@ -3,6 +3,7 @@ package com.mokuroku.backend.sns.dto;
 import com.mokuroku.backend.member.entity.Member;
 import com.mokuroku.backend.sns.entity.LocationEntity;
 import com.mokuroku.backend.sns.entity.PostEntity;
+import com.mokuroku.backend.sns.entity.PostStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class PostDTO {
     private LocalDateTime regDate;
     private LocalDateTime updatedDate;
     private LocalDateTime deleteDate;
-    private char status;
+    private PostStatus status;
 
     // Entity를 DTO로
     public static PostDTO fromEntity(PostEntity postEntity, Member member) {

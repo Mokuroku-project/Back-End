@@ -1,14 +1,12 @@
 package com.mokuroku.backend.sns.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
@@ -18,10 +16,7 @@ public class GooglemapService {
     private String mapApikey;
 
     // 외부 api를 호출하기 위한 HTTP 클라이언트
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    // json 파싱
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final WebClient.Builder webClientBuilder;
 
     /*
     위도와 경도를 받아서 google Maps API를 호출하고,
@@ -29,15 +24,22 @@ public class GooglemapService {
      */
     public JsonObject getAddressFromLatlLng(double latitude, double longitude) {
         try {
-            String url = String.format(
-                    "https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&language=ko&key=%s"
-                    , latitude, longitude, mapApikey
-            );
-            // API 호출 -> JSON 문자열 응답 받기
-            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+            WebClient client = webClientBuilder.baseUrl("https://maps.googleapis.com/maps/api").build();
+//
+            Mono<String> responseMono = client.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/geocode/json")
+                            .queryParam("latlng", latitude + "," + longitude)
+                            .queryParam("language", "ko")
+                            .queryParam("key", mapApikey)
+                            .build())
+                    .retrieve()
+                    .bodyToMono(String.class);
+
+            String responseBody = responseMono.block(); //여기서 응답 꺼냄
 
             // Gson을 사용해 JSON 문자열을 JsonObject로 파싱
-            return JsonParser.parseString(response.getBody()).getAsJsonObject();
+            return JsonParser.parseString(responseBody).getAsJsonObject();
 
         }  catch (Exception e) {
             // 예외 발생 시 빈 JsonObject 반환(또는 null 반환도 가능)
